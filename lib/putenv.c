@@ -11,24 +11,34 @@ int putenv(const char *string) {
   char **newenv;
   static char **origenv;
   if (!origenv) origenv=environ;
+
+  // first find out of we are asked to remove or add/change an entry
+  // putenv("FOO") means remove all FOO=* entries.
   if (!(tmp=strchr(string,'='))) {
     len=strlen(string);
     remove=1;
   } else
     len=tmp-string;
+
+  // now loop through the environment looking for the string
   ep=(const char**)environ;
   if (!ep) return 0;
   for (i=envc=0, ep[i]; ep[i]; ++i) {
-    if (*string == ep[i][0] &&
-	!memcmp(string,*ep,len) &&
-	(*ep)[len]=='=') {
+    // i is the iterator for reading, envc for writing
+    // we compare the first byte before calling memcmp as an optimization
+    if (*string == ep[i][0] && !memcmp(string,ep[i],len) && ep[i][len]=='=') {
+      // we found the prefix
+      // if we were asked to remove said entry, we are done
       if (remove) continue;
+      // if we were asked to replace, do that, and for future matches
+      // pretend we were asked to remove
       ep[envc++]=string;
-      remove=1;		// remove dupes
-    }
+      remove=1;
+    } else
+      ep[envc++]=ep[i];
   }
-  if (!remove) {
-    // we were trying to replace something and didn't find it
+  if (remove==0) {
+    // we were asked to replace something that wasn't there
     // so realloc and add here
     newenv = (char**) realloc(environ==origenv?0:environ,
 			      (envc+2)*sizeof(char*));
@@ -51,32 +61,32 @@ int putenv(const char *string) {
 int
 main ()
 {
-	char* a="FOO=bar";
-	char* b="FOO=baz";
-	char* fraud[]={a, b, 0};
-	environ=fraud;
+  char* a="FOO=bar";
+  char* b="FOO=baz";
+  char* c="FOO=blub";
+  char* fraud[]={a, b, 0};
+  environ=fraud;
 
-	// test fraudulent environments
-	assert(putenv("FOO") != -1);	// invalid env: FOO appears twice
-	assert(getenv("FOO") == 0);	// we want putenv to remove both
+  // test fraudulent environments
+  assert(putenv(c) == 0);	// invalid env: FOO appears twice
+  assert(environ[0]==c && environ[1]==0);
 
-	// revert
-	free(environ); environ=fraud; fraud[0]=a; fraud[1]=b; fraud[2]=0;
-	// make sure FOO=1 removes both previous FOOs
-	assert(putenv("FOO=1") != -1);	// invalid env: FOO appears twice
-	assert(!strcmp(environ[0],"FOO=1") && environ[1]==0);
+  putenv("NEWVAR1=NEWVAL1");
+  putenv("NEWVAR2=NEWVAL2");
 
-	// now do some more basic tests
-	static char foo[] = "Hello=World";
-	assert (putenv ("foo=bar") != -1);
-	assert (!strcmp (getenv ("foo"), "bar"));
-	assert (putenv ("foo=baz") != -1);
-	assert (!strcmp (getenv ("foo"), "baz"));
-	putenv (foo);
-	assert (!strcmp (getenv ("Hello"), "World"));
-	foo[6] = 'M';
-	assert (!strcmp (getenv ("Hello"), "Morld"));
+  assert (!strcmp(getenv("NEWVAR1"), "NEWVAL1"));
 
-	return 0;
+  // now do some more basic tests
+  static char foo[] = "Hello=World";
+  assert (putenv ("foo=bar") != -1);
+  assert (!strcmp (getenv ("foo"), "bar"));
+  assert (putenv ("foo=baz") != -1);
+  assert (!strcmp (getenv ("foo"), "baz"));
+  putenv (foo);
+  assert (!strcmp (getenv ("Hello"), "World"));
+  foo[6] = 'M';
+  assert (!strcmp (getenv ("Hello"), "Morld"));
+
+  return 0;
 }
 #endif
