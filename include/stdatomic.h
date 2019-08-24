@@ -110,4 +110,8 @@ typedef _Atomic struct
 #define atomic_flag_clear(PTR)  __atomic_clear ((PTR), __ATOMIC_SEQ_CST)
 #define atomic_flag_clear_explicit(PTR, MO)   __atomic_clear ((PTR), (MO))
 
+#define atomic_thread_fence(MO) __atomic_thread_fence (MO)
+#define atomic_signal_fence(MO) __atomic_signal_fence  (MO)
+#define atomic_is_lock_free(OBJ) __atomic_is_lock_free (sizeof (*(OBJ)), (OBJ))
+
 #endif
