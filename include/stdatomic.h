@@ -88,11 +88,11 @@ typedef _Atomic __UINTMAX_TYPE__ atomic_uintmax_t;
 #define atomic_compare_exchange_strong(PTR, VAL, DES) __atomic_compare_exchange_n(PTR, VAL, DES, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
 #define atomic_compare_exchange_weak(PTR, VAL, DES) __atomic_compare_exchange_n(PTR, VAL, DES, true, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST)
 
-#define atomic_fetch_add_explicit(PTR, VAL, MO) __atomic_add_fetch(PTR, VAL, MO)
-#define atomic_fetch_sub_explicit(PTR, VAL, MO) __atomic_sub_fetch(PTR, VAL, MO)
-#define atomic_fetch_or_explicit(PTR, VAL, MO) __atomic_or_fetch(PTR, VAL, MO)
-#define atomic_fetch_xor_explicit(PTR, VAL, MO) __atomic_xor_fetch(PTR, VAL, MO)
-#define atomic_fetch_and_explicit(PTR, VAL, MO) __atomic_and_fetch(PTR, VAL, MO)
+#define atomic_fetch_add_explicit(PTR, VAL, MO) __atomic_fetch_add(PTR, VAL, MO)
+#define atomic_fetch_sub_explicit(PTR, VAL, MO) __atomic_fetch_sub(PTR, VAL, MO)
+#define atomic_fetch_or_explicit(PTR, VAL, MO) __atomic_fetch_or(PTR, VAL, MO)
+#define atomic_fetch_xor_explicit(PTR, VAL, MO) __atomic_fetch_xor(PTR, VAL, MO)
+#define atomic_fetch_and_explicit(PTR, VAL, MO) __atomic_fetch_and(PTR, VAL, MO)
 
 #define atomic_fetch_add(PTR, VAL) atomic_fetch_add_explicit(PTR, VAL, __ATOMIC_SEQ_CST)
 #define atomic_fetch_sub(PTR, VAL) atomic_fetch_sub_explicit(PTR, VAL, __ATOMIC_SEQ_CST)
