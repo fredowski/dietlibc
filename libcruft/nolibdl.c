@@ -13,6 +13,4 @@ __attribute__((weak)) int dlclose(void* handle) { return 0; }
 
 __attribute__((weak)) int dladdr(void *addr, Dl_info *info) { return 0; }
 
-__attribute__((weak)) int dladdr1(void *addr, Dl_info *info, void **extra_info, int flags) { return 0; }
-
 #endif

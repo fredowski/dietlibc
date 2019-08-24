@@ -8,7 +8,7 @@ int isinf(double d) {
   u.d=d;
   return (u.l==0x7FF0000000000000ll?1:u.l==0xFFF0000000000000ll?-1:0);
 }
-int __isinf(double d) __attribute__((alias("isinf")));
+int __isinf(double d) __attribute__((const, nothrow, leaf, alias("isinf")));
 
 #if 0
 TestFromIeeeExtended("7FFF0000000000000000");   /* +infinity */
