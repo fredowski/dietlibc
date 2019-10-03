@@ -38,6 +38,16 @@ extern void __assert_fail (const char *__assertion, const char *__file,
 #endif
 #endif
 
+#if __STDC_VERSION__ >= 201112L
+// _Static_assert is only defined in C11 :-(
+#define static_assert(cond,errmsg) _Static_assert(cond,errmsg)
+#else
+
+#define __X(x, y) x ## y
+#define __Y(x, y) __X(x, y)
+#define static_assert(cond,errmsg) struct __Y(foo,__LINE__) { char __temp[1 - (!(cond))*2]; };
+#endif
+
 __END_DECLS
 
 #endif

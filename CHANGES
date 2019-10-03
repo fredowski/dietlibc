@@ -7,6 +7,9 @@
   libc can't call rand() and change the seed, so introduce rand_i (Christopher Wellons)
   add stdatomic.h
   add dummy libdl functions for static linking that will just return failure
+  add stdalign.h
+  add uchar.h and c16rtomb, c32rtomb, mbrtoc16, mbrtoc32
+  add static_assert to <assert.h>
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
