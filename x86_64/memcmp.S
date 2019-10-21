@@ -18,10 +18,9 @@ memcmp:	/* rdi=ptr1, esi=ptr2, rdx=bytes */
   lea -8(%rdx),%rdx
   jz 1b
 2:
-  seta %al
-  setb %ah
-  neg %al
-  or %ah,%al
+  seta %ah
+  setb %al
+  sub %ah,%al
   movsbl %al,%eax
   ret
 1:
