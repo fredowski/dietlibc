@@ -103,6 +103,13 @@ void   explicit_bzero(void*, size_t) __THROW __noinline__;
 int timingsafe_memcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __noinline__;
 int timingsafe_bcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __noinline__;
 
+/* NetBSD has its own extension that is happened to be mentioned in the
+ * Linux man page for memcmp, so we support it, too */
+int consttime_memequal(void *b1, void *b2, size_t len) __THROW __nonnull((1,2)) __noinline__;
+
+/* NetBSD also has its own extension for memset :-( */
+void* explicit_memset(void *b, int c, size_t len) __THROW __nonnull((1)) __noinline__;
+
 __END_DECLS
 
 #endif
