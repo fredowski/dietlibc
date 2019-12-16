@@ -4,13 +4,19 @@
 /* if you change something here ... KNOW what you're doing !
  * it'll effect ALL platforms ! */
 
+#ifdef __arm__
+#define TYPE_FUNC %function
+#else
+#define TYPE_FUNC @function
+#endif
+
 #ifdef __clang__
 .macro DEF_G name
 .global \name
 #ifdef __PIE__
 .hidden \name
 #endif
-.type \name,@function
+.type \name,TYPE_FUNC
 \name:
 .endm
 .macro DEF_W name
@@ -18,7 +24,7 @@
 #ifdef __PIE__
 .hidden \name
 #endif
-.type \name,@function
+.type \name,TYPE_FUNC
 \name:
 .endm
 #else
