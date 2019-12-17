@@ -3,3 +3,4 @@ Beware!  Much of this code is untested!
 
 Someday, we will have a test suite and everything will be just fine.
 
+libm is rudimentary at best and i386 only at this point.
