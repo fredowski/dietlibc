@@ -12,6 +12,7 @@
   add static_assert to <assert.h>
   x86_64/memcmp.S optimization (Stefan Kanthak)
   add consttime_memequal and explicit_memset from NetBSD
+  fix rw fopen + fread + WANT_FREAD_OPTIMIZATION silent file corruption (Emil)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)

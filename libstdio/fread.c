@@ -20,6 +20,10 @@ size_t fread_unlocked(void *ptr, size_t size, size_t nmemb, FILE *stream) {
   }
 
 #ifdef WANT_FREAD_OPTIMIZATION
+  if (__unlikely(feof_unlocked(stream)))
+    return EOF;
+  if (__fflush4(stream,BUFINPUT)) return EOF;
+
   size_t inbuf=stream->bs-stream->bm;
   if (__unlikely(!inbuf)) {
     stream->bm=0;
