@@ -35,6 +35,7 @@ __BEGIN_DECLS
 
 double sin(double d) __THROW __attribute__((__const__));
 double cos(double d) __THROW __attribute__((__const__));
+void sincos(double d, double *sin, double *cos) __THROW __attribute__((__const__));
 double tan(double d) __THROW __attribute__((__const__));
 
 double sinh(double d) __THROW __attribute__((__const__));
@@ -44,33 +45,83 @@ double tanh(double d) __THROW __attribute__((__const__));
 double asin(double d) __THROW __attribute__((__const__));
 double acos(double d) __THROW __attribute__((__const__));
 double atan(double d) __THROW __attribute__((__const__));
+double atan2(double y, double x) __THROW __attribute__((__const__));
 
 double asinh(double d) __THROW __attribute__((__const__));
 double acosh(double d) __THROW __attribute__((__const__));
 double atanh(double d) __THROW __attribute__((__const__));
 
+float sinf(float d) __THROW __attribute__((__const__));
+float cosf(float d) __THROW __attribute__((__const__));
+void sincosf(float d, float *sin, float *cos) __THROW __attribute__((__const__));
+float tanf(float d) __THROW __attribute__((__const__));
+
+float sinhf(float d) __THROW __attribute__((__const__));
+float coshf(float d) __THROW __attribute__((__const__));
+float tanhf(float d) __THROW __attribute__((__const__));
+
+float asinf(float d) __THROW __attribute__((__const__));
+float acosf(float d) __THROW __attribute__((__const__));
+float atanf(float d) __THROW __attribute__((__const__));
+float atan2f(float y, float x) __THROW __attribute__((__const__));
+
+float asinhf(float d) __THROW __attribute__((__const__));
+float acoshf(float d) __THROW __attribute__((__const__));
+float atanhf(float d) __THROW __attribute__((__const__));
+
 double exp(double d) __THROW __attribute__((__const__));
+double expm1(double d) __THROW __attribute__((__const__));
+double exp2(double d) __THROW __attribute__((__const__));
 double exp10(double d) __THROW __attribute__((__const__));
+double pow10(double d) __THROW __attribute__((__const__));
 double log(double d) __THROW __attribute__((__const__));
+double log1p(double d) __THROW __attribute__((__const__));
+double log2(double d) __THROW __attribute__((__const__));
 double log10(double d) __THROW __attribute__((__const__));
 
-double exp2(double d) __THROW __attribute__((__const__));
-double log2(double d) __THROW __attribute__((__const__));
-
-double pow(double x, double y) __THROW __attribute__((__const__));
+float expf(float d) __THROW __attribute__((__const__));
+float expm1f(float d) __THROW __attribute__((__const__));
+float exp2f(float d) __THROW __attribute__((__const__));
+float exp10f(float d) __THROW __attribute__((__const__));
+float pow10f(float d) __THROW __attribute__((__const__));
+float logf(float d) __THROW __attribute__((__const__));
+float log1pf(float d) __THROW __attribute__((__const__));
+float log2f(float d) __THROW __attribute__((__const__));
+float log10f(float d) __THROW __attribute__((__const__));
 
 double sqrt(double x) __THROW __attribute__((__const__));
 double fabs(double x) __THROW __attribute__((__const__));
 double fmod(double x, double y) __THROW __attribute__((__const__));
+double pow(double x, double y) __THROW __attribute__((__const__));
+
+float sqrtf(float x) __THROW __attribute__((__const__));
+float fabsf(float x) __THROW __attribute__((__const__));
+float fmodf(float x, float y) __THROW __attribute__((__const__));
+float powf(float x, float y) __THROW __attribute__((__const__));
 
 double floor(double x) __attribute__((__const__));
 double ceil(double x) __attribute__((__const__));
+double round(double x) __attribute__((__const__));
+double trunc(double x) __attribute__((__const__));
 
+float floorf(float x) __attribute__((__const__));
+float ceilf(float x) __attribute__((__const__));
+float roundf(float x) __attribute__((__const__));
+float truncf(float x) __attribute__((__const__));
+
+double remainder(double x, double y) __THROW __attribute__((__const__));
+double drem(double x, double y) __THROW __attribute__((__const__));
 double expm1(double x) __THROW __attribute__((__const__));
 double hypot(double x, double y) __THROW __attribute__((__const__));
 double atan2(double x, double y) __THROW __attribute__((__const__));
-
 double copysign(double value, double sign) __attribute__((__const__));
+
+float remainderf(float x, float y) __THROW __attribute__((__const__));
+float dremf(float x, float y) __THROW __attribute__((__const__));
+float expm1f(float x) __THROW __attribute__((__const__));
+float hypotf(float x, float y) __THROW __attribute__((__const__));
+float atan2f(float x, float y) __THROW __attribute__((__const__));
+float copysignf(float value, float sign) __attribute__((__const__));
 
 #  define HUGE_VAL \
   (__extension__ \
@@ -101,11 +152,24 @@ double erfc(double x);
 double lgamma(double x);
 
 double rint(double x);
-
+double fdim(double x, double y);
+double fma(double x, double y, double z);
 double modf(double x, double * iptr);
+
+float  rintf(float x);
+float  fdimf(float x, float y);
+float  fmaf(float x, float y, float z);
+float  modff(float x, float * iptr);
 
 double frexp(double x, int *exp);
 double ldexp(double x, int exp);
+double logb(double x);
+float  frexpf(float x, int *exp);
+int    ilogb(double x);
+float  ldexpf(float x, int exp);
+float  logbf(float x);
+int    ilogbf(float x);
+
 
 __END_DECLS
 

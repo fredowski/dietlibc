@@ -54,7 +54,7 @@ int __dtostr(double d,char *buf,unsigned int maxlen,unsigned int prec,unsigned i
     prec2=prec2==0?1:prec2+2;
     prec2=prec2>maxlen?8:prec2;
     i=0;
-    if (prec2 && (long long)u.l<0) { buf[0]='-'; ++i; }
+    if (prec2 && (long long)u.l<0) { buf[0]='-'; ++i; ++prec2; }
     for (; i<prec2; ++i) buf[i]='0';
     buf[buf[0]=='0'?1:2]='.'; buf[i]=0;
     return i;
