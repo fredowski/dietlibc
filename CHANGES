@@ -14,6 +14,7 @@
   add consttime_memequal and explicit_memset from NetBSD
   fix rw fopen + fread + WANT_FREAD_OPTIMIZATION silent file corruption (Emil)
   libm functions for x86_64 (Emil)
+  add support for gcc 10's __attribute__((access(...)))
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)

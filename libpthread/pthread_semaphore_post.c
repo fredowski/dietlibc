@@ -34,7 +34,7 @@ int sem_post(sem_t*sem) {
   else if (sem->lock.count>1) {
     /* ok... we are in a semaphor handling and a signal handler.
      * now we want to  send a post... let the manager do this for us :) */
-    __thread_send_manager((MGR_func)__MGR_sem_post,sem);
+    __thread_send_manager((void*)__MGR_sem_post,sem);
   }
   else ret=__MGR_sem_post(sem);
   pthread_mutex_unlock(&sem->lock);

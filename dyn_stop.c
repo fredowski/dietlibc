@@ -1,6 +1,6 @@
 #include "dietfeatures.h"
 
-#ifdef WANT_DYNAMIC
+#ifdef WANT_CTOR
 #include <sys/cdefs.h>
 #include <endian.h>
 
@@ -24,15 +24,6 @@ static structor __DTOR_END__[1]={((structor)0)};
 # define EH_FRAME_SECTION_CONST
 #endif
 
-__attribute__((section(".eh_frame")))
-__attribute_used
-static
-#if __WORDSIZE == 32
-EH_FRAME_SECTION_CONST char __FRAME_END__[4] = { 0, 0, 0, 0 };
-#else
-EH_FRAME_SECTION_CONST char __FRAME_END__[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-#endif
-
 static void __do_global_ctors_aux(void)
 {
   structor *cf=__DTOR_END__;	/* ugly trick to prevent warning */
@@ -44,4 +35,15 @@ __attribute__((section(".init"))) void _init(void)
 {
   __do_global_ctors_aux();
 }
+#endif
+
+#ifdef WANT_EXCEPTIONS
+__attribute__((section(".eh_frame")))
+__attribute_used
+static
+#if __WORDSIZE == 32
+EH_FRAME_SECTION_CONST char __FRAME_END__[4] = { 0, 0, 0, 0 };
+#else
+EH_FRAME_SECTION_CONST char __FRAME_END__[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+#endif
 #endif

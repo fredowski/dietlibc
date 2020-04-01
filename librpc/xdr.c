@@ -74,9 +74,7 @@ void xdr_free(xdrproc_t proc, char* objp)
 /*
  * XDR nothing
  */
-bool_t xdr_void( /* xdrs, addr */ )
-	/* XDR *xdrs; */
-	/* char* addr; */
+bool_t xdr_void( XDR* unused, void* unused2)
 {
 
 	return (TRUE);

@@ -115,15 +115,21 @@ int clearenv(void) __THROW;
 char* secure_getenv(const char* name) __THROW;
 #endif
 
+__writemem__(1) __readmemsz__(2,3)
 int mbtowc(wchar_t *pwc, const char *s, size_t n) __THROW;
+__writemem__(1)
 int wctomb(char *s, wchar_t wc) __THROW;
+__writemem__(1) __readmemsz__(2,3)
 size_t mbstowcs(wchar_t *dest, const char *src, size_t n) __THROW;
+__readmemsz__(1,2)
 int mblen(const char* s,size_t n) __THROW __pure;
 
+__writememsz__(1,3)
 size_t wcstombs(char *dest, const wchar_t *src, size_t n) __THROW;
 
 /* These come from OpenBSD: */
 uint32_t arc4random(void) __THROW;
+__writememsz__(1,2)
 void arc4random_buf(void* buf, size_t n) __THROW;
 uint32_t arc4random_uniform(uint32_t upper_bound) __THROW;
 void arc4random_stir(void) __THROW;

@@ -21,19 +21,25 @@ struct group *getgrent(void) __THROW;
 void setgrent(void) __THROW;
 void endgrent(void) __THROW;
 
-int getgrent_r(struct group *res, char *buf, size_t buflen,
-	       struct group **res_sig) __THROW;
+__writememsz__(2,3)
+int getgrent_r(struct group* res, char* buf, size_t buflen,
+	       struct group** res_sig) __THROW;
+__writememsz__(3,4)
 int getgrnam_r(const char* name,
-	       struct group *res, char *buf, size_t buflen,
-	       struct group **res_sig) __THROW;
+	       struct group* res, char* buf, size_t buflen,
+	       struct group** res_sig) __THROW;
+__writememsz__(3,4)
 int getgrgid_r(uid_t uid,
-	       struct group *res, char *buf, size_t buflen,
-	       struct group **res_sig) __THROW;
+	       struct group* res, char* buf, size_t buflen,
+	       struct group** res_sig) __THROW;
 
-int setgroups(size_t n, const gid_t *groups) __THROW;
-int setgroups32(size_t n, const gid32_t *groups) __THROW;
-int initgroups(const char *user, gid_t group) __THROW;
-int getgrouplist(const char*user,gid_t group,gid_t*groups,int*ngroups) __THROW;
+int setgroups(size_t n, const gid_t* groups) __THROW;
+__readmemsz__(2,1)
+int setgroups32(size_t n, const gid32_t* groups) __THROW;
+__readmem__(1)
+int initgroups(const char* user, gid_t group) __THROW;
+__readmem__(1) __writemem__(3)
+int getgrouplist(const char* user,gid_t group,gid_t* groups,int* ngroups) __THROW;
 
 __END_DECLS
 

@@ -284,7 +284,7 @@ struct xdr_discrim
  * know whether the call is a read or a write to the passed parameter
  * also, the XDR structure is always updated by some of these calls.
  */
-extern bool_t xdr_void (void) __THROW;
+extern bool_t xdr_void (XDR*, void*) __THROW;
 extern bool_t xdr_short (XDR *__xdrs, short *__sp) __THROW;
 extern bool_t xdr_u_short (XDR *__xdrs, unsigned short *__usp) __THROW;
 extern bool_t xdr_int (XDR *__xdrs, int *__ip) __THROW;

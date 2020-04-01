@@ -25,11 +25,14 @@ struct servent {
 extern void endservent (void) __THROW;
 extern void setservent(int stayopen) __THROW;
 
+__writememsz__(2,3)
 extern int getservent_r(struct servent *res, char *buf, size_t buflen,
 			 struct servent **res_sig) __THROW;
+__writememsz__(4,5)
 extern int getservbyname_r(const char* name,const char* proto,
 			   struct servent *res, char *buf, size_t buflen,
 			   struct servent **res_sig) __THROW;
+__writememsz__(4,5)
 extern int getservbyport_r(int port,const char* proto,
 			   struct servent *res, char *buf, size_t buflen,
 			   struct servent **res_sig) __THROW;
@@ -59,6 +62,7 @@ extern struct hostent *gethostbyname2 (const char *__name, int __af) __THROW;
 
 /* this glibc "invention" is so ugly, I'm going to throw up any minute
  * now */
+__writememsz__(3,4)
 extern int gethostbyname_r(const char* NAME, struct hostent* RESULT_BUF,char* BUF,
 			   size_t BUFLEN, struct hostent** RESULT,
 			   int* H_ERRNOP) __THROW;
@@ -69,10 +73,12 @@ extern int gethostbyname_r(const char* NAME, struct hostent* RESULT_BUF,char* BU
 #define NO_ADDRESS 4
 #define NO_DATA 5
 
+__writememsz__(5,6)
 extern int gethostbyaddr_r(const char* addr, size_t length, int format,
 		    struct hostent* result, char *buf, size_t buflen,
 		    struct hostent **RESULT, int *h_errnop) __THROW;
 
+__writememsz__(4,5)
 int gethostbyname2_r(const char* name, int AF, struct hostent* result,
 		    char *buf, size_t buflen,
 		    struct hostent **RESULT, int *h_errnop) __THROW;
@@ -89,11 +95,14 @@ struct protoent *getprotobynumber(int proto) __THROW;
 void setprotoent(int stayopen) __THROW;
 void endprotoent(void) __THROW;
 
+__writememsz__(2,3)
 int getprotoent_r(struct protoent *res, char *buf, size_t buflen,
 		  struct protoent **res_sig) __THROW;
+__writememsz__(3,4)
 int getprotobyname_r(const char* name,
 		     struct protoent *res, char *buf, size_t buflen,
 		     struct protoent **res_sig) __THROW;
+__writememsz__(3,4)
 int getprotobynumber_r(int proto,
 		      struct protoent *res, char *buf, size_t buflen,
 		      struct protoent **res_sig) __THROW;

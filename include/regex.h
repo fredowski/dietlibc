@@ -43,7 +43,9 @@ typedef struct __regex_t {
 #define re_nsub r.pieces
 
 int regcomp(regex_t* preg, const char* regex, int cflags) __THROW;
+__writememsz__(4,3)
 int regexec(const regex_t* preg, const char* string, size_t nmatch, regmatch_t pmatch[], int eflags) __THROW;
+__writememsz__(3,4)
 size_t regerror(int errcode, const regex_t* preg, char* errbuf, size_t errbuf_size) __THROW;
 void regfree(regex_t* preg) __THROW;
 

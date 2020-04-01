@@ -46,6 +46,7 @@ loff_t lseek64(int fildes, loff_t offset, int whence) __THROW;
 int chdir(const char *path) __THROW;
 int fchdir(int fd) __THROW;
 int rmdir(const char *pathname) __THROW;
+__writememsz__(1,2)
 char *getcwd(char *buf, size_t size) __THROW __attribute__((__warn_unused_result__));
 
 #ifdef _GNU_SOURCE
@@ -58,15 +59,21 @@ int open(const char* pathname,int flags, ...) __THROW;
 int open64(const char* pathname,int flags, ...) __THROW;
 int creat(const char* pathname,mode_t mode) __THROW;
 int creat64(const char* pathname,mode_t mode) __THROW;
+__readmemsz__(2,3)
 ssize_t write(int fd,const void* buf,size_t len) __THROW;
+__writememsz__(2,3)
 ssize_t read(int fd,void* buf,size_t len) __THROW;
 int close(int fd) __THROW;
 
 int unlink(const char *pathname) __THROW;
 
+__writememsz__(2,3)
 ssize_t pread(int fd, void *buf, size_t count, off_t offset);
+__readmemsz__(2,3)
 ssize_t pwrite(int fd, const void *buf, size_t count, off_t offset);
+__writememsz__(2,3)
 ssize_t pread64(int fd, void *buf, size_t count, off64_t offset);
+__readmemsz__(2,3)
 ssize_t pwrite64(int fd, const void *buf, size_t count, off64_t offset);
 
 int execve(const char *filename, char *const argv [], char *const envp[]) __THROW;
@@ -108,6 +115,7 @@ int getdents64(int fd, struct dirent64 *dirp, unsigned int count) __THROW;
 pid_t fork(void) __THROW;
 pid_t vfork(void) __THROW;
 
+__writememsz__(2,3)
 int readlink(const char *path, char *buf, size_t bufsiz) __THROW;
 int symlink(const char *oldpath, const char *newpath) __THROW;
 int link(const char *oldpath, const char *newpath) __THROW;
@@ -127,7 +135,9 @@ char *ttyname (int desc) __THROW;
 int brk(void *end_data_segment) __THROW;
 void *sbrk(ptrdiff_t increment) __THROW;
 
+__writememsz__(1,2)
 int gethostname(char *name, size_t len) __THROW;
+__readmemsz__(1,2)
 int sethostname(const char *name, size_t len) __THROW;
 
 int usleep(unsigned long useconds) __THROW;
@@ -183,7 +193,9 @@ char* sha512_crypt(const char* key, const char* salt) __THROW;
 
 int getpagesize(void) __THROW __attribute__((__const__,__pure__));
 
+__writememsz__(1,2)
 int getdomainname(char *name, size_t len) __THROW;
+__readmemsz__(1,2)
 int setdomainname(const char *name, size_t len) __THROW;
 
 int getgroups(int size, gid_t list[]) __THROW;
@@ -198,6 +210,7 @@ struct __sysctl_args;
 int _sysctl(struct __sysctl_args *args) __THROW;
 
 #define _CS_PATH 1
+__writememsz__(2,3)
 size_t confstr(int name,char*buf,size_t len) __THROW;
 
 #define _SC_CLK_TCK 1
@@ -217,6 +230,7 @@ long sysconf(int name) __THROW;
 pid_t tcgetpgrp(int fd) __THROW;
 int tcsetpgrp(int fd, pid_t pgrpid) __THROW;
 
+__writememsz__(1,2)
 int profil(unsigned short *buf, size_t bufsiz, size_t offset, unsigned int scale);
 
 /* Linux only: */
@@ -265,6 +279,7 @@ char* cuserid(char * string); /* ugh! */
 int lockf (int __fd, int __cmd, off_t __len) __THROW;
 int lockf64 (int __fd, int __cmd, off64_t __len) __THROW;
 
+__writememsz__(2,3)
 void swab(const void *src, void *dest, ssize_t nbytes) __THROW;
 
 int vhangup(void) __THROW;
@@ -304,6 +319,7 @@ long fadvise64_64(int fd,off64_t offset,off64_t len,int advice) __THROW;
 int faccessat(int dirfd, const char *pathname, int mode, int flags) __THROW;
 int fchownat(int dirfd, const char *pathname, uid_t owner, gid_t group, int flags) __THROW;
 int linkat(int olddirfd, const char *oldpath, int newdirfd, const char *newpath, int flags) __THROW;
+__writememsz__(3,4)
 int readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz) __THROW;
 #endif
 

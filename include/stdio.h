@@ -20,6 +20,7 @@ FILE *freopen (const char *path, const char *mode, FILE *stream) __THROW;
 int printf(const char *format, ...) __THROW __attribute__((__format__(__printf__,1,2)));
 int fprintf(FILE *stream, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
 int sprintf(char *str, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
+__writememsz__(1,2)
 int snprintf(char *str, size_t size, const char *format, ...) __THROW __attribute__((__format__(__printf__,3,4)));
 int asprintf(char **ptr, const char* format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
 
@@ -30,6 +31,7 @@ int sscanf(const char *str, const char *format, ...) __THROW __attribute__((__fo
 int vprintf(const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,1,0)));
 int vfprintf(FILE *stream, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,2,0)));
 int vsprintf(char *str, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,2,0)));
+__writememsz__(1,2)
 int vsnprintf(char *str, size_t size, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,3,0)));
 
 int fdprintf(int fd, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
@@ -107,10 +109,14 @@ void rewind(FILE *stream) __THROW;
 int fgetpos(FILE *stream, fpos_t *pos) __THROW;
 int fsetpos(FILE *stream, fpos_t *pos) __THROW;
 
+__writemem__(1)
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream) __THROW;
+__writemem__(1)
 size_t fread_unlocked(void *ptr, size_t size, size_t nmemb, FILE *stream) __THROW;
 
+__readmem__(1)
 size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream) __THROW;
+__readmem__(1)
 size_t fwrite_unlocked(const void *ptr, size_t size, size_t nmemb, FILE *stream) __THROW;
 
 int fflush(FILE *stream) __THROW;
@@ -142,6 +148,7 @@ void perror(const char *s) __THROW;
 #define _IOFBF 2
 
 int setvbuf(FILE *stream, char *buf, int mode , size_t size) __THROW;
+__writememsz__(2,4)
 int setvbuf_unlocked(FILE *stream, char *buf, int mode , size_t size) __THROW;
 
 #if !defined(__cplusplus)
@@ -151,6 +158,7 @@ int setvbuf_unlocked(FILE *stream, char *buf, int mode , size_t size) __THROW;
 #else
 inline int setbuf(FILE *stream, char *buf) __THROW
   { return setvbuf(stream,buf,buf?_IOFBF:_IONBF,BUFSIZ); }
+__writememsz__(2,3)
 inline int setbuffer(FILE *stream, char *buf, size_t size) __THROW
   { return setvbuf(stream,buf,buf?_IOFBF:_IONBF,size); }
 inline int setlinebuf(FILE *stream) __THROW

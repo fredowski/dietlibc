@@ -35,6 +35,7 @@ extern int hsearch_r(ENTRY item, ACTION action, ENTRY** retval, struct hsearch_d
 extern int hcreate_r(size_t count, struct hsearch_data* htab) __THROW;
 extern void hdestroy_r(struct hsearch_data* htab) __THROW;
 
+__readmemsz__(2,3)
 extern uint64_t siphash24(const unsigned char key[16], const unsigned char *in, size_t len) __THROW;
 
 #endif

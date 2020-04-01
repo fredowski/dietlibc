@@ -23,8 +23,10 @@ extern void setspent(void) __THROW;
 extern void endspent(void) __THROW;
 extern struct spwd* getspnam (const char* __name) __THROW;
 
+__readmemsz__(2,3)
 int getspent_r(struct spwd* res, char* buf, size_t buflen,
 	       struct spwd** res_sig) __THROW;
+__readmemsz__(3,4)
 int getspnam_r(const char* name,
 	       struct spwd* res, char* buf, size_t buflen,
 	       struct spwd** res_sig) __THROW;

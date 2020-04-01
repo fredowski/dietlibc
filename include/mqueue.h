@@ -25,12 +25,18 @@ struct mq_attr {
 
 __BEGIN_DECLS
 
+__readmem__(1)
 mqd_t mq_open(const char *name, int oflag, ...) __THROW;
+__readmem__(1)
 int mq_unlink(const char *name) __THROW;
+__readmemsz__(2,3)
 int mq_send(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned msg_prio) __THROW;
+__readmemsz__(2,3)
 int mq_timedsend(mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned msg_prio,
 		 const struct timespec *abs_timeout) __THROW;
+__writememsz__(2,3)
 ssize_t mq_receive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned *msg_prio) __THROW;
+__writememsz__(2,3)
 ssize_t mq_timedreceive(mqd_t mqdes, char *restrict msg_ptr, size_t msg_len,
 			unsigned *restrict msg_prio, const struct timespec *restrict abs_timeout) __THROW;
 int mq_notify(mqd_t mqdes, const struct sigevent *notification) __THROW;
