@@ -53,7 +53,9 @@ struct msginfo {
 
 extern int msgctl (int msqid, int cmd, struct msqid_ds *buf) __THROW;
 extern int msgget (key_t key, int msgflg) __THROW;
+__writememsz__(2,3)
 extern int msgrcv (int msqid, void *msgp, size_t msgsz, long int msgtyp, int msgflg) __THROW;
+__readmemsz__(2,3)
 extern int msgsnd (int msqid, const void *msgp, size_t msgsz, int msgflg) __THROW;
 
 __END_DECLS

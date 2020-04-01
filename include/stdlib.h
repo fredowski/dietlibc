@@ -9,12 +9,16 @@
 
 __BEGIN_DECLS
 
+__attribute_alloc__(2)
 void *calloc(size_t nmemb, size_t size) __THROW __attribute_malloc__;
+__attribute_alloc__(1)
 void *malloc(size_t size)  __THROW __attribute_malloc__;
 void free(void *ptr) __THROW;
+__attribute_alloc__(2)
 void *realloc(void *ptr, size_t size) __THROW __attribute_malloc__;
 
 /* useful OpenBSD extension: */
+__attribute_alloc2__(2,3)
 void* reallocarray(void* ptr, size_t nmemb, size_t size) __THROW __attribute_malloc__ __attribute_alloc2__(2,3);
 
 char *getenv(const char *name) __THROW __pure;

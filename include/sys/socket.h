@@ -640,11 +640,17 @@ int socket(int domain, int type, int protocol) __THROW;
 int accept(int s, struct sockaddr *addr, socklen_t *addrlen) __THROW;
 int connect(int sockfd, const struct sockaddr *serv_addr, socklen_t addrlen) __THROW;
 int bind(int sockfd, const struct sockaddr *my_addr, socklen_t addrlen) __THROW;
+__writememsz__(2,3)
 int recv(int s, void *buf, size_t len, int flags) __THROW;
+__writememsz__(2,3)
 int recvfrom(int s, void *buf, size_t len, int flags, struct sockaddr *from, socklen_t *fromlen) __THROW;
+__writemem__(2)
 int recvmsg(int s, struct msghdr *msg, int flags) __THROW;
+__readmemsz__(2,3)
 int send(int s, const void *msg, size_t len, int flags) __THROW;
+__readmemsz__(2,3)
 int sendto(int s, const void *msg, size_t len, int flags, const struct sockaddr *to, socklen_t tolen) __THROW;
+__readmem__(2)
 int sendmsg(int s, const struct msghdr *msg, int flags) __THROW;
 
 int getpeername(int s, struct sockaddr *name, socklen_t *namelen) __THROW;
@@ -693,6 +699,7 @@ struct addrinfo {
   struct addrinfo *ai_next;
 };
 
+__writememsz__(3,4) __writememsz__(5,6)
 int getnameinfo(const struct sockaddr *sa, socklen_t salen, char *host,
 		size_t hostlen, char *serv, size_t servlen, int flags) __THROW;
 int getaddrinfo(const char *node, const char *service, const struct

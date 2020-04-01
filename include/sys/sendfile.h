@@ -7,10 +7,12 @@
 
 __BEGIN_DECLS
 
+__readmemsz__(3,4)
 extern ssize_t sendfile (int out_fd, int in_fd, off_t* offset,
 			 size_t count) __THROW;
 
 #ifndef __NO_STAT64
+__readmemsz__(3,4)
 extern ssize_t sendfile64 (int out_fd, int in_fd, loff_t* offset,
 			   size_t count) __THROW;
 

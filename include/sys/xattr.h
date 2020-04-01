@@ -18,55 +18,67 @@ enum
 
 /* Set the attribute NAME of the file pointed to by PATH to VALUE (which
    is SIZE bytes long).  Return 0 on success, -1 for errors.  */
+__readmem__(1) __readmem__(2) __readmemsz__(3,4)
 int setxattr(const char *path, const char *name, const void *value, size_t size, int flags) __THROW;
 
 /* Set the attribute NAME of the file pointed to by PATH to VALUE (which is
    SIZE bytes long), not following symlinks for the last pathname component.
    Return 0 on success, -1 for errors.  */
+__readmem__(1) __readmem__(2) __readmemsz__(3,4)
 int lsetxattr (const char *path, const char *name, const void *value, size_t size, int flags) __THROW;
 
 /* Set the attribute NAME of the file descriptor FD to VALUE (which is SIZE
    bytes long).  Return 0 on success, -1 for errors.  */
+__readmem__(2) __readmemsz__(3,4)
 int fsetxattr (int fd, const char *name, const void *value, size_t size, int flags) __THROW;
 
 /* Get the attribute NAME of the file pointed to by PATH to VALUE (which is
    SIZE bytes long).  Return 0 on success, -1 for errors.  */
+__readmem__(1) __readmem__(2) __writememsz__(3,4)
 ssize_t getxattr (const char *path, const char *name, void *value, size_t size) __THROW;
 
 /* Get the attribute NAME of the file pointed to by PATH to VALUE (which is
    SIZE bytes long), not following symlinks for the last pathname component.
    Return 0 on success, -1 for errors.  */
+__readmem__(1) __readmem__(2) __writememsz__(3,4)
 ssize_t lgetxattr (const char *path, const char *name, void *value, size_t size) __THROW;
 
 /* Get the attribute NAME of the file descriptor FD to VALUE (which is SIZE
    bytes long).  Return 0 on success, -1 for errors.  */
+__readmem__(2) __writememsz__(3,4)
 ssize_t fgetxattr (int fd, const char *name, void *value, size_t size) __THROW;
 
 /* List attributes of the file pointed to by PATH into the user-supplied
    buffer LIST (which is SIZE bytes big).  Return 0 on success, -1 for
    errors.  */
+__readmem__(1) __writememsz__(2,3)
 ssize_t listxattr (const char *path, char *list, size_t size) __THROW;
 
 /* List attributes of the file pointed to by PATH into the user-supplied
    buffer LIST (which is SIZE bytes big), not following symlinks for the
    last pathname component.  Return 0 on success, -1 for errors.  */
+__readmem__(1) __writememsz__(2,3)
 ssize_t llistxattr (const char *path, char *list, size_t size) __THROW;
 
 /* List attributes of the file descriptor FD into the user-supplied buffer
    LIST (which is SIZE bytes big).  Return 0 on success, -1 for errors.  */
+__writememsz__(2,3)
 ssize_t flistxattr (int fd, char *list, size_t size) __THROW;
 
 /* Remove the attribute NAME from the file pointed to by PATH.  Return 0
    on success, -1 for errors.  */
+__readmem__(1) __readmem__(2)
 int removexattr (const char *path, const char *name) __THROW;
 
 /* Remove the attribute NAME from the file pointed to by PATH, not
    following symlinks for the last pathname component.  Return 0 on
    success, -1 for errors.  */
+__readmem__(1) __readmem__(2)
 int lremovexattr (const char *path, const char *name) __THROW;
 
 /* Remove the attribute NAME from the file descriptor FD.  Return 0 on
    success, -1 for errors.  */
+__readmem__(2)
 int fremovexattr (int fd, const char *name) __THROW;
 
 __END_DECLS

@@ -13,7 +13,9 @@ enum {
 #define GRND_RANDOM GRND_RANDOM
 };
 
+__writememsz__(1,2)
 int getrandom(void* buf, size_t buflen, unsigned int flags) __THROW;
+__writememsz__(1,2)
 int getentropy(void* buf,size_t buflen) __THROW;
 
 __END_DECLS

@@ -57,14 +57,17 @@ extern struct rpcent *getrpcbynumber (int __number) __THROW;
 extern struct rpcent *getrpcent (void) __THROW;
 
 #ifdef __USE_MISC
+__writememsz__(3,4)
 extern int getrpcbyname_r (const char *__name, struct rpcent *__result_buf,
 			   char *__buffer, size_t __buflen,
 			   struct rpcent **__result) __THROW;
 
+__writememsz__(3,4)
 extern int getrpcbynumber_r (int __number, struct rpcent *__result_buf,
 			     char *__buffer, size_t __buflen,
 			     struct rpcent **__result) __THROW;
 
+__writememsz__(2,3)
 extern int getrpcent_r (struct rpcent *__result_buf, char *__buffer,
 			size_t __buflen, struct rpcent **__result) __THROW;
 #endif
