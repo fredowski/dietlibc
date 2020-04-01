@@ -138,5 +138,20 @@
 #define __hidden__ __attribute__((visibility("hidden")))
 #endif
 
+#if (__GNUC__ < 10)
+#define __readmem__(argno_ptr)
+#define __readmemsz__(argno_ptr, argno_size)
+#define __writemem__(argno_ptr)
+#define __writememsz__(argno_ptr, argno_size)
+#define __readwritemem__(argno_ptr)
+#define __readwritememsz__(argno_ptr, argno_size)
+#else
+#define __readmem__(argno_ptr) __attribute__((access(read_only, argno_ptr)))
+#define __readmemsz__(argno_ptr, argno_size) __attribute__((access(read_only, argno_ptr, argno_size)))
+#define __writemem__(argno_ptr) __attribute__((access(write_only, argno_ptr)))
+#define __writememsz__(argno_ptr, argno_size) __attribute__((access(write_only, argno_ptr, argno_size)))
+#define __readwritemem__(argno_ptr) __attribute__((access(read_write, argno_ptr)))
+#define __readwritememsz__(argno_ptr, argno_size) __attribute__((access(read_write, argno_ptr, argno_size)))
+#endif
 
 #endif
