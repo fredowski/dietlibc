@@ -101,7 +101,8 @@ int getaddrinfo(const char *node, const char *service, const struct addrinfo *hi
 	  if (family==PF_INET6 && node) {
 	    int l=strlen(node);
 	    if ((l>6 && !strcmp(node+l-6,".local")) || !strchr(node,'.'))
-	      foo->ip.ip6.sin6_scope_id=__dns_plugplay_interface;
+	      if (foo->ip.ip6.sin6_scope_id == 0)
+		foo->ip.ip6.sin6_scope_id=__dns_plugplay_interface;
 	  }
 #endif
 	  if (h.h_name) {
