@@ -132,25 +132,25 @@ int ffsll(long long i) __THROW __attribute_const__;
  * It is meant for scrubbing crypto keys and passwords from memory after
  * use, so they don't show up in swap files or core dumps. */
 __writememsz__(1,2)
-void   explicit_bzero(void*, size_t) __THROW __noinline__;
+void   explicit_bzero(void*, size_t) __THROW __dontinline__;
 
 /* More OpenBSD extensions. These are for comparing passwords and hashes
  * without leaking timing information on how long the common prefix was.
  * The comparison always compares all the bytes, even if there is a
  * mismatch early on. */
 __readmemsz__(1,3) __readmemsz__(2,3)
-int timingsafe_memcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __noinline__;
+int timingsafe_memcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __dontinline__;
 __readmemsz__(1,3) __readmemsz__(2,3)
-int timingsafe_bcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __noinline__;
+int timingsafe_bcmp(const void* s1, const void* s2, size_t n) __THROW __nonnull((1,2)) __dontinline__;
 
 /* NetBSD has its own extension that is happened to be mentioned in the
  * Linux man page for memcmp, so we support it, too */
 __readmemsz__(1,3) __readmemsz__(2,3)
-int consttime_memequal(void *b1, void *b2, size_t len) __THROW __nonnull((1,2)) __noinline__;
+int consttime_memequal(void *b1, void *b2, size_t len) __THROW __nonnull((1,2)) __dontinline__;
 
 /* NetBSD also has its own extension for memset :-( */
 __writememsz__(1,3)
-void* explicit_memset(void *b, int c, size_t len) __THROW __nonnull((1)) __noinline__;
+void* explicit_memset(void *b, int c, size_t len) __THROW __nonnull((1)) __dontinline__;
 
 __END_DECLS
 

@@ -127,9 +127,9 @@
 #endif
 
 #if (__GNUC__ < 3) || ((__GNUC__ == 3) && (__GNUC_MINOR__ < 1))
-#define __noinline__
+#define __dontinline__
 #else
-#define __noinline__ __attribute__((noinline))
+#define __dontinline__ __attribute__((noinline))
 #endif
 
 #if (__GNUC__ < 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ < 6))
