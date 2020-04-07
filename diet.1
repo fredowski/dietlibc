@@ -4,7 +4,7 @@
 diet \- mangle gcc command line arguments
 .SH SYNOPSIS
 .PP
-.B diet [-v] [-Os]
+.B diet [-v] [-L] [-Os]
 [\fInormal gcc command line\fP]
 .SH DESCRIPTION
 .PP
@@ -23,6 +23,11 @@ executing it.
 When passed the -Os option before the gcc argument, diet will mangle the
 gcc options to include the best known for-size optimization settings for
 the platform.
+
+The -L option will not run the compiler at all but print the destination
+path. It still needs to compiler name on the command line to determine
+the architecture. The idea is to use this to get the destination libdir
+for automated builds.
 .SH FILES
 ~/.diet/\fIcompiler\fR may contain compiler options as you would
 specify them on the command line, i.e. separated by spaces.  Those will

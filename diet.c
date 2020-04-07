@@ -57,7 +57,7 @@ static void usage(void) {
 	   " (non-install version in source tree)"
 #endif
 	   "\n\n");
-  error("usage: diet [-v] [-Os] gcc command line\n"
+  error("usage: diet [-v] [-L] [-Os] gcc command line\n"
 	"e.g.   diet -Os gcc -c t.c\n"
 	"or     diet sparc-linux-gcc -o foo foo.c bar.o\n");
 }
