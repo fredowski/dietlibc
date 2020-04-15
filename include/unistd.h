@@ -325,6 +325,9 @@ int readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz) __THRO
 
 #define _POSIX_MAPPED_FILES 200809L
 
+__writememsz__(1,2)
+int getentropy(void* buf,size_t buflen) __THROW;
+
 __END_DECLS
 
 #endif
