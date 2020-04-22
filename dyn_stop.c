@@ -1,18 +1,7 @@
 #include "dietfeatures.h"
 
-#ifdef WANT_CTOR
 #include <sys/cdefs.h>
 #include <endian.h>
-
-typedef void(*structor)(void);
-
-__attribute__((section(".ctors")))
-__attribute_used
-static structor __CTOR_END__[1]={((structor)0)};
-
-__attribute__((section(".dtors")))
-__attribute_used
-static structor __DTOR_END__[1]={((structor)0)};
 
 /* see gcc-3.4/gcc/crtstuff.c */
 #if !defined(EH_FRAME_SECTION_CONST)
@@ -23,6 +12,17 @@ static structor __DTOR_END__[1]={((structor)0)};
 #if !defined(EH_FRAME_SECTION_CONST)
 # define EH_FRAME_SECTION_CONST
 #endif
+
+#ifdef WANT_CTOR
+typedef void(*structor)(void);
+
+__attribute__((section(".ctors")))
+__attribute_used
+static structor __CTOR_END__[1]={((structor)0)};
+
+__attribute__((section(".dtors")))
+__attribute_used
+static structor __DTOR_END__[1]={((structor)0)};
 
 static void __do_global_ctors_aux(void)
 {
