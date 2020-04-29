@@ -6,8 +6,8 @@
 
 void *memccpy(void *dst, const void *src, int c, size_t count)
 {
-  char *a = dst;
-  const char *b = src;
+  unsigned char *a = dst;
+  const unsigned char *b = src;
   size_t i;
   if (count>=16) {
     __m128i cmpval=_mm_set1_epi8((unsigned char)c);
@@ -40,7 +40,7 @@ void *memccpy(void *dst, const void *src, int c, size_t count)
     return 0;
   }
   for (i=0; i<count; ++i)
-    if ((a[i]=b[i])==c)
+    if ((a[i]=b[i])==(unsigned char)c)
       return a+i+1;
   return 0;
 }

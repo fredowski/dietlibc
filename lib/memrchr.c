@@ -3,11 +3,11 @@
 #include <string.h>
 
 void* memrchr(const void *s, int c, size_t n) {
-  register const char* t=s;
-  register const char* last=0;
+  register const unsigned char* t=s;
+  register const unsigned char* last=0;
   int i;
   for (i=n; i; --i) {
-    if (*t==c)
+    if (*t==(unsigned char)c)
       last=t;
     ++t;
   }

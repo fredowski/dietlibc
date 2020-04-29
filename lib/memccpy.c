@@ -5,12 +5,12 @@
 
 void *memccpy(void *dst, const void *src, int c, size_t count)
 {
-  char *a = dst;
-  const char *b = src;
+  unsigned char *a = dst;
+  const unsigned char *b = src;
   while (count--)
   {
     *a++ = *b;
-    if (*b==c)
+    if (*b==(unsigned char)c)
     {
       return (void *)a;
     }
