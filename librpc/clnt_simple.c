@@ -92,8 +92,10 @@ int callrpc (const char *host, const unsigned long prognum,
 			clnt_destroy(crp->client);
 			crp->client = NULL;
 		}
-		if ((hp = gethostbyname(host)) == NULL)
+		if ((hp = gethostbyname(host)) == NULL) {
+			free(freeme);
 			return ((int) RPC_UNKNOWNHOST);
+		}
 		timeout.tv_usec = 0;
 		timeout.tv_sec = 5;
 		memmove((char *) &server_addr.sin_addr, hp->h_addr, hp->h_length);
@@ -101,8 +103,10 @@ int callrpc (const char *host, const unsigned long prognum,
 		server_addr.sin_port = 0;
 		if ((crp->client = clntudp_create(&server_addr, (unsigned long) prognum,
 										  (unsigned long) versnum, timeout,
-										  &crp->socket)) == NULL)
+										  &crp->socket)) == NULL) {
+			free(freeme);
 			return ((int) rpc_createerr.cf_stat);
+		}
 		crp->valid = 1;
 		crp->oldprognum = prognum;
 		crp->oldversnum = versnum;

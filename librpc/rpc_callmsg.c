@@ -124,6 +124,8 @@ register struct rpc_msg *cmsg;
 				if (oa->oa_base == NULL) {
 					oa->oa_base = (char*)
 						mem_alloc(oa->oa_length);
+					if (!oa->oa_base)
+						return (FALSE);
 				}
 				buf = XDR_INLINE(xdrs, RNDUP(oa->oa_length));
 				if (buf == NULL) {
@@ -157,6 +159,8 @@ register struct rpc_msg *cmsg;
 				if (oa->oa_base == NULL) {
 					oa->oa_base = (char*)
 						mem_alloc(oa->oa_length);
+					if (!oa->oa_base)
+						return (FALSE);
 				}
 				buf = XDR_INLINE(xdrs, RNDUP(oa->oa_length));
 				if (buf == NULL) {

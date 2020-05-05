@@ -116,6 +116,7 @@ AUTH *authunix_create __P ((char *machname, uid_t uid,
 	au = (struct audata *) mem_alloc(sizeof(*au));
 #ifndef KERNEL
 	if (au == NULL) {
+		mem_free(auth, sizeof(*auth));
 		(void) fprintf(stderr, "authunix_create: out of memory\n");
 		return (NULL);
 	}
@@ -148,6 +149,8 @@ AUTH *authunix_create __P ((char *machname, uid_t uid,
 	au->au_origcred.oa_base = mem_alloc((unsigned int) len);
 #else
 	if ((au->au_origcred.oa_base = mem_alloc((unsigned int) len)) == NULL) {
+		mem_free(auth, sizeof(*auth));
+		mem_free(au, sizeof(*au));
 		(void) fprintf(stderr, "authunix_create: out of memory\n");
 		return (NULL);
 	}
