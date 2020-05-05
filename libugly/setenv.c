@@ -11,6 +11,7 @@ int setenv(const char *name, const char *value, int overwrite) {
   }
   {
     char *c=malloc(strlen(name)+strlen(value)+2);
+    if (!c) return -1;
     strcpy(c,name);
     strcat(c,"=");
     strcat(c,value);

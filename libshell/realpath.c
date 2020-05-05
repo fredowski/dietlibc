@@ -44,6 +44,7 @@ char* realpath(const char* file, char* dest) {
   if (!dest) dest=malloc(PATH_MAX+1);
   if (!dest) return NULL;
   res=myrealpath(file,dest,31);
+  if (res!=dest) free(dest);
   fchdir(fd);
   close(fd);
   return res;
