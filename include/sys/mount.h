@@ -115,7 +115,7 @@ enum
 {
   MNT_FORCE = 1,		/* Force unmounting.  */
 #define MNT_FORCE MNT_FORCE
-  MNT_DETACH = 2		/* Just detach, unmount when last reference dies.  */
+  MNT_DETACH = 2,		/* Just detach, unmount when last reference dies.  */
 #define MNT_DETACH MNT_DETACH
   MNT_EXPIRE = 4,		/* Mark for expiry.  */
 #define MNT_EXPIRE MNT_EXPIRE
