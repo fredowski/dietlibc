@@ -32,11 +32,11 @@ extern char __executable_start;
 #endif
 
 #ifdef WANT_GNU_STARTUP_BLOAT
-char* program_invocation_name;
-char* program_invocation_short_name;
+extern char* program_invocation_name;
+extern char* program_invocation_short_name;
 #endif
 
-void* __vdso;
+extern void* __vdso;
 
 extern int main(int argc,char* argv[],char* envp[]);
 
@@ -52,7 +52,7 @@ extern int __valgrind;
 #endif
 
 #ifdef __i386__
-int __modern_linux;
+extern int __modern_linux;
 #endif
 
 #ifdef WANT_TLS
@@ -62,8 +62,8 @@ int __modern_linux;
  * __tdataptr is a pointer to the initialized thread local data section
  * __tmemsize is already rounded up to meet alignment
  * the final memory layout is [tdata] [tbss (zero)] [tcb] */
-size_t __tdatasize, __tmemsize;
-void* __tdataptr;
+extern size_t __tdatasize, __tmemsize;
+extern void* __tdataptr;
 
 static void findtlsdata(long* auxvec) {
 #if (__WORDSIZE == 64)
@@ -98,7 +98,7 @@ static void findtlsdata(long* auxvec) {
 #endif
 
 #if defined(WANT_SSP) || defined(WANT_TLS)
-tcbhead_t* __tcb_mainthread;
+extern tcbhead_t* __tcb_mainthread;
 
 extern void __setup_tls(tcbhead_t*);
 #endif
@@ -321,7 +321,7 @@ static void callback() {
 
 
 #ifdef __PIE__
-__hidden__ char _DYNAMIC;
+extern char _DYNAMIC;
 #endif
 
 extern long* _auxvec;
