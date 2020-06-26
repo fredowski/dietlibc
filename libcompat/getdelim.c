@@ -14,8 +14,8 @@ ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream) {
   if (!*lineptr) *n=0;
   for (i=0; ; ) {
     int x;
-    if (i>=*n) {
-      int tmp=*n+100;
+    if (i+1>=*n) {
+      size_t tmp=*n+100;
       char* new=realloc(*lineptr,tmp);
       if (!new) return -1;
       *lineptr=new; *n=tmp;
