@@ -27,7 +27,13 @@ err_out:
   tmp->buflen=BUFSIZE;
   {
     struct stat st;
-    fstat(fd,&st);
+    if (fstat(fd,&st) == -1) {
+      // this can happen if the kernel ran out of resources
+kaputt:
+      if (closeonerror) __libc_close(fd);
+      free(tmp);
+      return NULL;
+    }
     tmp->flags=(S_ISFIFO(st.st_mode))?FDPIPE:0;
   }
   switch (mode&3) {
@@ -37,8 +43,9 @@ err_out:
   }
   tmp->popen_kludge=0;
   if (__stdio_atexit==0) {
+    if (atexit(__stdio_flushall))
+      goto kaputt;
     __stdio_atexit=1;
-    atexit(__stdio_flushall);
   }
   tmp->next=__stdio_root;
   __stdio_root=tmp;

@@ -7,7 +7,7 @@ link_warning("setenv","setenv calls malloc.  Avoid it in small programs.");
 int setenv(const char *name, const char *value, int overwrite) {
   if (getenv(name)) {
     if (!overwrite) return 0;
-    unsetenv(name);
+    if (unsetenv(name)) return -1;
   }
   {
     char *c=malloc(strlen(name)+strlen(value)+2);
