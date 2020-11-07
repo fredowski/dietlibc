@@ -151,8 +151,10 @@ int main(int argc, char *argv[])
     trunc32(in);
 
   close(in);
-  if (argc==3)
-      rename(fn,argv[2]);
+  if (argc==3) {
+      if (rename(fn,argv[2]))
+	die(3, "could not move file.trunc over file");
+  }
   return 0;
 }
 

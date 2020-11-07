@@ -13,8 +13,13 @@ typedef struct __stdio_file FILE;
 
 extern FILE *stdin, *stdout, *stderr;
 
+__attribute__((__warn_unused_result__))
 FILE *fopen (const char *path, const char *mode) __THROW;
+
+__attribute__((__warn_unused_result__))
 FILE *fdopen (int fildes, const char *mode) __THROW;
+
+__attribute__((__warn_unused_result__))
 FILE *freopen (const char *path, const char *mode, FILE *stream) __THROW;
 
 int printf(const char *format, ...) __THROW __attribute__((__format__(__printf__,1,2)));
@@ -41,11 +46,19 @@ int vscanf(const char *format, va_list ap) __THROW __attribute__((__format__(__s
 int vsscanf(const char *str, const char *format, va_list ap) __THROW __attribute__((__format__(__scanf__,2,0)));
 int vfscanf(FILE *stream, const char *format, va_list ap) __THROW __attribute__((__format__(__scanf__,2,0)));
 
+__attribute__((__warn_unused_result__))
 int fgetc(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 int fgetc_unlocked(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 char *fgets(char *s, int size, FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 char *fgets_unlocked(char *s, int size, FILE *stream) __THROW;
 
+__error("gets cannot be used safely; dietlibc does not implement it")
 char *gets(char *s) __THROW;
 int ungetc(int c, FILE *stream) __THROW;
 int ungetc_unlocked(int c, FILE *stream) __THROW;
@@ -55,7 +68,10 @@ int fputc_unlocked(int c, FILE *stream) __THROW;
 int fputs(const char *s, FILE *stream) __THROW;
 int fputs_unlocked(const char *s, FILE *stream) __THROW;
 
+__attribute__((__warn_unused_result__))
 int getc(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 int getchar(void) __THROW;
 int putchar(int c) __THROW;
 int putchar_unlocked(int c) __THROW;
@@ -66,8 +82,8 @@ int putchar_unlocked(int c) __THROW;
 #define putc_unlocked(c,stream) fputc_unlocked(c,stream)
 #define putchar_unlocked(c) fputc_unlocked(c,stdout)
 #else
-inline int putc(int c, FILE *stream) __THROW { return fputc(c,stream); }
-inline int putc_unlocked(int c, FILE *stream) __THROW { return fputc_unlocked(c,stream); }
+static inline int putc(int c, FILE *stream) __THROW { return fputc(c,stream); }
+static inline int putc_unlocked(int c, FILE *stream) __THROW { return fputc_unlocked(c,stream); }
 #endif
 
 #if !defined(__cplusplus)
@@ -76,25 +92,38 @@ inline int putc_unlocked(int c, FILE *stream) __THROW { return fputc_unlocked(c,
 #define getc_unlocked(stream) fgetc_unlocked(stream)
 #define getchar_unlocked() fgetc_unlocked(stdin)
 #else
-inline int getc_unlocked(FILE *stream) __THROW { return fgetc_unlocked(stream); }
-inline int getchar_unlocked(void) __THROW { return fgetc_unlocked(stdin); }
+static inline int getc_unlocked(FILE *stream) __THROW { return fgetc_unlocked(stream); }
+static inline int getchar_unlocked(void) __THROW { return fgetc_unlocked(stdin); }
 #endif
 
 int puts(const char *s) __THROW;
 
 int fseek(FILE *stream, long offset, int whence) __THROW;
 int fseek_unlocked(FILE *stream, long offset, int whence) __THROW;
+
+__attribute__((__warn_unused_result__))
 long ftell(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 long ftell_unlocked(FILE *stream) __THROW;
+
 int fseeko(FILE *stream, off_t offset, int whence) __THROW;
 int fseeko_unlocked(FILE *stream, off_t offset, int whence) __THROW;
+
+__attribute__((__warn_unused_result__))
 off_t ftello(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 off_t ftello_unlocked(FILE *stream) __THROW;
 
 #if __WORDSIZE == 32
 int fseeko64(FILE *stream, loff_t offset, int whence) __THROW;
 int fseeko64_unlocked(FILE *stream, loff_t offset, int whence) __THROW;
+
+__attribute__((__warn_unused_result__))
 loff_t ftello64(FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 loff_t ftello64_unlocked(FILE *stream) __THROW;
 
 #if defined _FILE_OFFSET_BITS && _FILE_OFFSET_BITS == 64
@@ -134,7 +163,10 @@ int fileno_unlocked(FILE *stream) __THROW;
 void clearerr(FILE *stream) __THROW;
 void clearerr_unlocked(FILE *stream) __THROW;
 
+__attribute__((__warn_unused_result__))
 int remove(const char *pathname) __THROW;
+
+__attribute__((__warn_unused_result__))
 int rename(const char *oldpath, const char *newpath) __THROW;
 
 void perror(const char *s) __THROW;
@@ -165,6 +197,7 @@ inline int setlinebuf(FILE *stream) __THROW
   { return setvbuf(stream,0,_IOLBF,BUFSIZ); }
 #endif
 
+__attribute__((__warn_unused_result__))
 FILE *popen(const char *command, const char *type) __THROW;
 int pclose(FILE *stream) __THROW;
 
@@ -176,9 +209,16 @@ int pclose(FILE *stream) __THROW;
 
 #define L_tmpnam 128
 #define P_tmpdir "/tmp"
+__attribute__((__warn_unused_result__))
 char* tmpnam(char *s) __THROW;	/* DO NOT USE!!! Use mkstemp instead! */
+
+__attribute__((__warn_unused_result__))
 char* tempnam(char* dir,char* _template);	/* dito */
+
+__attribute__((__warn_unused_result__))
 FILE* tmpfile(void) __THROW;
+
+__attribute__((__warn_unused_result__))
 FILE* tmpfile_unlocked(void) __THROW;
 
 #define FILENAME_MAX 4095
@@ -192,6 +232,8 @@ char* ctermid(char* s); /* returns "/dev/tty" */
 
 void flockfile(FILE* f) __THROW;
 void funlockfile(FILE* f) __THROW;
+
+__attribute__((__warn_unused_result__))
 int ftrylockfile (FILE *__stream) __THROW;
 
 #ifdef _GNU_SOURCE
@@ -203,7 +245,10 @@ ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream) __THROW;
 #if defined(_ATFILE_SOURCE) || ((_XOPEN_SOURCE + 0) >= 700) || ((_POSIX_C_SOURCE + 0) >= 200809L)
 /* also include fcntl.h for the AT_* constants */
 
+__attribute__((__warn_unused_result__))
 int symlinkat(const char *oldpath, int newdirfd, const char *newpath);
+
+__attribute__((__warn_unused_result__))
 int renameat(int olddirfd, const char *oldpath, int newdirfd, const char *newpath) __THROW;
 #endif
 
