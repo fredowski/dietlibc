@@ -15,6 +15,9 @@ size_t mbrtoc32(char32_t *restrict pwc, const char *restrict s, size_t n, mbstat
   /* read one character */
   uint32_t x;
   ssize_t r=__mbrtox(s,n,&x);
+
+  (void)ps;	// not needed for char32_t
+
   if (r<0) {
     if (r==-1) errno=EILSEQ;
     return r;

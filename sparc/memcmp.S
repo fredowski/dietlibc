@@ -12,6 +12,8 @@
 .text
 .globl memcmp
 memcmp:
+.glob bcmp
+bcmp:
 	clr %o5
 .Lloop:
 	subcc %o2, 1, %o2

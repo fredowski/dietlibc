@@ -129,7 +129,7 @@ void __libc_vsyslog(int priority, const char *format, va_list arg_ptr)
   }
 
   /* check priority against setlogmask */
-  if ((LOG_MASK(LOG_PRI(priority)) && LogMask) == 0) return;
+  if ((LOG_MASK(LOG_PRI(priority)) & LogMask) == 0) return;
 
   /* Set default facility if none specified. */
   if ((priority & LOG_FACMASK) == 0) priority |= LogFacility;

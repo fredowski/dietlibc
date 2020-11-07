@@ -108,8 +108,10 @@ long nrand48(randbuf buf) __THROW;
 __attribute__((__warn_unused_result__))
 double erand48(randbuf buf) __THROW;
 
+__attribute__((__callback(4, 1, 1)))
 void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 
+__attribute__((__callback(5, 1, 2)))
 __attribute__((__warn_unused_result__))
 void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));
 

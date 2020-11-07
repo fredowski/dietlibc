@@ -60,5 +60,9 @@ void arc4random_stir(void) {
 }
 
 void arc4random_addrandom(unsigned char* dat,size_t datlen) {
+  // not actually doing it, as all the randomness comes from the kernel
+  // anyway
+  (void)dat;
+  (void)datlen;
 }
 

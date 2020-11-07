@@ -5,6 +5,9 @@
 #endif
 .type memcmp,@function
 memcmp:	/* rdi=ptr1, esi=ptr2, rdx=bytes */
+.global bcmp
+.type bcmp,@function
+bcmp:
 1:
   cmp $8,%rdx
   jb 1f
@@ -33,4 +36,5 @@ memcmp:	/* rdi=ptr1, esi=ptr2, rdx=bytes */
 
 .Lhere:
 .size memcmp,.Lhere-memcmp
+.size bcmp,.Lhere-memcmp
 	.section	.note.GNU-stack,"",@progbits

@@ -10,6 +10,7 @@
 /* we ignore the locale and always do UTF-8 */
 
 size_t c32rtomb(char *restrict s, char32_t w, mbstate_t *restrict ps) {
+  (void)ps;	// not needed for char32_t
 
   /* the UTF-16 surrogate pair range is reserved */
   if (w >= 0xd800 && w <= 0xdfff) {

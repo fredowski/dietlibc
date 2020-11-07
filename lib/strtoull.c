@@ -58,7 +58,7 @@ skip0x:
 
 /* die, BSD, die!!! */
 unsigned long long int strtouq(const char *nptr, char **endptr, int base)
-	__attribute__((leaf, nothrow, alias("strtoull")));
+	__attribute__((__leaf, nothrow, alias("strtoull")));
 
 uintmax_t strtoumax(const char *nptr, char **endptr, int base)
-	__attribute__((leaf, nothrow, alias("strtoull")));
+	__attribute__((__leaf, nothrow, alias("strtoull")));

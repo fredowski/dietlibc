@@ -1,6 +1,10 @@
 #ifndef _SYS_CDEFS_H
 #define _SYS_CDEFS_H
 
+#ifndef __has_attribute
+#define __has_attribute(foo) 0
+#endif
+
 #ifndef __cplusplus
 #define __THROW
 #define __BEGIN_DECLS
@@ -19,6 +23,11 @@
 #if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 6))
 #define __leaf , __leaf__
 #else
+#define __leaf
+#endif
+
+#if defined(__clang__) && __has_attribute(leaf)
+#undef __leaf
 #define __leaf
 #endif
 
@@ -160,6 +169,23 @@
 #else
 #define __warn(message) __attribute__((warning(message)))
 #define __error(message) __attribute__((error(message)))
+#endif
+
+#if __has_attribute(diagnose_if)
+#define __condwarn(condition, message) diagnose_if(condition, message, "warning")
+#define __conderr(condition, message) diagnose_if(condition, message, "error")
+#else
+#define __condwarn(condition, message)
+#define __conderr(condition, message)
+#endif
+
+#if __has_attribute(enable_if)
+#endif
+
+#if __has_attribute(callback)
+#define __callback(...) callback(__VA_ARGS__)
+#else
+#define __callback(...)
 #endif
 
 #endif
