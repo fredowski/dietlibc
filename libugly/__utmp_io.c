@@ -21,7 +21,8 @@ __utmp_io(int fd, void *ut, ssize_t len, off_t *offset, int type) {
   if (type == F_WRLCK) {
       ret = write(fd, ut, len);
       e = errno;
-      fsync (fd);
+      if (fsync (fd) == -1)
+	ret = -1;
       /* FIXME - where exactly should the offset point after a write? */
       newoffset = lseek (fd, 0, SEEK_CUR);
    } else {

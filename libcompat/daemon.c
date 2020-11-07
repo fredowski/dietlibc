@@ -9,6 +9,7 @@
 int daemon (int nochdir,int noclose)
 {
   int fd;
+  int r=0;
   switch (fork()) {
   case -1: return (-1);
   case  0: break;
@@ -19,11 +20,14 @@ int daemon (int nochdir,int noclose)
   if (!noclose) {
     fd = open(_PATH_DEVNULL,O_RDWR,0);
     if (fd == -1) return (-1);
-    dup2 (fd,STDIN_FILENO);
-    dup2 (fd,STDOUT_FILENO);
-    dup2 (fd,STDERR_FILENO);
-    if (fd>2) close (fd);
+    if (dup2 (fd,STDIN_FILENO) == -1 ||
+	dup2 (fd,STDOUT_FILENO) == -1 ||
+	dup2 (fd,STDERR_FILENO) == -1) {
+      r = -1;
+    }
+      
+    if (fd>2 && close (fd) == -1) r = -1;
   }
-  return (0);
+  return r;
 }
 

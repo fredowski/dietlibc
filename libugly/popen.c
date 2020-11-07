@@ -21,8 +21,11 @@ FILE *popen(const char *command, const char *type) {
   }
   if (!pid) {	/* child */
     const char *argv[]={__sh,"-c",0,0};
-    close(pfd[!fd0]); close(fd0);
-    dup2(pfd[fd0],fd0); close(pfd[fd0]);
+    if (close(pfd[!fd0])==-1 ||
+	close(fd0)==-1 ||
+	dup2(pfd[fd0],fd0)==-1 ||
+	close(pfd[fd0])==-1)
+      _exit(127);
     argv[2]=command;
     execve(__binsh,(char*const*)argv,environ);
     _exit(127);

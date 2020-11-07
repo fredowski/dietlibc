@@ -260,16 +260,20 @@ __BEGIN_DECLS
 
 #define MAP_FAILED      ((void *) -1)
 
+__attribute__((__warn_unused_result__))
 extern void *mmap (void *__addr, size_t __len, int __prot,
                    int __flags, int __fd, off_t __offset);
 
 extern int munmap (void *__addr, size_t __len) __THROW;
 extern int mprotect (void *__addr, size_t __len, int __prot) __THROW;
 extern int msync (void *__addr, size_t __len, int __flags) __THROW;
+
+__attribute__((__warn_unused_result__))
 extern void *mremap (void *__addr, size_t __old_len, size_t __new_len,
 		     unsigned long __may_move) __THROW;
 extern int mincore (void *__start, size_t __len, unsigned char *__vec);
 
+__attribute__((__warn_unused_result__))
 extern void *mmap64 (void *__addr, size_t __len, int __prot,
 		     int __flags, int __fd, off64_t __offset) __THROW;
 
@@ -279,10 +283,15 @@ extern void *mmap64 (void *__addr, size_t __len, int __prot,
 #endif
 #endif
 
+__attribute__((__warn_unused_result__))
 int mlockall(int flags) __THROW;
+
+__attribute__((__warn_unused_result__))
 int mlock(const void *addr, size_t len) __THROW;
 int munlock(const void *addr, size_t len) __THROW;
 int munlockall(void) __THROW;
+
+__attribute__((__warn_unused_result__))
 int mlock2(const void *addr, size_t len, int flags) __THROW;
 
 int madvise(void *start, size_t length, int advice) __THROW;
