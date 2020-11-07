@@ -163,7 +163,7 @@
 #define __readwritememsz__(argno_ptr, argno_size) __attribute__((access(read_write, argno_ptr, argno_size)))
 #endif
 
-#if (__GNUC__ < 4) || ((__GNUC__ == 4) && (__GNUC_MINUR__ < 3))
+#if (__GNUC__ < 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ < 3))
 #define __warn(message)
 #define __error(message)
 #else
