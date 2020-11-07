@@ -9,7 +9,7 @@
 
 __BEGIN_DECLS
 
-__attribute_alloc__(2)
+__attribute_alloc2__(1,2)
 void *calloc(size_t nmemb, size_t size) __THROW __attribute_malloc__;
 __attribute_alloc__(1)
 void *malloc(size_t size)  __THROW __attribute_malloc__;
