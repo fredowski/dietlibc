@@ -3,6 +3,7 @@
 
 #include <sys/cdefs.h>
 #include <endian.h>
+#include <stdint.h>
 
 __BEGIN_DECLS
 
