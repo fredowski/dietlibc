@@ -70,6 +70,10 @@ char *strsep(char ** __restrict__ stringp, const char * __restrict__ delim) __TH
 
 __readmemsz__(1,3)
 void* memchr(const void *s, int c, size_t n) __THROW __pure __nonnull((1));
+
+__readmemsz__(1,2)
+char *strndup(const char *s,size_t n) __THROW __attribute_malloc__ __nonnull((1));
+
 #ifdef _GNU_SOURCE
 __readmemsz__(1,3)
 void* memrchr(const void *s, int c, size_t n) __THROW __pure __nonnull((1));
@@ -90,9 +94,6 @@ void *memmem(const void *haystack, size_t haystacklen, const void *needle, size_
 
 __writememsz__(1,3) __readmemsz__(2,3)
 void* mempcpy(void* __restrict__ dest,const void* __restrict__ src,size_t n) __THROW __nonnull((1,2));
-
-__readmemsz__(1,2)
-char *strndup(const char *s,size_t n) __THROW __attribute_malloc__ __nonnull((1));
 
 #define strdupa(s) ({ const char* tmp=s; size_t l=strlen(tmp)+1; char* x=alloca(l); memcpy(x,tmp,l); })
 #define strndupa(s,n) ({ const char* tmp=s; const char* y=memchr(tmp,0,(n)); size_t l=y?y-tmp:n; char* x=alloca(l+1); x[l]=0; memcpy(x,tmp,l); })
