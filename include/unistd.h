@@ -59,6 +59,8 @@ char *get_current_dir_name (void) __THROW;
 
 __attribute__((__warn_unused_result__))
 int pipe2(int pipefd[2], int flags) __THROW;
+
+pid_t gettid(void) __THROW __pure;
 #endif
 
 __attribute__((__warn_unused_result__))
@@ -436,7 +438,6 @@ long init_module(void *module, unsigned long len, const char *options) __THROW;
 /* flags can be O_EXCL | O_NONBLOCK | O_TRUNC (forced unloading)
  * O_EXCL is there so the kernel can spot old rmmod versions */
 long delete_module(const char* name,unsigned int flags) __THROW;
-pid_t gettid(void) __THROW __pure;
 int tkill(pid_t tid, int sig) __THROW;
 int tgkill(pid_t tgid, pid_t tid, int sig) __THROW;
 /* see linux/fadvise.h */
