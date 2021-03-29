@@ -816,11 +816,12 @@ const char *gai_strerror(int errcode) __THROW;
 
 #define SIOCDEVPRIVATE	0x89F0		/* to 89FF */
 
+#define _LINUX_SOCKET_H
+
 #ifdef _GNU_SOURCE
+/* flags can be: SOCK_NONBLOCK, SOCK_CLOEXEC */
 int accept4(int s, struct sockaddr *addr, socklen_t *addrlen, int flags) __THROW;
 #endif
-
-#define _LINUX_SOCKET_H
 
 __END_DECLS
 
