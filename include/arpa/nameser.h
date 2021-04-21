@@ -26,54 +26,90 @@ __BEGIN_DECLS
  */
 typedef enum __ns_type {
 	ns_t_invalid = 0,	/* Cookie. */
-	ns_t_a = 1,		/* Host address. */
-	ns_t_ns = 2,		/* Authoritative server. */
-	ns_t_md = 3,		/* Mail destination. */
-	ns_t_mf = 4,		/* Mail forwarder. */
-	ns_t_cname = 5,		/* Canonical name. */
-	ns_t_soa = 6,		/* Start of authority zone. */
+	ns_t_a = 1,		/* RFC 1035. Host address. */
+	ns_t_ns = 2,		/* RFC 1035. Authoritative server. */
+	ns_t_md = 3,		/* (obsolete, use MX) Mail destination. */
+	ns_t_mf = 4,		/* (obsolete, use MX) Mail forwarder. */
+	ns_t_cname = 5,		/* RFC 1035. Canonical name. */
+	ns_t_soa = 6,		/* RFC 1035. Start of authority zone. */
 	ns_t_mb = 7,		/* Mailbox domain name. */
 	ns_t_mg = 8,		/* Mail group member. */
 	ns_t_mr = 9,		/* Mail rename name. */
 	ns_t_null = 10,		/* Null resource record. */
-	ns_t_wks = 11,		/* Well known service. */
-	ns_t_ptr = 12,		/* Domain name pointer. */
-	ns_t_hinfo = 13,	/* Host information. */
+	ns_t_wks = 11,		/* RFC 974. Well known service. */
+	ns_t_ptr = 12,		/* RFC 1035. Domain name pointer. */
+	ns_t_hinfo = 13,	/* RFC 1035. Host information. */
 	ns_t_minfo = 14,	/* Mailbox information. */
-	ns_t_mx = 15,		/* Mail routing information. */
-	ns_t_txt = 16,		/* Text strings. */
-	ns_t_rp = 17,		/* Responsible person. */
-	ns_t_afsdb = 18,	/* AFS cell database. */
+	ns_t_mx = 15,		/* RFC 1035. Mail routing information. */
+	ns_t_txt = 16,		/* RFC 1035. Text strings. */
+	ns_t_rp = 17,		/* RFC 1883. Responsible person. */
+	ns_t_afsdb = 18,	/* RFC 1183. AFS cell database. */
 	ns_t_x25 = 19,		/* X_25 calling address. */
 	ns_t_isdn = 20,		/* ISDN calling address. */
 	ns_t_rt = 21,		/* Router. */
 	ns_t_nsap = 22,		/* NSAP address. */
 	ns_t_nsap_ptr = 23,	/* Reverse NSAP lookup (deprecated). */
-	ns_t_sig = 24,		/* Security signature. */
-	ns_t_key = 25,		/* Security key. */
+	ns_t_sig = 24,		/* RFC 2535. Security signature. */
+	ns_t_key = 25,		/* RFC 2535. Security key. */
 	ns_t_px = 26,		/* X.400 mail mapping. */
 	ns_t_gpos = 27,		/* Geographical position (withdrawn). */
-	ns_t_aaaa = 28,		/* Ip6 Address. */
-	ns_t_loc = 29,		/* Location Information. */
+	ns_t_aaaa = 28,		/* RFC3596. IP6 Address. */
+	ns_t_loc = 29,		/* RFC 1876. Location Information. */
 	ns_t_nxt = 30,		/* Next domain (security). */
 	ns_t_eid = 31,		/* Endpoint identifier. */
 	ns_t_nimloc = 32,	/* Nimrod Locator. */
-	ns_t_srv = 33,		/* Server Selection. */
+	ns_t_srv = 33,		/* RFC 1876. Server Selection. */
 	ns_t_atma = 34,		/* ATM Address */
-	ns_t_naptr = 35,	/* Naming Authority PoinTeR */
-	ns_t_kx = 36,		/* Key Exchange */
-	ns_t_cert = 37,		/* Certification record */
+	ns_t_naptr = 35,	/* RFC 3403. Naming Authority PoinTeR */
+	ns_t_kx = 36,		/* RFC 2230. Key Exchange */
+	ns_t_cert = 37,		/* RFC 4398. Certification record */
 	ns_t_a6 = 38,		/* IPv6 address (deprecates AAAA) */
-	ns_t_dname = 39,	/* Non-terminal DNAME (for IPv6) */
-	ns_t_sink = 40,		/* Kitchen sink (experimentatl) */
+	ns_t_dname = 39,	/* RFC 2672. Non-terminal DNAME (for IPv6) */
+	ns_t_sink = 40,		/* Kitchen sink (experimental) */
 	ns_t_opt = 41,		/* EDNS0 option (meta-RR) */
-	ns_t_tsig = 250,	/* Transaction signature. */
+	ns_t_apl = 42,		/* RFC 3123. Address Prefix List */
+	ns_t_ds = 43,		/* RFC 4034. Delegation Signer */
+	ns_t_sshfp = 44,	/* RFC 4255. SSH public key fingerprint */
+	ns_t_ipseckey = 45,	/* RFC 4025. IPsec key */
+	ns_t_rrsig = 46,	/* RFC 4034. DNSSEC signature */
+	ns_t_nsec = 47,		/* RFC 4034. Next-Secure record */
+	ns_t_dnskey = 48,	/* RFC 4034. DNS key record */
+	ns_t_dhcid = 49,	/* RFC 4701. DHCP identifier */
+	ns_t_nsec3 = 50,	/* RFC 5155. NSEC record version 3 or NSEC hashed */
+	ns_t_nsec3param = 51,	/* RFC 5155. NSEC3 parameters */
+	ns_t_tlsa = 52,		/* RFC 6698. For DANE. TLSA certificate association */
+	ns_t_smimea = 53,
+	ns_t_hip = 55,		/* RFC 5205. Host identity protocol */
+	ns_t_ninfo = 56,
+	ns_t_rkey = 57,
+	ns_t_talink = 58,
+	ns_t_cds = 59,		/* RFC 7344. Child DS */
+	ns_t_cdnskey = 60,	/* RFC 7344. Child DNSKEY */
+	ns_t_openpgpkey = 61,
+	ns_t_csync = 62,
+	ns_t_spf = 99,
+	ns_t_uinfo = 100,
+	ns_t_uid = 101,
+	ns_t_gid = 102,
+	ns_t_unspec = 103,
+	ns_t_nid = 104,
+	ns_t_l32 = 105,
+	ns_t_l64 = 106,
+	ns_t_lp = 107,
+	ns_t_eui48 = 108,
+	ns_t_eui64 = 109,
+	ns_t_tkey = 249,	/* RFC 2930. TSIG. Secret Key. */
+	ns_t_tsig = 250,	/* RFC 2845. Transaction signature. */
 	ns_t_ixfr = 251,	/* Incremental zone transfer. */
 	ns_t_axfr = 252,	/* Transfer zone of authority. */
 	ns_t_mailb = 253,	/* Transfer mailbox records. */
 	ns_t_maila = 254,	/* Transfer mail agent records. */
 	ns_t_any = 255,		/* Wildcard match. */
-	ns_t_zxfr = 256,	/* BIND-specific, nonstandard. */
+	ns_t_uri = 256,		/* RFC 7553 */
+	ns_t_caa = 257,		/* RFC 8659. Certification Authority Authorization */
+	ns_t_avc = 258,		/* some proprietary obsolete Cisco shit */
+	ns_t_ta = 32768,	/* for DNSSEC, 
+	ns_t_dlv = 32769,	/* for DNSSEC, RFC 4431 */
 	ns_t_max = 65536
 } ns_type;
 
@@ -91,6 +127,15 @@ typedef enum __ns_class {
 	ns_c_any = 255,		/* Wildcard match. */
 	ns_c_max = 65536
 } ns_class;
+
+/* Certificate type values in CERT resource records.  */
+typedef enum __ns_cert_types {
+	cert_t_pkix = 1,	/*%< PKIX (X.509v3) */
+	cert_t_spki = 2,	/*%< SPKI */
+	cert_t_pgp  = 3,	/*%< PGP */
+	cert_t_url  = 253,	/*%< URL private type */
+	cert_t_oid  = 254	/*%< OID private type */
+} ns_cert_types;
 
 /*
  * Currently defined opcodes.
