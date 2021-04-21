@@ -108,7 +108,7 @@ typedef enum __ns_type {
 	ns_t_uri = 256,		/* RFC 7553 */
 	ns_t_caa = 257,		/* RFC 8659. Certification Authority Authorization */
 	ns_t_avc = 258,		/* some proprietary obsolete Cisco shit */
-	ns_t_ta = 32768,	/* for DNSSEC, 
+	ns_t_ta = 32768,	/* for DNSSEC, */
 	ns_t_dlv = 32769,	/* for DNSSEC, RFC 4431 */
 	ns_t_max = 65536
 } ns_type;
