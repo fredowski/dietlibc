@@ -77,7 +77,7 @@ int res_mkquery(int op, const char *dname, int class, int type, char* data,
       }
       y=tmp;
     }
-    *++x= 0; *++x= type;	/* A */
+    *++x= (type>>8); *++x= type;	/* A */
     *++x= 0; *++x= class;	/* IN */
     ++x;
     if (x-packet>buflen) return -1;
