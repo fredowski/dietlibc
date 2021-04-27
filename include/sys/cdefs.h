@@ -66,6 +66,7 @@
 #define __attribute_specific_free__(func,argpos) __attribute__((malloc, malloc(a,b)))
 #endif
 #endif
+#endif
 
 /* idea for these macros taken from Linux kernel */
 #define __likely(foo) __expect((foo),1)
