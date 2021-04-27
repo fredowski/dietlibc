@@ -60,6 +60,10 @@
 #else
 #define __expect(foo,bar) __builtin_expect((long)(foo),bar)
 #define __attribute_malloc__ __attribute__((__malloc__))
+#if __GNUC__ < 11
+#define __attribute_specific_free__(a,b) __attribute_malloc__
+#else
+#define __attribute_specific_free__(func,argpos) __attribute__((malloc, malloc(a,b)))
 #endif
 #endif
 

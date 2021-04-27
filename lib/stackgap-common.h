@@ -346,6 +346,9 @@ extern void __deregister_frame_info (const void *);
 #if __has_attribute(optimize)
 __attribute__((optimize("no-stack-protector")))
 #endif
+#if __has_attribute(no_stack_protector)
+__attribute__((no_stack_protector))
+#endif
 int stackgap(int argc,char* argv[],char* envp[], funcptr fp);
 int stackgap(int argc,char* argv[],char* envp[], funcptr fp) {
 #ifndef WANT_CTOR

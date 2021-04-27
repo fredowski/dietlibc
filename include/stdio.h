@@ -14,9 +14,11 @@ typedef struct __stdio_file FILE;
 extern FILE *stdin, *stdout, *stderr;
 
 __attribute__((__warn_unused_result__))
+__attribute_specific_free__(fclose,1)
 FILE *fopen (const char *path, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
+__attribute_specific_free__(fclose,1)
 FILE *fdopen (int fildes, const char *mode) __THROW;
 
 __attribute__((__warn_unused_result__))
@@ -198,6 +200,7 @@ inline int setlinebuf(FILE *stream) __THROW
 #endif
 
 __attribute__((__warn_unused_result__))
+__attribute_specific_free__(pclose,1)
 FILE *popen(const char *command, const char *type) __THROW;
 int pclose(FILE *stream) __THROW;
 
@@ -216,6 +219,7 @@ __attribute__((__warn_unused_result__))
 char* tempnam(char* dir,char* _template);	/* dito */
 
 __attribute__((__warn_unused_result__))
+__attribute_specific_free__(fclose,1)
 FILE* tmpfile(void) __THROW;
 
 __attribute__((__warn_unused_result__))

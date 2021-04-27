@@ -33,7 +33,11 @@ struct dirent64 {
 
 typedef struct __dirstream DIR;
 
+__attribute__((__warn_unused_result__))
+__attribute_specific_free__(closedir,1)
 DIR *opendir (const char *__name) __THROW;
+__attribute__((__warn_unused_result__))
+__attribute_specific_free__(closedir,1)
 DIR *fdopendir (int fd) __THROW;
 int closedir (DIR *__dirp) __THROW;
 struct dirent *readdir (DIR *__dirp) __THROW;
