@@ -63,7 +63,7 @@
 #if __GNUC__ < 11
 #define __attribute_specific_free__(a,b) __attribute_malloc__
 #else
-#define __attribute_specific_free__(func,argpos) __attribute__((malloc, malloc(a,b)))
+#define __attribute_specific_free__(func,argpos) __attribute__((malloc, malloc(func,argpos)))
 #endif
 #endif
 #endif

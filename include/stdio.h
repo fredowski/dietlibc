@@ -13,6 +13,9 @@ typedef struct __stdio_file FILE;
 
 extern FILE *stdin, *stdout, *stderr;
 
+int fclose(FILE *stream) __THROW;
+int fclose_unlocked(FILE *stream) __THROW;
+
 __attribute__((__warn_unused_result__))
 __attribute_specific_free__(fclose,1)
 FILE *fopen (const char *path, const char *mode) __THROW;
@@ -153,9 +156,6 @@ size_t fwrite_unlocked(const void *ptr, size_t size, size_t nmemb, FILE *stream)
 int fflush(FILE *stream) __THROW;
 int fflush_unlocked(FILE *stream) __THROW;
 
-int fclose(FILE *stream) __THROW;
-int fclose_unlocked(FILE *stream) __THROW;
-
 int feof(FILE *stream) __THROW;
 int feof_unlocked(FILE *stream) __THROW;
 int ferror(FILE *stream) __THROW;
@@ -199,10 +199,10 @@ inline int setlinebuf(FILE *stream) __THROW
   { return setvbuf(stream,0,_IOLBF,BUFSIZ); }
 #endif
 
+int pclose(FILE *stream) __THROW;
 __attribute__((__warn_unused_result__))
 __attribute_specific_free__(pclose,1)
 FILE *popen(const char *command, const char *type) __THROW;
-int pclose(FILE *stream) __THROW;
 
 #ifndef SEEK_SET
 #define SEEK_SET 0
