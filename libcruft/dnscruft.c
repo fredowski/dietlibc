@@ -168,8 +168,11 @@ int __dns_decodename(const unsigned char *packet,unsigned int offset,unsigned ch
       unsigned int duh;
       if (dest+*tmp+1>max) return -1;
       if (tmp+*tmp+1>=behindpacket) return -1;
-      for (duh=*tmp; duh>0; --duh)
-	*dest++=*++tmp;
+      for (duh=*tmp; duh>0; --duh) {
+	char next = *++tmp;
+	if (!isalnum(next) && next!='-') return -1;
+	*dest++=next;
+      }
       *dest++='.'; ok=1;
       ++tmp;
       if (tmp>after) { after=tmp; if (!*tmp) ++after; }

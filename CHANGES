@@ -17,6 +17,7 @@
   add support for gcc 10's __attribute__((access(...)))
   rename __noinline__ to __dontinline__ (__noline was also valid in gcc)
   fix behavior of memchr/memrchr/memccpy if the comparison value is out of range (Abishek Rose)
+  __dns_decodename will now reject invalid incoming names (Philipp Jeitner)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
