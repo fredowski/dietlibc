@@ -66,9 +66,9 @@ struct iocb {
 }; /* 64 bytes */
 
 long io_setup (unsigned nr_events, aio_context_t *ctxp);
-long io_destroy (aio_context_t ctx);
-long io_submit (aio_context_t ctx_id, long nr, struct iocb **iocbpp);
-long io_cancel (aio_context_t ctx_id, struct iocb *iocb, struct io_event *result);
-long io_getevents (aio_context_t ctx_id, long min_nr, long nr, struct io_event *events,struct timespec *timeout);
+int io_destroy (aio_context_t ctx);
+int io_submit (aio_context_t ctx_id, long nr, struct iocb **iocbpp);
+int io_cancel (aio_context_t ctx_id, struct iocb *iocb, struct io_event *result);
+int io_getevents (aio_context_t ctx_id, long min_nr, long nr, struct io_event *events,struct timespec *timeout);
 
 #endif
