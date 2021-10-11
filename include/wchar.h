@@ -25,10 +25,14 @@ typedef int (*wctype_t)(wint_t);
 
 struct tm;
 
+#ifndef __mbstate_t_declared
+#define __mbstate_t_declared
+typedef __CHAR32_TYPE__ char32_t;
 typedef struct {
   int count;
-  wchar_t sofar;
+  char32_t sofar;
 } mbstate_t;
+#endif
 
 wint_t btowc(int);
 wint_t fgetwc(FILE *);
