@@ -481,6 +481,14 @@
 #define __NR_pidfd_open	544
 #define __NR_openat2	547
 #define __NR_pidfd_getfd	548
+#define __NR_faccesat2	549
+#define __NR_process_madvise	550
+#define __NR_epoll_pwait2	551
+#define __NR_mount_setattr	552
+#define __NR_quotactl_fd	553
+#define __NR_landlock_create_ruleset	554
+#define __NR_landlock_add_rule	555
+#define __NR_landlock_restrict_self	556
 
 #define syscall_weak(name,wsym,sym) \
 .text ; \

@@ -446,6 +446,15 @@
 #define __NR_clone3 (__NR_SYSCALL_BASE + 435)
 #define __NR_openat2 (__NR_SYSCALL_BASE + 437)
 #define __NR_pidfd_getfd (__NR_SYSCALL_BASE + 438)
+#define __NR_faccessat2 (__NR_SYSCALL_BASE + 439)
+#define __NR_process_madvise (__NR_SYSCALL_BASE + 440)
+#define __NR_epoll_pwait2 (__NR_SYSCALL_BASE + 441)
+#define __NR_mount_setattr (__NR_SYSCALL_BASE + 442)
+#define __NR_quotactl_fd (__NR_SYSCALL_BASE + 443)
+#define __NR_landlock_create_ruleset (__NR_SYSCALL_BASE + 444)
+#define __NR_landlock_add_rule (__NR_SYSCALL_BASE + 445)
+#define __NR_landlock_restrict_self (__NR_SYSCALL_BASE + 446)
+
 
 /*
  * The following SWIs are ARM private.
@@ -874,6 +883,71 @@
 #define __ARGS_process_vm_writev	1
 #define __ARGS_kcmp			1
 #define __ARGS_finit_module		0
+
+#define __ARGS_sched_setattr		0
+#define __ARGS_sched_getattr		0
+#define __ARGS_renameat2		1
+#define __ARGS_seccomp			0
+#define __ARGS_getrandom		0
+#define __ARGS_memfd_create		0
+#define __ARGS_bpf			0
+#define __ARGS_execveat			1
+#define __ARGS_userfaultfd		0
+#define __ARGS_membarrier		0
+#define __ARGS_mlock2			0
+#define __ARGS_copy_file_range		1
+#define __ARGS_preadv2			1
+#define __ARGS_pwritev2			1
+#define __ARGS_pkey_mprotect		0
+#define __ARGS_pkey_alloc		0
+#define __ARGS_pkey_free		0
+#define __ARGS_statx			1
+#define __ARGS_rseq			0
+#define __ARGS_io_pgetevents		1
+#define __ARGS_migrate_pages		0
+#define __ARGS_kexec_file_load		0
+#define __ARGS_clock_gettime64		0
+#define __ARGS_clock_settime64		0
+#define __ARGS_clock_adjtime64		0
+#define __ARGS_clock_getres_time64	0
+#define __ARGS_clock_nanosleep_time64	0
+#define __ARGS_timer_gettime64		0
+#define __ARGS_timer_settime64		0
+#define __ARGS_timerfd_gettime64	0
+#define __ARGS_timerfd_settime64	0
+#define __ARGS_utimensat_time64		0
+#define __ARGS_pselect6_time64		1
+#define __ARGS_ppoll_time64		1
+#define __ARGS_io_pgetevents_time64	1
+#define __ARGS_recvmmsg_time64		1
+#define __ARGS_mq_timedsend_time64	1
+#define __ARGS_mq_timedreceive_time64	1
+#define __ARGS_semtimedop_time64	0
+#define __ARGS_rt_sigtimedwait_time64	0
+#define __ARGS_futex_time64		1
+#define __ARGS_sched_rr_get_interval_time64 0
+#define __ARGS_pidfd_send_signal	0
+#define __ARGS_io_uring_setup		0
+#define __ARGS_io_uring_enter		1
+#define __ARGS_io_uring_register	0
+#define __ARGS_open_tree		0
+#define __ARGS_move_mount		1
+#define __ARGS_fsopen			0
+#define __ARGS_fsconfig			1
+#define __ARGS_fsmount			0
+#define __ARGS_fspick			0
+#define __ARGS_pidfd_open		0
+#define __ARGS_clone3			0
+#define __ARGS_openat2			0
+#define __ARGS_pidfd_getfd		0
+#define __ARGS_faccessat2		0
+#define __ARGS_process_madvise		1
+#define __ARGS_epoll_pwait2		1
+#define __ARGS_mount_setattr		1
+#define __ARGS_quotactl_fd		0
+#define __ARGS_landlock_create_ruleset	0
+#define __ARGS_landlock_add_rule	0
+#define __ARGS_landlock_restrict_self	0
 
 
 #ifdef __ASSEMBLER__
