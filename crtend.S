@@ -9,9 +9,11 @@ __CTOR_END__:
 .global __DTOR_END__
 __DTOR_END__:
 
+/* apparenty this is not needed and in fact causes linker warnings
 .section .eh_frame,"aw"
 #if __WORDSIZE == 32
 .long 0
 #else
 .quad 0
 #endif
+*/
