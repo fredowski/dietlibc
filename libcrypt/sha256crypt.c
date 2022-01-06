@@ -488,10 +488,25 @@ sha256_crypt_r (const char *key, const char *salt, char *buffer, int buflen)
 
   if (rounds_custom)
     {
+#ifdef __dietlibc__
+      // avoid bloat dependency on *printf
+      char tmp[42];	// enough to hold a 128-bit number
+      int l = __ltostr(tmp, sizeof(tmp), rounds, 10, 0);
+      int left = MAX(0, buflen);
+      int needed = sizeof(sha256_rounds_prefix) - 1 + l + 1;
+      if (needed < left) {
+	memcpy(cp, sha256_rounds_prefix, sizeof(sha256_rounds_prefix)-1);
+	memcpy(cp + sizeof(sha256_rounds_prefix)-1, tmp, l);
+	cp += needed;
+	buflen -= needed;
+	cp[-1] = '$';
+      }
+#else
       int n = snprintf (cp, MAX (0, buflen), "%s%zu$",
 			sha256_rounds_prefix, rounds);
       cp += n;
       buflen -= n;
+#endif
     }
 
   cp = stpncpy (cp, salt, MIN ((size_t) MAX (0, buflen), salt_len));
