@@ -238,7 +238,7 @@ DIETLIBC_OBJ = $(OBJDIR)/unified.o \
 $(SYSCALLOBJ) $(LIBOBJ) $(LIBSTDIOOBJ) $(LIBUGLYOBJ) \
 $(LIBCRUFTOBJ) $(LIBCRYPTOBJ) $(LIBSHELLOBJ) $(LIBREGEXOBJ) \
 $(OBJDIR)/__longjmp.o $(OBJDIR)/setjmp.o \
-$(OBJDIR)/clone.o
+$(OBJDIR)/clone.o $(OBJDIR)/__guard.o
 
 $(OBJDIR)/dietlibc.a: $(DIETLIBC_OBJ) $(OBJDIR)/start.o
 	$(CROSS)ar cru $@ $(DIETLIBC_OBJ)
