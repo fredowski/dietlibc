@@ -66,6 +66,8 @@
 #define __attribute_specific_free__(func,argpos) __attribute__((malloc, malloc(func,argpos)))
 #endif
 #endif
+#else
+#define __attribute_specific_free__(a,b)
 #endif
 
 /* idea for these macros taken from Linux kernel */
