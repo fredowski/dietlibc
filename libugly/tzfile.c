@@ -45,6 +45,8 @@ static int32_t __myntohl(const unsigned char* c) {
          ((uint32_t)c[3]);
 }
 
+#include <stdio.h>
+
 time_t __tzfile_map(time_t t, int *isdst, int forward);
 time_t __tzfile_map(time_t t, int *isdst, int forward) {
   /* "TZif" plus 16 reserved bytes. */
@@ -56,42 +58,18 @@ time_t __tzfile_map(time_t t, int *isdst, int forward) {
   tzh_timecnt=ntohl(*(int*)(tzfile+32));
   tzh_typecnt=ntohl(*(int*)(tzfile+36));
 
-#if 0
-  int tzh_ttisgmtcnt=ntohl(*(int*)(tzfile+20));
-  int tzh_ttisstdcnt=ntohl(*(int*)(tzfile+24));
-  int tzh_leapcnt=ntohl(*(int*)(tzfile+28));
-  int tzh_charcnt=ntohl(*(int*)(tzfile+40));
-  tmp=tzfile+20+6*4;
-  printf("ttisgmtcnt %d ttisstdcnt %d leapcnt %d timecnt %d typecnt %d charcnt %d\n",tzh_ttisgmtcnt,tzh_ttisstdcnt, tzh_leapcnt, tzh_timecnt, tzh_typecnt, tzh_charcnt);
-  printf("transition times: ");
-  for (i=0; i<tzh_timecnt; ++i) {
-    printf("%s%lu",i?", ":"",ntohl(*(int*)tmp)); tmp+=4;
-  }
-  printf("\n");
-  printf("indices: ");
-  for (i=0; i<tzh_timecnt; ++i) {
-    printf("%s%d",i?", ":"",*tmp); ++tmp;
-  }
-  printf("\n");
-  printf("transition times: ");
-  for (i=0; i<tzh_typecnt; ++i) {
-    printf("%s(%lu,%d,%d)",i?", ":"",ntohl(*(int*)tmp),tmp[4],tmp[5]); tmp+=6;
-  }
-  printf("\n");
-  for (i=0; i<tzh_charcnt; ++i) {
-    printf("%s\"%s\"",i?", ":"",tmp);
-    tmp+=strlen(tmp);
-  }
-  printf("\n");
-#endif
+//  printf("tzh_timecnt=%d, tzh_typecnt=%d\n",tzh_timecnt,tzh_typecnt);
 
   tmp=tzfile+20+6*4;
   daylight=(tzh_timecnt>0);
   if (forward) {
     for (i=0; i<tzh_timecnt; ++i) {
-      if ((time_t)__myntohl(tmp+i*4) >= t) {
+//      printf("val=%x t=%x\n",(time_t)__myntohl(tmp+i*4),t);
+      if ((time_t)__myntohl(tmp+i*4) >= t)
+last:
+      {
 	unsigned char* tz=tmp;
-  /*      printf("match at %d\n",i); */
+//        printf("match at %d\n",i);
 	tmp+=tzh_timecnt*4;
 	i=tmp[i-1];
   /*      printf("using index %d\n",i); */
@@ -105,6 +83,8 @@ time_t __tzfile_map(time_t t, int *isdst, int forward) {
 	return t+timezone;
       }
     }
+    --i;
+    goto last;
   } else {	/* reverse map, for mktime */
     time_t nexttz=0,lastval=0;
 //    printf("tzh_timecnt: %d\n",tzh_timecnt);
