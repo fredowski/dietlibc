@@ -17,7 +17,7 @@ extern void __dns_makebuf(size_t x);
 
 struct hostent* gethostbyname2(const char *host,int AF) {
   struct hostent *hostbuf;
-  struct hostent *hp;
+  struct hostent *hp=0;
   int res;
   int herr;
 
