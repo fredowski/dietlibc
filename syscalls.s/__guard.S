@@ -21,6 +21,8 @@ __stack_chk_guard:
 #else
 
 .text
+.global __guard
+.global __stack_chk_guard
 #if __WORDSIZE == 64
 .comm __stack_chk_guard,0,8
 .comm __guard,8,0

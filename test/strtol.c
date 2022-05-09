@@ -6,7 +6,7 @@
 #include <errno.h>
 
 int main() {
-  char* c, *s;
+  char* c=0, *s;
 
   assert(strtol(s="123",&c,0)==123 && c==s+3);
   assert(strtol(s="+123",&c,0)==123 && c==s+4);
