@@ -58,7 +58,7 @@ int sched_rr_get_interval(pid_t pid, struct timespec* tp) __THROW;
 #define CLONE_FS        0x00000200      /* set if fs info shared between processes */
 #define CLONE_FILES     0x00000400      /* set if open files shared between processes */
 #define CLONE_SIGHAND   0x00000800      /* set if signal handlers and blocked signals shared */
-#define CLONE_PID       0x00001000      /* set if pid shared */
+#define CLONE_PIDFD     0x00001000      /* set if a pidfd should be placed in parent */                                             
 #define CLONE_PTRACE    0x00002000      /* set if we want to let tracing continue on the child too */
 #define CLONE_VFORK     0x00004000      /* set if the parent wants the child to wake it up on mm_release */
 #define CLONE_PARENT    0x00008000      /* set if we want to have the same parent as the cloner */
@@ -71,6 +71,7 @@ int sched_rr_get_interval(pid_t pid, struct timespec* tp) __THROW;
 #define CLONE_DETACHED  0x00400000
 #define CLONE_UNTRACED  0x00800000
 #define CLONE_CHILD_SETTID 0x01000000
+#define CLONE_NEWCGROUP 0x02000000
 #define CLONE_NEWUTS    0x04000000
 #define CLONE_NEWIPC    0x08000000
 #define CLONE_NEWUSER   0x10000000
@@ -78,7 +79,74 @@ int sched_rr_get_interval(pid_t pid, struct timespec* tp) __THROW;
 #define CLONE_NEWNET    0x40000000
 #define CLONE_IO        0x80000000
 
+/* Flags for the clone3() syscall. */                                                                                               
+#define CLONE_CLEAR_SIGHAND 0x100000000ULL /* Clear any signal handler and reset to SIG_DFL. */                                     
+#define CLONE_INTO_CGROUP 0x200000000ULL /* Clone into a specific cgroup given the right permissions. */                            
+
+/*
+ * cloning flags intersect with CSIGNAL so can be used with unshare and clone3
+ * syscalls only:
+ */
 #define CLONE_SIGNAL    (CLONE_SIGHAND | CLONE_THREAD)
+
+/**
+ * struct clone_args - arguments for the clone3 syscall
+ * @flags:        Flags for the new process as listed above.
+ *                All flags are valid except for CSIGNAL and
+ *                CLONE_DETACHED.
+ * @pidfd:        If CLONE_PIDFD is set, a pidfd will be
+ *                returned in this argument.
+ * @child_tid:    If CLONE_CHILD_SETTID is set, the TID of the
+ *                child process will be returned in the child's
+ *                memory.
+ * @parent_tid:   If CLONE_PARENT_SETTID is set, the TID of
+ *                the child process will be returned in the
+ *                parent's memory.
+ * @exit_signal:  The exit_signal the parent process will be
+ *                sent when the child exits.
+ * @stack:        Specify the location of the stack for the
+ *                child process.
+ *                Note, @stack is expected to point to the
+ *                lowest address. The stack direction will be
+ *                determined by the kernel and set up
+ *                appropriately based on @stack_size.
+ * @stack_size:   The size of the stack for the child process.
+ * @tls:          If CLONE_SETTLS is set, the tls descriptor
+ *                is set to tls.
+ * @set_tid:      Pointer to an array of type *pid_t. The size
+ *                of the array is defined using @set_tid_size.
+ *                This array is used to select PIDs/TIDs for
+ *                newly created processes. The first element in
+ *                this defines the PID in the most nested PID
+ *                namespace. Each additional element in the array
+ *                defines the PID in the parent PID namespace of
+ *                the original PID namespace. If the array has
+ *                less entries than the number of currently
+ *                nested PID namespaces only the PIDs in the
+ *                corresponding namespaces are set.
+ * @set_tid_size: This defines the size of the array referenced
+ *                in @set_tid. This cannot be larger than the
+ *                kernel's limit of nested PID namespaces.
+ * @cgroup:       If CLONE_INTO_CGROUP is specified set this to
+ *                a file descriptor for the cgroup.
+ *
+ * The structure is versioned by size and thus extensible.
+ * New struct members must go at the end of the struct and
+ * must be properly 64bit aligned.
+ */
+struct clone_args {
+  uint64_t flags;
+  uint64_t pidfd;
+  uint64_t child_tid;
+  uint64_t parent_tid;
+  uint64_t exit_signal;
+  uint64_t stack;
+  uint64_t stack_size;
+  uint64_t tls;
+  uint64_t set_tid;
+  uint64_t set_tid_size;
+  uint64_t cgroup;
+};
 
 int clone(int (*fn)(void*),void* stack,int flags,void* arg, ...) __THROW;
 
