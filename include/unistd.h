@@ -446,7 +446,7 @@ long fadvise64_64(int fd,off64_t offset,off64_t len,int advice) __THROW;
 
 #endif
 
-#if defined(_ATFILE_SOURCE) || ((_XOPEN_SOURCE + 0) >= 700) || ((_POSIX_C_SOURCE + 0) >= 200809L)
+#if defined(_GNU_SOURCE) || defined(_ATFILE_SOURCE) || ((_XOPEN_SOURCE + 0) >= 700) || ((_POSIX_C_SOURCE + 0) >= 200809L)
 /* also include fcntl.h for the AT_* constants */
 
 __attribute__((__warn_unused_result__))
