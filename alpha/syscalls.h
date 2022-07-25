@@ -489,6 +489,9 @@
 #define __NR_landlock_create_ruleset	554
 #define __NR_landlock_add_rule	555
 #define __NR_landlock_restrict_self	556
+#define __NR_process_mrelease 558
+#define __NR_futex_waitv 559
+#define __NR_set_mempolicy_home_node 560
 
 #define syscall_weak(name,wsym,sym) \
 .text ; \

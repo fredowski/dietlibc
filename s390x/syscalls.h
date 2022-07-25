@@ -1,8 +1,4 @@
 
-
-
-
-
 #define __NR_exit		  1
 #define __NR_fork		  2
 #define __NR_read		  3
@@ -371,6 +367,9 @@
 #define __NR_landlock_create_ruleset	 444
 #define __NR_landlock_add_rule	 445
 #define __NR_landlock_restrict_self	 446
+#define __NR_process_mrelease 448
+#define __NR_futex_waitv 449
+#define __NR_set_mempolicy_home_node 450
 
 #define syscall_weak(name,wsym,sym) \
 .text; \

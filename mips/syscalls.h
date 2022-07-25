@@ -425,6 +425,9 @@
 #define __NR_landlock_create_ruleset	 (__NR_Linux + 444)
 #define __NR_landlock_add_rule	 (__NR_Linux + 445)
 #define __NR_landlock_restrict_self	 (__NR_Linux + 446)
+#define __NR_process_mrelease (__NR_Linux + 448)
+#define __NR_futex_waitv (__NR_Linux + 449)
+#define __NR_set_mempolicy_home_node (__NR_Linux + 450)
 
 #elif _MIPS_SIM == _ABI64
 
@@ -783,6 +786,9 @@
 #define __NR_landlock_create_ruleset	 (__NR_Linux + 444)
 #define __NR_landlock_add_rule	 (__NR_Linux + 445)
 #define __NR_landlock_restrict_self	 (__NR_Linux + 446)
+#define __NR_process_mrelease (__NR_Linux + 448)
+#define __NR_futex_waitv (__NR_Linux + 449)
+#define __NR_set_mempolicy_home_node (__NR_Linux + 450)
 
 #else
 #error "dietlibc not ported to your MIPS ABI yet."
