@@ -29,9 +29,9 @@ char *strncpy(char* __restrict__ dest, const char* __restrict__ src, size_t n) _
 __readmemsz__(1,3) __readmemsz__(2,3)
 int strncmp(const char* s1, const char* s2, size_t n) __THROW __pure __nonnull((1,2));
 
-__writemem__(1) __readmem__(2)
+__readwritemem__(1) __readmem__(2)
 char *strcat(char* __restrict__ dest, const char* __restrict__ src) __THROW __nonnull((1,2));
-__writememsz__(1,3) __readmem__(2)
+__readwritememsz__(1,3) __readmem__(2)
 char *strncat(char* __restrict__ dest, const char* __restrict__ src, size_t n) __THROW __nonnull((1,2));
 
 __readmem__(1) __readmem__(2)
