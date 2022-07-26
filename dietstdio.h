@@ -86,8 +86,15 @@ ssize_t __libc_read(int fd,void*buf,size_t len);
 ssize_t __libc_write(int fd,const void*buf,size_t len);
 #endif
 
+__attribute__((__warn_unused_result__))
+__attribute_specific_free__(fclose,1)
 FILE *fopen_unlocked(const char *path, const char *mode) __THROW;
+
+__attribute__((__warn_unused_result__))
+__attribute_specific_free__(fclose,1)
 FILE *fdopen_unlocked(int fildes, const char *mode) __THROW;
+
+__attribute__((__warn_unused_result__))
 FILE *freopen_unlocked(const char *path, const char *mode, FILE *stream) __THROW;
 
 int __stdout_is_tty(void);

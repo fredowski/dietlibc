@@ -126,6 +126,9 @@ int fseeko64(FILE *stream, loff_t offset, int whence) __THROW;
 int fseeko64_unlocked(FILE *stream, loff_t offset, int whence) __THROW;
 
 __attribute__((__warn_unused_result__))
+FILE *freopen64 (const char *path, const char *mode, FILE *stream) __THROW;
+
+__attribute__((__warn_unused_result__))
 loff_t ftello64(FILE *stream) __THROW;
 
 __attribute__((__warn_unused_result__))

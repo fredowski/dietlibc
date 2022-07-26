@@ -149,6 +149,7 @@ struct clone_args {
 };
 
 int clone(int (*fn)(void*),void* stack,int flags,void* arg, ...) __THROW;
+int clone3(struct clone_args* ca, size_t size) __THROW;
 
 int unshare(int flags) __THROW;
 
