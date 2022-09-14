@@ -43,6 +43,7 @@ __vsyscall:
 #include "../syscalls.s/write.S"
 #include "../syscalls.s/open.S"
 #include "../syscalls.s/close.S"
+#include "../syscalls.s/close_range.S"
 #include "../syscalls.s/waitpid.S"
 
 #include "../syscalls.s/getgid.S"

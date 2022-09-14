@@ -88,6 +88,12 @@ ssize_t read(int fd,void* buf,size_t len) __THROW;
 // give a ton of annoying warnings.
 int close(int fd) __THROW;
 
+#if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+#define CLOSE_RANGE_UNSHARE 0x01
+#define CLOSE_RANGE_CLOEXEC 0x02
+int close_range(unsigned int first,unsigned int last,int flags) __THROW;
+#endif
+
 int unlink(const char *pathname) __THROW;
 
 __attribute__((__warn_unused_result__))

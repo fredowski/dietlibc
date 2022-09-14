@@ -67,6 +67,7 @@ __error_unified_syscall:
 #include "../syscalls.s/chown32.S"
 #include "../syscalls.s/chroot.S"
 #include "../syscalls.s/close.S"
+#include "../syscalls.s/close_range.S"
 #include "../syscalls.s/create_module.S"
 #include "../syscalls.s/delete_module.S"
 #include "../syscalls.s/dup.S"

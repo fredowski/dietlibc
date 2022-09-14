@@ -48,6 +48,7 @@ FUNC_END	__unified_syscall4
 #include "../syscalls.s/chown.S"
 #include "../syscalls.s/chroot.S"
 #include "../syscalls.s/close.S"
+#include "../syscalls.s/close_range.S"
 #include "../syscalls.s/dup.S"
 #include "../syscalls.s/dup2.S"
 #include "../syscalls.s/execve.S"
