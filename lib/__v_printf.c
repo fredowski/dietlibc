@@ -102,6 +102,7 @@ inn_printf:
       case 'j':
 #endif
       case 'z':
+      case 't':
       case 'l':
 	++flag_long;
 	goto inn_printf;
@@ -163,10 +164,13 @@ inn_printf:
 	if (preci>MAX_WIDTH) return -1;
 	goto inn_printf;
 
-      /* print a char or % */
+      /* print a char */
       case 'c':
-	ch=(char)va_arg(arg_ptr,int);
-	/* fall through */
+	buf[0]=(char)va_arg(arg_ptr,int);
+	sz=1;
+	s=buf;
+	goto print_out;
+
       case '%':
 	B_WRITE(fn,&ch,1);
 	++len;
@@ -314,6 +318,10 @@ num_printf:
 	}
 	else {
 	  number=va_arg(arg_ptr,int);
+	  if ((flag_long<-1)&&flag_in_sign)
+	    number=(signed char)number;
+	  if ((flag_long==-1)&&flag_in_sign)
+	    number=(signed short)number;
 	  if (sizeof(int) != sizeof(long) && !flag_in_sign)
 	    number&=((unsigned int)-1);
 	}
