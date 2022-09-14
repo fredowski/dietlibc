@@ -20,6 +20,7 @@
   __dns_decodename will now reject invalid incoming names (Philipp Jeitner)
   add freopen64
   add wcsnlen
+  various printf fixes (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
