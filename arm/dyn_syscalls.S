@@ -52,6 +52,7 @@ FUNC_END	__unified_syscall4
 #include "../syscalls.s/dup.S"
 #include "../syscalls.s/dup2.S"
 #include "../syscalls.s/execve.S"
+#include "../syscalls.s/execveat.S"
 #include "../syscalls.s/fchdir.S"
 #include "../syscalls.s/fchmod.S"
 #include "../syscalls.s/fchown.S"

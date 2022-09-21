@@ -77,6 +77,7 @@ __error_unified_syscall:
 #include "../syscalls.s/epoll_ctl.S"
 #include "../syscalls.s/epoll_wait.S"
 #include "../syscalls.s/execve.S"
+#include "../syscalls.s/execveat.S"
 #include "../syscalls.s/fchdir.S"
 #include "../syscalls.s/fchmod.S"
 #include "../syscalls.s/fchown.S"

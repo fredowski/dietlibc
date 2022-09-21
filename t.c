@@ -111,7 +111,13 @@ extern char* strcpy2(char*a,char*b);
 #include "rand_i.h"
 
 int main(int argc,char *argv[]) {
+  int fd=open("/opt/diet/bin/ls", O_RDONLY);
+  char* Argv[] = {"ls", "/tmp", 0};
+  if (fd!=-1)
+    fexecve(fd, Argv, NULL);
+#if 0
   printf("%d\n",rand_i());
+#endif
 #if 0
   int i;
   for (i=0; i<1024; ++i) {
@@ -173,7 +179,7 @@ int main(int argc,char *argv[]) {
   printf("%+05d\n",500);
 #endif
 #if 0
-  char* c;
+  char* c=0;
   printf("%d\n",asprintf(&c,"foo %d",23));
   puts(c);
 #endif
@@ -335,7 +341,7 @@ int main(int argc,char *argv[]) {
   puts(strport);
 #endif
 #if 0
-  struct addrinfo *ai;
+  struct addrinfo *aio=0;
   struct addrinfo hints;
   char buf[16];
   memset(&hints,0,sizeof(hints));
@@ -482,7 +488,7 @@ again:
   }
 #endif
 #if 0
-  char *tmp;
+  char *tmp=0;
   printf("%lu\n",strtol("0xf0000000",&tmp,0));
 #endif
 #if 0
@@ -495,18 +501,18 @@ again:
   }
 #endif
 #if 0
-  char *tmp;
+  char *tmp=0;
   printf("%x\n",strtol("0Xffff",&tmp,16));
 #endif
 /*  putchar('c');
   write(1,"fnord\n",6); */
 #if 0
-  struct addrinfo *ai;
+  struct addrinfo *ai=0;
 //  getaddrinfo("xorn","22",0,&ai);
   puts(gai_strerror(getaddrinfo("xorn","22",0,&ai)));
 #endif
 #if 0
-  struct hostent host,*res;
+  struct hostent host,*res=0;
   char buf[4096];
   int fnord;
 
@@ -648,7 +654,7 @@ again:
   puts(buf);
 #endif
 #if 0
-  struct addrinfo *ai;
+  struct addrinfo *ai=0;
   struct addrinfo hints;
   char buf[16];
   hints.ai_family = AF_UNSPEC;
@@ -762,7 +768,7 @@ again:
     printf("s*h sub\n");
 #endif
 #if 0
-  char*tmp;
+  char*tmp=0;
   int n=asprintf(&tmp,"foo %s %d\n","bar",23);
   write(1,tmp,n);
   free(tmp);

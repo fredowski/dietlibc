@@ -475,6 +475,14 @@ __attribute__((__warn_unused_result__))
 __writememsz__(1,2)
 int getentropy(void* buf,size_t buflen) __THROW;
 
+__readmem__(2) __readmem__(3) __readmem__(4)
+int execveat(int dirfd, const char *pathname,
+	     const char *const argv[], const char *const envp[],
+	     int flags) __THROW;
+
+__readmem__(2) __readmem__(3)
+int fexecve(int fd, char* const argv[], char* const envp[]) __THROW;
+
 __END_DECLS
 
 #endif
