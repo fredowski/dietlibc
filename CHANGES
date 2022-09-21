@@ -22,6 +22,7 @@
   add wcsnlen
   various printf fixes (Gabriel Ravier)
   add close_range (Guilherme Janczak)
+  add execveat and fexecve
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
