@@ -13,4 +13,5 @@ int fexecve(int fd, char* const argv[], char* const envp[]) {
     buf[14+__ltostr(buf+14,30-14,fd,10,0)]=0;
     return execve(buf, argv, envp);
   }
+  return r;
 }

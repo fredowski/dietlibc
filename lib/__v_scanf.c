@@ -85,10 +85,18 @@ in_scan:
 	case 'h':
 	  flag_half=1;
 	  goto in_scan;
+#if __WORDSIZE == 64
+	case 'j':
+#endif
+	case 'z':
+	case 't':
 	case 'l':
 	  if (flag_long) flag_longlong=1;
 	  flag_long=1;
 	  goto in_scan;
+#if __WORDSIZE != 64
+	case 'j':
+#endif
 	case 'q':
 	case 'L':
 	  flag_longlong=1;
