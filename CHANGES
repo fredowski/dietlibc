@@ -23,6 +23,7 @@
   various printf fixes (Gabriel Ravier)
   add close_range (Guilherme Janczak)
   add execveat and fexecve
+  add j, z and t in scanf (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
