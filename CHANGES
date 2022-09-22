@@ -24,6 +24,7 @@
   add close_range (Guilherme Janczak)
   add execveat and fexecve
   add j, z and t in scanf (Gabriel Ravier)
+  fix %p in scanf for 64-bit platforms (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
