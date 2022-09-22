@@ -131,7 +131,10 @@ inn_printf:
       case '9':
 	if(flag_dot) return -1;
 	width=strtoul(format-1,(char**)&s,10);
-	if (width>MAX_WIDTH) return -1;
+	if (width>MAX_WIDTH) {
+	  errno=ENOMEM;
+	  return -1;
+	}
 	if (ch=='0' && !flag_left) padwith='0';
 	format=s;
 	goto inn_printf;
@@ -146,7 +149,10 @@ inn_printf:
 	    flag_left=1;
 	    tmp=-tmp;
 	  }
-	  if ((width=(unsigned long)tmp)>MAX_WIDTH) return -1;
+	  if ((width=(unsigned long)tmp)>MAX_WIDTH) {
+	    errno=ENOMEM;
+	    return -1;
+	  }
 	  goto inn_printf;
 	}
 	/* fall through */
@@ -161,7 +167,10 @@ inn_printf:
 	  preci=tmp<0?0:tmp;
 	  format=s;
 	}
-	if (preci>MAX_WIDTH) return -1;
+	if (preci>MAX_WIDTH) {
+	  errno=ENOMEM;
+	  return -1;
+	}
 	goto inn_printf;
 
       /* print a char */
