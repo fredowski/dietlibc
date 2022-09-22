@@ -15,6 +15,10 @@ int fclose_unlocked(FILE *stream) {
 	__stdio_root=f->next;
       break;
     }
+
+  /* don't leak contents of file in case it was a private key */
+  explicit_memset(stream->buf, 0, stream->buflen);
+
   if ((!(stream->flags&STATICBUF))&&(stream->buf))
     free(stream->buf);
   free(stream);

@@ -16,6 +16,9 @@ static int set_flags(FILE *stream, int flags) {
 
 int setvbuf_unlocked(FILE *stream, char *buf, int flags, size_t size) {
   if (buf) {
+    /* don't leak contents of file in case it was a private key */
+    explicit_memset(stream->buf, 0, stream->buflen);
+
     if (!(stream->flags&STATICBUF)) free(stream->buf);
     stream->buf=buf;
   }
@@ -25,6 +28,10 @@ int setvbuf_unlocked(FILE *stream, char *buf, int flags, size_t size) {
       return set_flags(stream,flags);
     }
     if (!(tmp=malloc(size))) return -1;
+
+    /* don't leak contents of file in case it was a private key */
+    explicit_memset(stream->buf, 0, stream->buflen);
+
     if (!(stream->flags&STATICBUF)) free(stream->buf);
     stream->buf=tmp;
   }
