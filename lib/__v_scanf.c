@@ -120,6 +120,8 @@ in_scan:
 
 	/* scan for integer / strtol reimplementation ... */
 	case 'p':
+	  flag_long=1;
+	  /* fall through */
 	case 'X':
 	case 'x':
 	  _div+=6;
