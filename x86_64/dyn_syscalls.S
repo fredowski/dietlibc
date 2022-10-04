@@ -230,6 +230,7 @@ __error_unified_syscall:
 #include "../syscalls.s/umask.S"
 #include "../syscalls.s/uname.S"
 #include "../syscalls.s/unlink.S"
+#include "../syscalls.s/unshare.S"
 #include "../syscalls.s/utime.S"
 #include "../syscalls.s/vhangup.S"
 #include "../syscalls.s/wait4.S"

@@ -181,6 +181,7 @@ FUNC_END	__unified_syscall4
 #include "../syscalls.s/umount2.S"
 #include "../syscalls.s/uname.S"
 #include "../syscalls.s/unlink.S"
+#include "../syscalls.s/unshare.S"
 #include "../syscalls.s/utime.S"
 #include "../syscalls.s/vhangup.S"
 #include "../syscalls.s/wait4.S"
