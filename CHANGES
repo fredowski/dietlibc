@@ -28,6 +28,7 @@
   set errno to ENOMEM in printf when abortint due to too large formatting request (Gabriel Ravier)
   fix wcsncmp (behaved like memcmp not strcmp) (Gabriel Ravier)
   memset buffer before fclose to prevent info leaks
+  add unshare
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
