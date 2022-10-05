@@ -246,7 +246,7 @@ print_out:
 	 */
 
 	if (flag_dot && width==0) width=preci;
-	if (!flag_dot) preci=sz;
+	if (!flag_dot || sz>preci) preci=sz;
 	if (!flag_left && padwith==' ') { /* do left-side padding with spaces */
 	  if (write_pad(&len,fn,width-preci,padwith))
 	    return -1;
@@ -266,6 +266,7 @@ print_out:
 	B_WRITE(fn,s,sz);
 	len+=sz;
 	if (flag_left) {
+          if (padwith=='0') padwith=' '; /* if the 0 and - flags both appear, the 0 flag is ignored */
 	  if (write_pad(&len,fn,width-preci,padwith))
 	    return -1;
 	}
