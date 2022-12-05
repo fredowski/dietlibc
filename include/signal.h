@@ -320,6 +320,9 @@ typedef struct siginfo {
 #define si_addr		_sifields._sigfault._addr
 #define si_band		_sifields._sigpoll._band
 #define si_fd		_sifields._sigpoll._fd
+#define si_call_addr	_sifields._sigsys._call_addr
+#define si_syscall	_sifields._sigsys._syscall
+#define si_arch		_sifields._sigsys._arch
 
 /* Values for `si_code'.  Positive values are reserved for kernel-generated
    signals.  */
