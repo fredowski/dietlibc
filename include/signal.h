@@ -281,12 +281,28 @@ typedef struct siginfo {
     /* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
     struct {
       void *_addr; /* faulting insn/memory ref. */
+      short int si_addr_lsb;  /* Valid LSB of the reported address.  */
+      union {
+	/* used when si_code=SEGV_BNDERR */
+	struct {
+	  void *_lower;
+	  void *_upper;
+	} _addr_bnd;
+	/* used when si_code=SEGV_PKUERR */
+	uint32_t _pkey;
+      } _bounds;
     } _sigfault;
     /* SIGPOLL */
     struct {
       __band_t _band;	/* POLL_IN, POLL_OUT, POLL_MSG */
       int32_t _fd;
     } _sigpoll;
+    /* SIGSYS.  */
+    struct {
+      void *_call_addr;	/* Calling user insn.  */
+      int _syscall;	/* Triggering system call number.  */
+      unsigned int _arch; /* AUDIT_ARCH_* of syscall.  */
+    } _sigsys;
   } _sifields;
 } siginfo_t;
 
