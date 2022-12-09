@@ -330,7 +330,7 @@ static int __loadlibrary(const char* fn) {
   __write1(fn);
   __write1("\n");
 #endif
-  fd=open(fn,O_RDONLY);
+  fd=open(fn,O_RDONLY,O_CLOEXEC);
   if (fd==-1) return -1;
   if (read(fd,buf,1000)<1000) {
 kaputt:
@@ -666,7 +666,7 @@ int main(int argc,char* argv[],char* envp[]) {
 
 #if 0
   {
-    fd=open("/proc/self/maps",O_RDONLY);
+    fd=open("/proc/self/maps",O_RDONLY|O_CLOEXEC);
     if (fd!=-1) {
       size_t l;
       do {
@@ -681,7 +681,7 @@ int main(int argc,char* argv[],char* envp[]) {
     __write2("usage: ld.so /path/to/binary\n");
     return 0;
   }
-  fd=open("/etc/diet.ld.conf",O_RDONLY);
+  fd=open("/etc/diet.ld.conf",O_RDONLY|O_CLOEXEC);
   if (fd!=-1) {
     int r=read(fd,path,99);
     if (r>0) path[r]=0;
@@ -692,7 +692,7 @@ int main(int argc,char* argv[],char* envp[]) {
     if (_memcmp(envp[i],"LD_LIBRARY_PATH=",16)==0)
       ldlp=envp[i]+16;
   }
-  fd=open(argv[1],O_RDONLY);
+  fd=open(argv[1],O_RDONLY|O_CLOEXEC);
   if (fd==-1) {
     __write2("could not open \"");
     __write2(argv[1]);

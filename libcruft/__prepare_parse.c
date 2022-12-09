@@ -8,7 +8,7 @@ void __prepare_parse(const char* filename,struct state* s) {
   int fd;
   s->cur=0;
   if (s->buffirst) return;	/* already mapped */
-  fd=open(filename,O_RDONLY);
+  fd=open(filename,O_RDONLY|O_CLOEXEC);
   if (fd>=0) {
     s->buflen=lseek(fd,0,SEEK_END);
     s->buffirst=mmap(0,s->buflen,PROT_READ,MAP_PRIVATE,fd,0);
