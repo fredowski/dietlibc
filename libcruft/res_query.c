@@ -65,12 +65,11 @@ int res_query(const char *dname, int class, int type, unsigned char *answer, int
 	if (pnpfd<0) {
 	  pnpfd=socket(PF_INET6,SOCK_DGRAM,IPPROTO_UDP);
 	  if (pnpfd==-1 && errno==EAFNOSUPPORT) {
-	    pnpfd=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP);
+	    pnpfd=socket(PF_INET,SOCK_DGRAM|SOCK_CLOEXEC,IPPROTO_UDP);
 	    v4pnp=1;
 	  }
 	  if (pnpfd>=0) {
 	    int one=1;
-	    fcntl(pnpfd,F_SETFD,FD_CLOEXEC);
 	    if (!v4pnp)
 	      setsockopt(pnpfd,IPPROTO_IPV6,IPV6_HOPLIMIT,&one,sizeof one);
 	    setsockopt(pnpfd,SOL_IP,IP_RECVTTL,&one,sizeof one);

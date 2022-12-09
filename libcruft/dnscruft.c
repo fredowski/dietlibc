@@ -27,9 +27,8 @@ void __dns_make_fd(void) {
   int tmp;
   struct sockaddr_in si;
   if (__dns_fd>=0) return;
-  tmp=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  tmp=socket(PF_INET,SOCK_DGRAM|SOCK_CLOEXEC,IPPROTO_UDP);
   if (tmp<0) return;
-  fcntl(tmp,F_SETFD,FD_CLOEXEC);
   si.sin_family=AF_INET;
   si.sin_port=0;
   si.sin_addr.s_addr=INADDR_ANY;
@@ -42,9 +41,8 @@ void __dns_make_fd6(void) {
   int tmp;
   struct sockaddr_in6 si;
   if (__dns_fd6>=0) return;
-  tmp=socket(PF_INET6,SOCK_DGRAM,IPPROTO_UDP);
+  tmp=socket(PF_INET6,SOCK_DGRAM|SOCK_CLOEXEC,IPPROTO_UDP);
   if (tmp<0) return;
-  fcntl(tmp,F_SETFD,FD_CLOEXEC);
   memset(&si,0,sizeof(si));
   si.sin6_family=AF_INET6;
   if (bind(tmp,(struct sockaddr*)&si,sizeof(si))) return;
