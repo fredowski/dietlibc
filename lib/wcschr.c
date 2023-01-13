@@ -4,5 +4,5 @@ wchar_t* wcschr(const wchar_t *wcs, wchar_t wc) {
   for (; *wcs; ++wcs)
     if (*wcs == wc)
       return (wchar_t*)wcs;
-  return 0;
+  return wc == 0 ? (wchar_t*)wcs : 0;
 }
