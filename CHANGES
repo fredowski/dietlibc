@@ -29,6 +29,7 @@
   fix wcsncmp (behaved like memcmp not strcmp) (Gabriel Ravier)
   memset buffer before fclose to prevent info leaks
   add unshare
+  fix strcasecmp and strncasecmp if strings had chars < 'A' (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
