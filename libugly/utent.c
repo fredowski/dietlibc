@@ -35,9 +35,8 @@ void utmpname(const char *file) {
 }
 
 void setutent() {
-  if (fd<0) fd = open(utmp_file_name,O_RDWR);
-  if (fd<0) fd = open(utmp_file_name,O_RDONLY);
-  fcntl (fd, F_SETFD, FD_CLOEXEC);
+  if (fd<0) fd = open(utmp_file_name,O_RDWR|O_CLOEXEC);
+  if (fd<0) fd = open(utmp_file_name,O_RDONLY|O_CLOEXEC);
   utmp_current = lseek(fd,0,SEEK_SET);
 }
 

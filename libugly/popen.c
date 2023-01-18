@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "dietstdio.h"
 #include <unistd.h>
 #include <fcntl.h>
@@ -11,7 +12,7 @@ FILE *popen(const char *command, const char *type) {
   FILE* f;
   pid_t pid;
 
-  if (pipe(pfd)<0) return 0;
+  if (pipe2(pfd,O_CLOEXEC)<0) return 0;
   fd0=(*type=='r');
   if ((!(f=fdopen(pfd[!fd0],type))) ||
       ((pid=fork())<0)) {
@@ -24,6 +25,7 @@ FILE *popen(const char *command, const char *type) {
     if (close(pfd[!fd0])==-1 ||
 	close(fd0)==-1 ||
 	dup2(pfd[fd0],fd0)==-1 ||
+	fcntl(fd0, F_SETFD, 0) ||
 	close(pfd[fd0])==-1)
       _exit(127);
     argv[2]=command;
@@ -31,7 +33,6 @@ FILE *popen(const char *command, const char *type) {
     _exit(127);
   }
   close(pfd[fd0]);
-  fcntl (pfd[!fd0], F_SETFD, FD_CLOEXEC);
   f->popen_kludge=pid;
   return f;
 }

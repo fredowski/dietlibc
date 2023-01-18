@@ -23,7 +23,7 @@ void __maplocaltime(void) {
   unsigned int len;
   if (tzlen>=0) return;
   tzlen=0;
-  if ((fd=open("/etc/localtime",O_RDONLY))<0) return;
+  if ((fd=open("/etc/localtime",O_RDONLY|O_CLOEXEC))<0) return;
   len=lseek(fd,0,SEEK_END);
   if ((tzfile=mmap(0,len,PROT_READ,MAP_PRIVATE,fd,0))==MAP_FAILED) {
     close(fd);

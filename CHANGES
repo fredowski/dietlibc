@@ -32,6 +32,7 @@
   fix strcasecmp and strncasecmp if strings had chars < 'A' (Gabriel Ravier)
   fix wcscmp and wcsncmp if wchar substraction would overflow (Gabriel Ravier)
   fix wcschr when searching for 0 (bugs@compiler.ai)
+  do close-on-exec on the open|socket not fcntl afterwards
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)

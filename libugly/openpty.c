@@ -25,7 +25,7 @@ int openpty(int *amaster, int *aslave, char *name, struct termios
   stat("/dev/pts/0", {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
   open("/dev/pts/0", O_RDWR|O_NOCTTY)     = 5
 #endif
-  if ((fd=open("/dev/ptmx",O_RDWR))<0) return -1;
+  if ((fd=open("/dev/ptmx",O_RDWR|O_CLOEXEC))<0) return -1;
 #if 0
   if (ioctl(fd,TCGETS,&ts)<0) goto kaputt;
 #endif
@@ -39,7 +39,7 @@ int openpty(int *amaster, int *aslave, char *name, struct termios
     strcpy(buf,"/dev/pts/");
     __ltostr(buf+9,10,ptyno,10,0);
   }
-  *aslave=open(buf,O_RDWR|O_NOCTTY);
+  *aslave=open(buf,O_RDWR|O_NOCTTY|O_CLOEXEC);
   if (*aslave<0) goto kaputt;
   *amaster=fd;
   if (name) strcpy(name,buf);
