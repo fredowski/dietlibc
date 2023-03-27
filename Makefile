@@ -114,7 +114,7 @@ WHAT=	$(OBJDIR) $(OBJDIR)/start.o $(OBJDIR)/crtend.o \
 	$(OBJDIR)/diet $(OBJDIR)/diet-i $(OBJDIR)/elftrunc \
 	$(OBJDIR)/dnsd
 
-all: $(WHAT)
+all: compile_commands.json $(WHAT)
 
 profiling: $(OBJDIR)/libgmon.a $(OBJDIR)/pstart.o
 
@@ -381,7 +381,7 @@ $(OBJDIR)/load:
 	chmod 755 $@
 
 clean:
-	rm -f *.o *.a t t1 compile load elftrunc exports mapfile libdietc.so include/errno_definition.h
+	rm -f *.o *.a t t1 compile load elftrunc exports mapfile libdietc.so include/errno_definition.h compile_commands.json compile_commands.json.tmpl
 	rm -rf bin-* pic-*
 	$(MAKE) -C examples clean
 	$(MAKE) -C dynlinker clean
@@ -685,3 +685,12 @@ include/errno_definition.h: dietfeatures.h
 
 ldso: ldso.c
 	gcc -nostdlib -shared -g -DIN_LDSO -Iinclude.ldso -I. -isystem include x86_64/start.S -o ldso ldso.c -fPIC x86_64/dyn_syscalls.S lib/errno_location.c -D__thread=
+
+srcfiles=$(wildcard include/*.h include/*/*.h *.c lib*/*.c *.S */*.S)
+
+.PHONY: compile_commands.json.tmpl
+compile_commands.json.tmpl: json
+	./json $(srcfiles) > $@
+
+compile_commands.json: compile_commands.json.tmpl
+	sed -e 's#"@"#"$(PWD)"#' < $< > $@
