@@ -82,14 +82,7 @@ typedef int32_t id_t;			/* Used as a general identifier; can be
 typedef unsigned long ino_t;		/* Used for file serial numbers. */
 typedef int32_t key_t;			/* Used for interprocess communication. */
 typedef int32_t pid_t;			/* Used for process IDs and process group IDs. */
-#ifdef __SIZE_TYPE__
-/* horrible kludge to make sure size_t and ssize_t are both long or both int */
-#define unsigned signed
-typedef __SIZE_TYPE__ ssize_t;
-#undef unsigned
-#else
-typedef signed long ssize_t;		/* Used for a count of bytes or an error indication. */
-#endif
+typedef __PTRDIFF_TYPE__ ssize_t;
 #if (defined(__sparc__) && (__arch64__)) || defined(__sparcv9)
 /* sparc64 has 32bit suseconds_t for some reason, even though struct
  * timeval is padded to 16 bytes anyway. */
