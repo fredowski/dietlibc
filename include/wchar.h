@@ -67,7 +67,7 @@ int vswprintf(wchar_t *__restrict__, size_t, const wchar_t *__restrict__, va_lis
 int vswscanf(const wchar_t *__restrict__, const wchar_t *__restrict__, va_list);
 int vwscanf(const wchar_t *__restrict__, va_list);
 size_t wcrtomb(char *__restrict__, wchar_t, mbstate_t *__restrict__);
-__writemem__(1) __readmem__(2)
+__readwritemem__(1) __readmem__(2)
 wchar_t *wcscat(wchar_t *__restrict__, const wchar_t *__restrict__);
 __readmem__(1)
 wchar_t *wcschr(const wchar_t *, wchar_t);

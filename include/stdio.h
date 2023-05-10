@@ -29,6 +29,7 @@ FILE *freopen (const char *path, const char *mode, FILE *stream) __THROW;
 
 int printf(const char *format, ...) __THROW __attribute__((__format__(__printf__,1,2)));
 int fprintf(FILE *stream, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
+int dprintf(int fd, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
 int sprintf(char *str, const char *format, ...) __THROW __attribute__((__format__(__printf__,2,3)));
 __writememsz__(1,2)
 int snprintf(char *str, size_t size, const char *format, ...) __THROW __attribute__((__format__(__printf__,3,4)));
@@ -40,6 +41,7 @@ int sscanf(const char *str, const char *format, ...) __THROW __attribute__((__fo
 
 int vprintf(const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,1,0)));
 int vfprintf(FILE *stream, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,2,0)));
+int vdprintf(int fd, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,2,0)));
 int vsprintf(char *str, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,2,0)));
 __writememsz__(1,2)
 int vsnprintf(char *str, size_t size, const char *format, va_list ap) __THROW __attribute__((__format__(__printf__,3,0)));
