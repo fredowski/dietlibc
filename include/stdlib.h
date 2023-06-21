@@ -96,7 +96,6 @@ long mrand48(void) __THROW;
 void srand48(long seed) __THROW;
 unsigned short *seed48(randbuf buf) __THROW;
 
-__attribute__((__warn_unused_result__))
 void lcong48(unsigned short param[7]) __THROW;
 
 __attribute__((__warn_unused_result__))
