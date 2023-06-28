@@ -35,6 +35,7 @@
   do close-on-exec on the open|socket not fcntl afterwards
   define ssize_t via __PTRDIFF_TYPE__ not via a horrible kludge involving #define and __SIZE_TYPE__
   add dprintf, vdprintf
+  add memset_explicit from C23
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)

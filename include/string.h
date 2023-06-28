@@ -153,6 +153,10 @@ int consttime_memequal(void *b1, void *b2, size_t len) __THROW __nonnull((1,2)) 
 __writememsz__(1,3)
 void* explicit_memset(void *b, int c, size_t len) __THROW __nonnull((1)) __dontinline__;
 
+/* C23 */
+__writememsz__(1,3)
+void* memset_explicit(void *b, int c, size_t len) __THROW __nonnull((1)) __dontinline__;
+
 /* C11 */
 typedef int errno_t;
 typedef size_t rsize_t;
