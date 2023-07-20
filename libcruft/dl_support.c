@@ -35,7 +35,7 @@ void _dl_aux_init(ElfW(auxv_t) *av)
 	switch (av->a_type)
 	{
 	case AT_PHDR:
-            _dl_phdr = av->a_un.a_ptr;
+            _dl_phdr = (void*)av->a_un.a_val;
             break;
 	case AT_PHNUM:
             _dl_phnum = av->a_un.a_val;
