@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/nameser.h>
+#include <ctype.h>
 #include "dietfeatures.h"
 #include "rand_i.h"
 
@@ -61,8 +62,12 @@ int res_mkquery(int op, const char *dname, int class, int type, char* data,
     const char* y,* tmp;
     x=packet+12; y=dname;
     while (*y) {
+      char c;
       while (*y=='.') ++y;
-      for (tmp=y; *tmp && *tmp!='.'; ++tmp) ;
+      for (tmp=y; (c=*tmp) && c!='.'; ++tmp) {
+	if (!isalnum(c) && c!='-' && c!='_')
+	  return -1;
+      }
       if (tmp-y > 63) return -1;
       *x=tmp-y;
       if (!(tmp-y)) break;
