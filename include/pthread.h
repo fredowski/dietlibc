@@ -37,7 +37,7 @@ struct _pthread_fastlock { int __spinlock; } __attribute__((__aligned__(16)));
 #define PTHREAD_SPIN_LOCKED 0
 #define PTHREAD_SPIN_UNLOCKED 1
 #else
-struct _pthread_fastlock { int __spinlock; };
+struct _pthread_fastlock { long __spinlock; };
 
 #define PTHREAD_SPIN_LOCKED 1
 #define PTHREAD_SPIN_UNLOCKED 0
@@ -191,7 +191,7 @@ int pthread_getschedparam(const pthread_t target_thread,int*policy,
 			  struct sched_param*param);
 
 /* ONCE */
-typedef int pthread_once_t;
+typedef long pthread_once_t;
 #define PTHREAD_ONCE_INIT	PTHREAD_SPIN_UNLOCKED
 
 int pthread_once(pthread_once_t*once_control,void(*init_routine)(void));

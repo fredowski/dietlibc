@@ -27,7 +27,7 @@ typedef int wchar_t;
 #endif
 
 #undef offsetof
-#if defined(__GNUC__) && (__GNUC >= 3)
+#if defined(__GNUC__) && (__GNUC__ >= 3)
 #define offsetof(type,member) __builtin_offsetof(type,member)
 #else
 #define offsetof(type,member) ((size_t) &((type*)0)->member)

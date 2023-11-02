@@ -248,7 +248,8 @@ $(OBJDIR)/librpc.a: $(LIBRPCOBJ)
 
 $(OBJDIR)/libcrypt.a: | $(OBJDIR)
 	touch dummy.c
-	$(CCC) -c dummy.c
+	$(CCC) $(INC) $(CCFLAGS) $(EXTRACFLAGS) -c dummy.c -D__dietlibc__
+	-$(STRIP) -x -R .comment -R .note dummy.o
 	$(CROSS)ar cru $@ dummy.o
 	rm -f dummy.c dummy.o
 
