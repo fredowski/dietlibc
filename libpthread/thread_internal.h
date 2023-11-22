@@ -104,7 +104,7 @@ struct _thread_key {
 #define __CUR_RTMIN SIGRTMIN
 #define __CUR_RTMAX (SIGRTMAX-2)
 
-int __testandset(int*spinlock);
+int __testandset(long*spinlock);
 
 void __pthread_lock(struct _pthread_fastlock*lock);
 int __pthread_trylock(struct _pthread_fastlock*lock);

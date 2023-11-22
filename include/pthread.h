@@ -32,7 +32,7 @@ typedef int pthread_t;
 
 /* Fast locks */
 #ifdef __hppa__
-struct _pthread_fastlock { int __spinlock; } __attribute__((__aligned__(16)));
+struct _pthread_fastlock { long __spinlock; } __attribute__((__aligned__(16)));
 
 #define PTHREAD_SPIN_LOCKED 0
 #define PTHREAD_SPIN_UNLOCKED 1

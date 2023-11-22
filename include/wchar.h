@@ -85,7 +85,7 @@ __readmem__(1)
 size_t wcslen(const wchar_t *) __pure;
 __readmemsz__(1,2)
 size_t wcsnlen(const wchar_t *, size_t) __pure;
-__writememsz__(1,3)
+__readwritememsz__(1,3)
 __readmem__(2)
 wchar_t *wcsncat(wchar_t *__restrict__, const wchar_t *__restrict__, size_t);
 __readmemsz__(1,3) __readmemsz__(2,3)
