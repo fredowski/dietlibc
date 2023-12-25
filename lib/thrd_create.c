@@ -1,9 +1,9 @@
 #define _LINUX_SOURCE
+#define _GNU_SOURCE
 #include <unistd.h>
 #include <threads.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#define _GNU_SOURCE
 #include <sched.h>
 #include "dietfeatures.h"
 #include <sys/tls.h>
