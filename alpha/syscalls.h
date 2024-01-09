@@ -492,6 +492,12 @@
 #define __NR_process_mrelease 558
 #define __NR_futex_waitv 559
 #define __NR_set_mempolicy_home_node 560
+#define __NR_cachestat 561
+#define __NR_fchmodat2 562
+#define __NR_map_shadow_stack 563
+#define __NR_futex_wake 564
+#define __NR_futex_wait 565
+#define __NR_futex_requeue 566
 
 #define syscall_weak(name,wsym,sym) \
 .text ; \

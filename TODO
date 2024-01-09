@@ -49,3 +49,4 @@ getopt configure check fails:
       return 16;
   }
 
+man ustr2stp

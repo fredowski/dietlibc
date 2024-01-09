@@ -457,6 +457,12 @@
 #define __NR_process_mrelease (__NR_SYSCALL_BASE + 448)
 #define __NR_futex_waitv (__NR_SYSCALL_BASE + 449)
 #define __NR_set_mempolicy_home_node (__NR_SYSCALL_BASE + 450)
+#define __NR_cachestat (__NR_SYSCALL_BASE + 451)
+#define __NR_fchmodat2 (__NR_SYSCALL_BASE + 452)
+#define __NR_map_shadow_stack (__NR_SYSCALL_BASE + 453)
+#define __NR_futex_wake (__NR_SYSCALL_BASE + 454)
+#define __NR_futex_wait (__NR_SYSCALL_BASE + 455)
+#define __NR_futex_requeue (__NR_SYSCALL_BASE + 456)
 
 
 /*
@@ -514,7 +520,6 @@
 #define __ARGS_chmod			0
 #define __ARGS_lchown			0
 #define __ARGS_break			0
-
 #define __ARGS_lseek			0
 #define __ARGS_getpid			0
 #define __ARGS_mount			1
@@ -524,7 +529,6 @@
 #define __ARGS_stime			0
 #define __ARGS_ptrace			0
 #define __ARGS_alarm			0
-
 #define __ARGS_pause			0
 #define __ARGS_utime			0
 #define __ARGS_stty			0
@@ -555,7 +559,6 @@
 #define __ARGS_mpx			0
 #define __ARGS_setpgid			0
 #define __ARGS_ulimit			0
-
 #define __ARGS_umask			0
 #define __ARGS_chroot			0
 #define __ARGS_ustat			0
@@ -580,7 +583,6 @@
 #define __ARGS_setgroups		0
 #define __ARGS_select			0
 #define __ARGS_symlink			0
-
 #define __ARGS_readlink			0
 #define __ARGS_uselib			0
 #define __ARGS_swapon			0
@@ -605,8 +607,6 @@
 #define __ARGS_stat			0
 #define __ARGS_lstat			0
 #define __ARGS_fstat			0
-
-
 #define __ARGS_vhangup			0
 #define __ARGS_idle			0
 #define __ARGS_syscall			0
@@ -686,7 +686,6 @@
 #define __ARGS_capset			0
 #define __ARGS_sigaltstack		0
 #define __ARGS_sendfile			0
-
 #define __ARGS_vfork			0
 #define __ARGS_ugetrlimit		0
 #define __ARGS_mmap2			1
@@ -719,7 +718,6 @@
 #define __ARGS_mincore			0
 #define __ARGS_madvise			0
 #define __ARGS_fcntl64			0
-
 #define __ARGS_security			0
 #define __ARGS_gettid			0
 #define __ARGS_readahead		0
@@ -736,7 +734,6 @@
 #define __ARGS_lremovexattr		0
 #define __ARGS_fremovexattr		0
 #define __ARGS_tkill			0
-
 #define __ARGS_sendfile64		0
 #define __ARGS_futex			0
 #define __ARGS_sched_setaffinity	0
@@ -755,7 +752,6 @@
 #define __ARGS_set_thread_area		0
 #define __ARGS_get_thread_area		0
 #define __ARGS_set_tid_address		0
-
 #define __ARGS_timer_create		0
 #define __ARGS_timer_settime		0
 #define __ARGS_timer_gettime		0
@@ -770,7 +766,6 @@
 #define __ARGS_tgkill			0
 #define __ARGS_utimes			0
 #define __ARGS_arm_fadvise64_64		1
-
 #define __ARGS_fadvise64		0
 #define __ARGS_fadvise64_64		0
 #define __ARGS_pciconfig_iobase		0
@@ -783,7 +778,6 @@
 #define __ARGS_mq_notify		0
 #define __ARGS_mq_getsetattr		0
 #define __ARGS_waitid			0
-
 #define __ARGS_socket			0
 #define __ARGS_bind			0
 #define __ARGS_connect			0
@@ -812,7 +806,6 @@
 #define __ARGS_shmdt			0
 #define __ARGS_shmget			0
 #define __ARGS_shmctl			0
-
 #define __ARGS_add_key			1
 #define __ARGS_request_key		1
 #define __ARGS_keyctl			0
@@ -825,7 +818,6 @@
 #define __ARGS_mbind			1
 #define __ARGS_get_mempolicy		1
 #define __ARGS_set_mempolicy		1
-
 #define __ARGS_openat			0
 #define __ARGS_mkdirat			0
 #define __ARGS_mknodat			0
@@ -860,7 +852,6 @@
 #define __ARGS_fallocate		0
 #define __ARGS_timerfd_settime		0
 #define __ARGS_timerfd_gettime		0
-
 #define __ARGS_signalfd4		0
 #define __ARGS_eventfd2			0
 #define __ARGS_epoll_create1		0
@@ -886,7 +877,6 @@
 #define __ARGS_process_vm_writev	1
 #define __ARGS_kcmp			1
 #define __ARGS_finit_module		0
-
 #define __ARGS_sched_setattr		0
 #define __ARGS_sched_getattr		0
 #define __ARGS_renameat2		1
@@ -954,7 +944,12 @@
 #define __ARGS_process_mrelease		0
 #define __ARGS_futex_waitv		1
 #define __ARGS_set_mempolicy_home_node	0
-
+#define __ARGS_cachestat 0
+#define __ARGS_fchmodat2 0
+#define __ARGS_map_shadow_stack 0
+#define __ARGS_futex_wake 0
+#define __ARGS_futex_wait 1
+#define __ARGS_futex_requeue 0
 
 #ifdef __ASSEMBLER__
 
