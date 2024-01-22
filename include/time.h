@@ -70,8 +70,10 @@ clock_t clock(void);
 
 char *strptime(const char *s, const char *format, struct tm *tm);
 
+/* timegm is in C23. No need for deprecation anymore */
+time_t timegm(struct tm *timeptr) __THROW __pure ;
+
 #ifdef _GNU_SOURCE
-time_t timegm(struct tm *timeptr) __THROW __attribute_dontuse__ __pure ;
 time_t timelocal(struct tm *timeptr) __THROW __attribute_dontuse__ __pure;
 #endif
 
