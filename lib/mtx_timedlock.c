@@ -10,7 +10,7 @@ int mtx_timedlock(mtx_t* mutex, const struct timespec* time_point) {
     r=__mtx_trylock(mutex,&i);
     if (r!=thrd_busy) return r;
     for (;;) {
-      r=futex(&mutex->lock,FUTEX_WAIT,i,time_point,0,0);
+      r=futex(&mutex->lock,FUTEX_WAIT_BITSET,i,time_point,0,FUTEX_BITSET_MATCH_ANY);
       if (r==-1) {
 	if (errno==EWOULDBLOCK) { r=0; break; } else
 	if (errno==ETIMEDOUT) return thrd_timedout; else
