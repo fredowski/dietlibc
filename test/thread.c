@@ -3,8 +3,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
+#ifdef __dietlibc__
 #include <write12.h>
+#else
+#include <string.h>
+static void __write1(const char* s) {
+  write(1,s,strlen(s));
+}
+#endif
 #include <time.h>
+#include <sys/time.h>
 #include <errno.h>
 
 mtx_t m;
@@ -37,10 +45,12 @@ int recursive_lock(int a) {
   else
     sleep(1);
   mtx_unlock(&m);
+  return 0;
 }
 
 int thread3(void* arg) {
   recursive_lock(5);
+  return 0;
 }
 
 once_flag f=ONCE_FLAG_INIT;
@@ -62,6 +72,7 @@ int thread5(void* arg) {
 //  __write1("thread5\n");
   ++done;
   mtx_unlock(&m);
+  return 0;
 }
 
 int thread6(void* arg) {
@@ -90,9 +101,16 @@ int main() {
   assert(thrd_create(threads,thread2,NULL)==thrd_success);
   {
     struct timespec ts;
+    struct timeval tv;
     ts.tv_sec=0;
     ts.tv_nsec=10000;
+    gettimeofday(&tv,0);
     nanosleep(&ts,0);
+    ts.tv_nsec+=10000;
+    if (ts.tv_nsec>1000000000) {
+      ts.tv_nsec -= 1000000000;
+      ts.tv_sec += 1;
+    }
     assert(mtx_timedlock(&m,&ts)==thrd_timedout);
   }
   {
