@@ -38,6 +38,7 @@
   add memset_explicit from C23
   import some patches from Debian
   mtx_timedlock and cnd_timedwait timespec is absolute, not relative
+  add <stdckdint.h>
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
