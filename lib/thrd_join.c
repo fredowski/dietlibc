@@ -23,11 +23,11 @@ int thrd_join(thrd_t thr, int* res) {
       // somebody is already calling thrd_join, refuse join
       return thrd_error;
     do {
-      r=futex(&thr->join_futex,FUTEX_WAIT,1,0,0,0);
+      r=futex(&thr->join_futex,FUTEX_WAIT_PRIVATE,1,0,0,0);
     } while (r==-1 && errno==EINTR);
     if (res) *res=thr->res;
     thr->join_wait_futex=1;
-    futex(&thr->join_wait_futex,FUTEX_WAKE,1,0,0,0);
+    futex(&thr->join_wait_futex,FUTEX_WAKE_PRIVATE,1,0,0,0);
   } else {
     /* thread is already dead, do cleanup */
     if (res) *res=thr->res;

@@ -30,12 +30,12 @@ void thrd_exit(int res) {
     /* we need to wake the waiting threads up one by one, because we
      * need to wait for all of them to have received our return value
      * before we can self destruct. */
-    while (futex(&t->join_futex,FUTEX_WAKE,1,0,0,0)==1) {	// wake one waiting thread
+    while (futex(&t->join_futex,FUTEX_WAKE_PRIVATE,1,0,0,0)==1) {	// wake one waiting thread
       // We woke somebody up.
       // Give them time to read our exit code.
       int r;
       do {
-	r=futex(&t->join_wait_futex,FUTEX_WAIT,0,0,0,0);
+	r=futex(&t->join_wait_futex,FUTEX_WAIT_PRIVATE,0,0,0,0);
       } while (r==EINTR);
       t->join_wait_futex=0;
     }

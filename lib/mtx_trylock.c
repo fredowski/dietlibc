@@ -2,7 +2,6 @@
 #define _DIETLIBC_SOURCE
 #include <threads.h>
 #include <sys/futex.h>
-#include <errno.h>
 
 int __mtx_trylock(mtx_t* mutex,int* lockval) {
   int i;

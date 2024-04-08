@@ -52,7 +52,7 @@ enum {
 
   FUTEX_WAITV_MAX=128,
 
-  FUTEX_BITSET_MATCH_ANY=0xffffffff,
+  FUTEX_BITSET_MATCH_ANY=-1,
 };
 
 long futex(int* uaddr,int op,int val,const struct timespec* timeout,int* uaddr2,int val3);
