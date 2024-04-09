@@ -71,8 +71,8 @@
 #endif
 
 /* idea for these macros taken from Linux kernel */
-#define __likely(foo) __expect((foo),1)
-#define __unlikely(foo) __expect((foo),0)
+#define __likely(foo) __builtin_expect((foo),1)
+#define __unlikely(foo) __builtin_expect((foo),0)
 
 #ifndef __attribute_malloc__
 #define __attribute_malloc__
