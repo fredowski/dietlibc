@@ -2,8 +2,6 @@
 #include "dietdirent.h"
 #include <unistd.h>
 #include <dirent.h>
-#include <stdlib.h>
-#include <errno.h>
 
 #ifdef __DIET_ARCH_ONLY_DIRENT64
 #define linux_dirent dirent64
