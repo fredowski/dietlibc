@@ -6,6 +6,6 @@
 
 int closedir (DIR* d) {
   int res=close(d->fd);
-  munmap (d, PAGE_SIZE);
+  munmap (d, DIRSTREAMSIZE);
   return res;
 }

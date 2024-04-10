@@ -40,7 +40,8 @@ int thrd_sleep(const struct timespec* time_point, struct timespec* remaining);
 void thrd_yield(void);
 
 typedef struct __mtx_t {
-  int lock, type;
+  int lock, 	// lock>>1 == number of mutex_locks (can be >1 if recursive)
+      type;	// mtx_plain, mtx_timed or mtx_recursive
   thrd_t owner;
 } mtx_t;
 
@@ -52,7 +53,7 @@ enum {
 
 int mtx_init(mtx_t* mutex, int type);
 int mtx_lock(mtx_t* mutex);
-int mtx_timedlock(mtx_t *restrict mutex, const struct timespec *restrict time_point);
+int mtx_timedlock(mtx_t *__restrict__ mutex, const struct timespec *__restrict__ time_point);
 int mtx_trylock(mtx_t* mutex);
 int mtx_unlock(mtx_t* mutex);
 void mtx_destroy(mtx_t* mutex);
@@ -67,14 +68,15 @@ typedef int once_flag;
 void call_once(once_flag* flag, void (*func)(void));
 
 typedef struct __cnd_t {
-  int sem;
+  int seq;
+  mtx_t* mtx;
 } cnd_t;
 
 int cnd_init(cnd_t* cond);
 int cnd_signal(cnd_t *cond);
 int cnd_broadcast(cnd_t *cond);
 int cnd_wait(cnd_t* cond, mtx_t* mutex);
-int cnd_timedwait(cnd_t* restrict cond, mtx_t* restrict mutex, const struct timespec* restrict time_point);
+int cnd_timedwait(cnd_t* __restrict__ cond, mtx_t* __restrict__ mutex, const struct timespec* __restrict__ time_point);
 void cnd_destroy(cnd_t* cond);
 
 #define thread_local __thread

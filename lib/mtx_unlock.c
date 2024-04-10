@@ -1,20 +1,27 @@
 #define _REENTRANT
 #include <threads.h>
 #include <sys/futex.h>
+#include <sys/cdefs.h>
 
 int mtx_unlock(mtx_t* mutex) {
-  thrd_t me=thrd_current();
-  if (mutex->lock==0) return thrd_error;
-  if ((mutex->type&mtx_recursive) && mutex->owner==me) {
-    if (__sync_add_and_fetch(&mutex->lock,-1)==0) {
-      // If we get here, the mutex was recursive, we unlocked it, and we
-      // were the last guy holding the lock.  Wake waiters.
-      mutex->owner=0;	// cosmetic; not really needed
-      futex(&mutex->lock,FUTEX_WAKE_PRIVATE,1,0,0,0);
-    }
-    return thrd_success;
-  }
-  if (__sync_val_compare_and_swap(&mutex->lock,1,0)==1)
-    futex(&mutex->lock,FUTEX_WAKE_PRIVATE,1,0,0,0);
+  /* https://en.cppreference.com/w/c/thread/mtx_unlock
+   * "The behavior is undefined if the mutex is not locked by the calling thread."
+   * glibc doesn't care. FreeBSD returns thrd_error */
+  if (__unlikely(mutex->owner != thrd_current()))
+    return thrd_error;
+
+  int cur,v;
+  do {
+    cur=mutex->lock;
+    if (__unlikely(cur==0))	// wasn't locked
+      return thrd_error;
+    v = cur-2;
+  } while (__unlikely(!__sync_bool_compare_and_swap(&mutex->lock,cur,v)));
+  if (v>1)
+    return thrd_success;	// recursive lock, others still holding
+  mutex->owner=0;
+  if (cur&1)	// non-empty futex queue
+    if (futex(&mutex->lock,FUTEX_WAKE_PRIVATE,1,0,0,0)==0)
+      __sync_bool_compare_and_swap(&mutex->lock,1,0);
   return thrd_success;
 }

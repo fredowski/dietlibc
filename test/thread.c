@@ -14,6 +14,7 @@ static void __write1(const char* s) {
 #include <time.h>
 #include <sys/time.h>
 #include <errno.h>
+#include <inttypes.h>
 
 mtx_t m;
 
@@ -21,7 +22,6 @@ long l;
 
 int thread(void* arg) {
   size_t i;
-  char buf[100];
   (void)arg;
   for (i=0; i<100; ++i) {
     mtx_lock(&m);
@@ -32,7 +32,9 @@ int thread(void* arg) {
 }
 
 int thread2(void* arg) {
+  volatile int* x=arg;
   mtx_lock(&m);
+  *x=1;
   sleep(1);
   mtx_unlock(&m);
   return 23;
@@ -49,6 +51,7 @@ int recursive_lock(int a) {
 }
 
 int thread3(void* arg) {
+  (void)arg;
   recursive_lock(5);
   return 0;
 }
@@ -60,6 +63,7 @@ void callme(void) {
 }
 
 int thread4(void* arg) {
+  (void)arg;
   call_once(&f,callme);
   return 0;
 }
@@ -68,14 +72,17 @@ cnd_t cond;
 int done;
 
 int thread5(void* arg) {
+  int me = (int)(uintptr_t)arg;
+  (void)arg;
+  mtx_lock(&m);
   cnd_wait(&cond,&m);
-//  __write1("thread5\n");
   ++done;
   mtx_unlock(&m);
   return 0;
 }
 
 int thread6(void* arg) {
+  (void)arg;
   errno=0;
   assert(write(-1,"foo",3)==-1);
   assert(errno==EBADF);
@@ -98,16 +105,18 @@ int main() {
   assert(l==100*sizeof(threads)/sizeof(threads[0]));
 
   __write1("mtx_timedlock test\n");
-  assert(thrd_create(threads,thread2,NULL)==thrd_success);
+  volatile int n=0;
+  assert(thrd_create(threads,thread2,(void*)&n)==thrd_success);
+  while (n!=1) __sync_synchronize();
   {
     struct timespec ts;
     struct timeval tv;
     ts.tv_sec=0;
-    ts.tv_nsec=10000;
+    ts.tv_nsec=100000;
     gettimeofday(&tv,0);
-    nanosleep(&ts,0);
-    ts.tv_nsec+=10000;
-    if (ts.tv_nsec>1000000000) {
+    ts.tv_sec=tv.tv_sec;
+    ts.tv_nsec=tv.tv_usec*1000+100000;
+    if (ts.tv_nsec>=1000000000) {
       ts.tv_nsec -= 1000000000;
       ts.tv_sec += 1;
     }
@@ -148,8 +157,9 @@ int main() {
   __write1("cnd_t test\n");
   cnd_init(&cond);
   mtx_init(&m,mtx_plain);
+  done=0;
   for (i=0; i<sizeof(threads)/sizeof(threads[0]); ++i) {
-    assert(thrd_create(threads+i,thread5,NULL)==thrd_success);
+    assert(thrd_create(threads+i,thread5,(void*)(size_t)i)==thrd_success);
     assert(thrd_detach(threads[i])==thrd_success);
   }
   {
@@ -165,6 +175,7 @@ int main() {
     cnd_broadcast(&cond);
     nanosleep(&ts,0);
     mtx_lock(&m);
+//    fprintf(stderr,"done=%d, expected %zu\n",done,sizeof(threads)/sizeof(threads[0]));
     assert(done==sizeof(threads)/sizeof(threads[0]));
     mtx_unlock(&m);
   }
