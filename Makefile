@@ -672,6 +672,13 @@ $(OBJDIR)/tmpnam.o $(OBJDIR)/utxent.o $(OBJDIR)/verr.o \
 $(OBJDIR)/verrx.o $(OBJDIR)/vwarn.o $(OBJDIR)/warn.o \
 $(OBJDIR)/wcsrtombs.o $(OBJDIR)/wcstombs.o $(OBJDIR)/eventfd.o: include/errno_definition.h
 
+$(OBJDIR)/mtx_destroy.o $(OBJDIR)/mtx_init.o $(OBJDIR)/mtx_lock.o \
+$(OBJDIR)/mtx_timedlock.o $(OBJDIR)/mtx_trylock.o $(OBJDIR)/mtx_unlock.o \
+$(OBJDIR)/thrd_create.o $(OBJDIR)/thrd_current.o $(OBJDIR)/thrd_detach.o \
+$(OBJDIR)/thrd_exit.o $(OBJDIR)/thrd_join.o $(OBJDIR)/thrd_root.o \
+$(OBJDIR)/cnd_broadcast.o $(OBJDIR)/cnd_destroy.o $(OBJDIR)/cnd_init.o \
+$(OBJDIR)/cnd_signal.o $(OBJDIR)/cnd_timedwait.o $(OBJDIR)/cnd_wait.o: include/threads.h
+
 $(OBJDIR)/qsort.o $(OBJDIR)/tmpnam.o $(OBJDIR)/res_mkquery.o: rand_i.h
 
 $(OBJDIR)/errno_location.o $(OBJDIR)/errno.o: dietfeatures.h
