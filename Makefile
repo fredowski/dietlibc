@@ -356,11 +356,11 @@ VERSION=dietlibc-$(shell head -n 1 CHANGES|sed 's/://')
 CURNAME=$(notdir $(shell pwd))
 
 $(OBJDIR)/diet: $(OBJDIR)/start.o diet.c $(OBJDIR)/dietlibc.a $(OBJDIR)/crtend.o
-	$(CCC) -isystem include $(CFLAGS) -nostdlib -o $@ $^ -DDIETHOME=\"$(DIETHOME)\" -DVERSION=\"$(VERSION)\" -lgcc $(EXTRALDFLAGS)
+	$(CCC) -static -isystem include $(CFLAGS) -nostdlib -o $@ $^ -DDIETHOME=\"$(DIETHOME)\" -DVERSION=\"$(VERSION)\" -lgcc $(EXTRALDFLAGS)
 	$(STRIP) -R .comment -R .note $@
 
 $(OBJDIR)/diet-i: $(OBJDIR)/start.o diet.c $(OBJDIR)/dietlibc.a $(OBJDIR)/crtend.o
-	$(CCC) -isystem include $(CFLAGS) -nostdlib -o $@ $^ -DDIETHOME=\"$(prefix)\" -DVERSION=\"$(VERSION)\" -DINSTALLVERSION -lgcc $(EXTRALDFLAGS)
+	$(CCC) -static -isystem include $(CFLAGS) -nostdlib -o $@ $^ -DDIETHOME=\"$(prefix)\" -DVERSION=\"$(VERSION)\" -DINSTALLVERSION -lgcc $(EXTRALDFLAGS)
 	$(STRIP) -R .comment -R .note $@
 
 $(PICODIR)/diet-dyn: $(PICODIR)/start.o $(PICODIR)/dyn_start.o diet.c
