@@ -118,7 +118,7 @@ all: compile_commands.json $(WHAT)
 
 profiling: $(OBJDIR)/libgmon.a $(OBJDIR)/pstart.o
 
-DEFAULTCFLAGS=-pipe -nostdinc -D_REENTRANT $(EXTRACFLAGS)
+DEFAULTCFLAGS=-pipe -nostdinc -D_REENTRANT -ffreestanding $(EXTRACFLAGS)
 CFLAGS=$(DEFAULTCFLAGS)
 CROSS=
 
