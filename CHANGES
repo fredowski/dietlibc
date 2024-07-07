@@ -40,6 +40,9 @@
   mtx_timedlock and cnd_timedwait timespec is absolute, not relative
   add <stdckdint.h>
   fchmodat and friends don't need #ifdefs to see anymore
+  add NAN to <math.h> (Gabriel Ravier)
+  add -ffreestanding (Thorsten Glaser)
+  fix printf %+f -0. (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
