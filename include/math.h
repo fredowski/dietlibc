@@ -131,6 +131,7 @@ float copysignf(float value, float sign) __attribute__((__const__));
   (__extension__ \
    ((union { unsigned int __i; float __f; }) \
     { __i: 0x7f800000UL }).__f)
+#define NAN (__builtin_nanf(""))
 
 #ifdef _GNU_SOURCE
 void sincos(double x, double* sinx, double* cosx);
