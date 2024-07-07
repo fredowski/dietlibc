@@ -419,7 +419,7 @@ num_printf:
 	      }
 	    }
 	  
-	    if ((flag_sign || flag_space) && d>=0) {
+	    if ((flag_sign || flag_space) && d>=0 && (1/d != 1/-0.)) { /* 1/d != 1/-0. checks for d being negative 0, inwhich case we don't want to add a plus since __dtostr will already have added a minus */
 	      *(--s)=(flag_sign)?'+':' ';
 	      ++sz;
 	    }
