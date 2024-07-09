@@ -42,7 +42,8 @@
   fchmodat and friends don't need #ifdefs to see anymore
   add NAN to <math.h> (Gabriel Ravier)
   add -ffreestanding (Thorsten Glaser)
-  fix printf %+f -0. (Gabriel Ravier)
+  more printf fixes (Gabriel Ravier)
+  SECURITY: fdopendir allocated PAGE_SIZE instead of DIRSTREAMSIZE (Gabriel Ravier)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)

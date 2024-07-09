@@ -276,9 +276,9 @@ print_out:
 
       /* print an integer value */
       case 'b':
+      case 'B':
 	base=2;
-	sz=0;
-	goto num_printf;
+	goto case_x_after_set_base_to_16;
       case 'p':
 	flag_hash=2;
 	flag_long=1;
@@ -289,6 +289,7 @@ print_out:
 	/* fall through */
       case 'x':
 	base=16;
+case_x_after_set_base_to_16:
 	sz=0;
 	if (flag_hash) {
 	  buf[1]='0';
@@ -317,7 +318,7 @@ print_out:
 
 num_printf:
 	s=buf+1;
-
+	if ((padwith=='0') && flag_dot) padwith=' '; /* for b, B, d, i, o, u, x and X conversions, if a precision is specified, the 0 flag is ignored */
 	if (flag_long>0) {
 #ifdef WANT_LONGLONG_PRINTF
 	  if (flag_long>1)
@@ -350,6 +351,20 @@ num_printf:
 	}
 	if (flag_long<0) number&=0xffff;
 	if (flag_long<-1) number&=0xff;
+
+       /* When the alternative form and the x conversion specifier are
+	* used to print a 0, the output does not contain a 0x.
+	* Similarly, when the alternative form and the o conversion
+	* specifier are used to print a 0, the output only contains a
+	* single 0, and not two.  In other words, printing 0 with the
+	* alternative form effectively outputs the same as if the
+	* alternative form was not used.  We also reset sz to 0 to undo
+	* the sz = 2 or ++sz done above */
+        if (number == 0 && flag_hash) {
+         flag_hash = 0;
+         sz = 0;
+       }
+
 #ifdef WANT_LONGLONG_PRINTF
 	if (flag_long>1)
 	  retval = __lltostr(s+sz,sizeof(buf)-5,(unsigned long long) llnumber,base,flag_upcase);
