@@ -1,17 +1,18 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#ifdef WANT_THREAD_SAFE
+#include <pthread.h>
+#include "libpthread/thread_internal.h"
+#endif
 #include <errno.h>
 #include "dietstdio.h"
 #include <stdlib.h>
-#ifdef WANT_THREAD_SAFE
-#include <pthread.h>
-#endif
 
 extern int __stdio_atexit;
 
 FILE*__stdio_init_file(int fd,int closeonerror,int mode) {
-  FILE *tmp=(FILE*)malloc(sizeof(FILE));
+  FILE *tmp=(FILE*)calloc(1,sizeof(FILE));
   if (!tmp) goto err_out;
   tmp->buf=(char*)malloc(BUFSIZE);
   if (!tmp->buf) {
@@ -25,6 +26,10 @@ err_out:
   tmp->bm=0;
   tmp->bs=0;
   tmp->buflen=BUFSIZE;
+#ifdef WANT_THREAD_SAFE
+  tmp->m.kind=PTHREAD_MUTEX_RECURSIVE_NP;
+  tmp->m.lock.__spinlock=PTHREAD_SPIN_UNLOCKED;
+#endif
   {
     struct stat st;
     if (fstat(fd,&st) == -1) {
