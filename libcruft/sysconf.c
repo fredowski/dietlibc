@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <sys/resource.h>
 #include <fcntl.h>
+#include <sys/auxv.h>
 #define _GNU_SOURCE
 #include <sched.h>
 
@@ -49,6 +50,10 @@ long sysconf(int name)
 #endif
 
   case _SC_PAGESIZE:
+    {
+      long x=getauxval(AT_PAGESZ);
+      if (x) return x;
+    }
 #if ( defined(__alpha__) || defined(__sparc__) )
     return 8192;
 #else
