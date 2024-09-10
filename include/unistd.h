@@ -449,7 +449,12 @@ int tgkill(pid_t tgid, pid_t tid, int sig) __THROW;
 /* see linux/fadvise.h */
 long fadvise64(int fd,off64_t offset,size_t len,int advice) __THROW;
 long fadvise64_64(int fd,off64_t offset,off64_t len,int advice) __THROW;
+#endif
 
+#if defined(_GNU_SOURCE) || defined(_LINUX_SOURCE)
+__attribute__((__warn_unused_result__))
+__readmemsz__(3,4)
+long openat2(int dirfd, const char* pathname, struct open_how* how, size_t size) __THROW;
 #endif
 
 #if defined(_GNU_SOURCE) || defined(_ATFILE_SOURCE) || ((_XOPEN_SOURCE + 0) >= 700) || ((_POSIX_C_SOURCE + 0) >= 200809L)

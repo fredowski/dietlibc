@@ -44,6 +44,7 @@
   add -ffreestanding (Thorsten Glaser)
   more printf fixes (Gabriel Ravier)
   SECURITY: fdopendir allocated PAGE_SIZE instead of DIRSTREAMSIZE (Gabriel Ravier)
+  add openat2 (linux-only, in unistd.h)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
