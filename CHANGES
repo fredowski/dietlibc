@@ -45,6 +45,7 @@
   more printf fixes (Gabriel Ravier)
   SECURITY: fdopendir allocated PAGE_SIZE instead of DIRSTREAMSIZE (Gabriel Ravier)
   add openat2 (linux-only, in unistd.h)
+  add qsort_r (_GNU_SOURCE only, needed by zstd)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
