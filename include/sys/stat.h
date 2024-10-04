@@ -3,6 +3,7 @@
 
 #include <sys/cdefs.h>
 #include <sys/types.h>
+#include <sys/time.h>
 #include <endian.h>
 
 __BEGIN_DECLS
@@ -730,7 +731,9 @@ int fstatat(int dirfd, const char *pathname, struct stat *buf, int flags) __THRO
 int mkdirat(int dirfd, const char *pathname, mode_t mode) __THROW;
 int mknodat(int dirfd, const char *pathname, mode_t mode, dev_t dev) __THROW;
 int mkfifoat(int dirfd, const char *pathname, mode_t mode) __THROW;
-int utimensat(int dirfd, const char *pathname, struct timespec* t,int flags) __THROW;
+int utimensat(int dirfd, const char *pathname, const struct timespec* t,int flags) __THROW;
+int futimens(int fd, const struct timespec* times) __THROW;
+
 
 __END_DECLS
 
