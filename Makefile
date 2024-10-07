@@ -382,8 +382,8 @@ $(OBJDIR)/load:
 	chmod 755 $@
 
 clean:
-	rm -f *.o *.a t t1 compile load elftrunc exports mapfile libdietc.so include/errno_definition.h compile_commands.json compile_commands.json.tmpl
-	rm -rf bin-* pic-*
+	rm -f *.o *.a t t1 compile load elftrunc exports mapfile libdietc.so include/errno_definition.h compile_commands.json compile_commands.json.tmpl *.plist
+	rm -rf bin-* pic-* .cache
 	$(MAKE) -C examples clean
 	$(MAKE) -C dynlinker clean
 	$(MAKE) -C libdl clean
