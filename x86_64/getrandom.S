@@ -1,6 +1,11 @@
 #include "dietfeatures.h"
 #include "syscalls.h"
 
+#if 0
+
+// this does not work because the vdso prototypes are different, so
+// #ifdef out and fall back to regular syscall for now
+
 .text
 .global getrandom
 #ifdef __PIE__
@@ -55,3 +60,8 @@ getrandom:
 .local funcname
 funcname:
 	.string "__vdso_getrandom"
+
+#endif
+
+syscall(getrandom,getrandom)
+
