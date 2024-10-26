@@ -48,6 +48,7 @@
   add qsort_r (_GNU_SOURCE only, needed by zstd)
   add futimens (_GNU_SOURCE only)
   add (and revert) x86_64 vdso getrandom
+  fix for ARM signals on newer kernel versions (Olaf Dreesen)
 
 0.34:
   move stpcpy from libcompat to lib as it is now part of POSIX (Enrico Scholz)
