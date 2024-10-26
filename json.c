@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int main(int argc,char* argv[]) {
   int i;
@@ -21,4 +22,5 @@ int main(int argc,char* argv[]) {
     printf("\n{ \"directory\": \"@\", \"file\": \"%s\", \"output\": \"%s\", \"arguments\": [ \"clang\", \"-c\", \"%s\", \"-I.\", \"-Iinclude\" ]}%s ",src,dfn,src,(i+1<argc)?",":"");
   }
   printf("\n]\n");
+  return 0;
 }
