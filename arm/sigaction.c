@@ -5,14 +5,14 @@
 
 void __restore_rt(void);
 asm(".text\n"
-    ".align 16\n"
+    ".align 4\n"
     "__restore_rt:"
     "mov r7,#173\n"     // __NR_rt_sigreturn
     "swi 0x0\n");
 
 void __restore(void);
 asm(".text\n"
-    ".align 16\n"
+    ".align 4\n"
     "__restore:"
     "mov r7,#119\n"     // __NR_sigreturn
     "swi 0x0\n");
