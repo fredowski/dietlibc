@@ -1,7 +1,5 @@
 #include <unistd.h>
 #include <fcntl.h>
-#include <errno.h>
-#include <stdlib.h>
 #ifdef WANT_THREAD_SAFE
 #include <pthread.h>
 #endif
