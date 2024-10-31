@@ -1,3 +1,5 @@
+0.36:
+
 0.35:
   fix pic for x32
   SECURITY: putenv removes duplicate entries from malicious environments (Daniel Hodson)
