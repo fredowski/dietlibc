@@ -700,5 +700,8 @@ srcfiles=$(wildcard include/*.h include/*/*.h *.c lib*/*.c *.S */*.S)
 compile_commands.json.tmpl: json
 	./json $(srcfiles) > $@
 
+json: json.c
+	$(CC) -o $@ $<
+
 compile_commands.json: compile_commands.json.tmpl
 	sed -e 's#"@"#"$(PWD)"#' < $< > $@
