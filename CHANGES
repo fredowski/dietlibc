@@ -1,6 +1,7 @@
 0.36:
   static_assert now work with one or two arguments (Gabriel Ravier)
   fix callback attribute for qsort_r
+  fix typos in stdckdint.h
 
 0.35:
   fix pic for x32
