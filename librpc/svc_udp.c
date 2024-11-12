@@ -360,7 +360,7 @@ static int svcudp_enablecache(SVCXPRT* transp, unsigned long size)
 		return (0);
 	}
 	BZERO(uc->uc_entries, cache_ptr, size * SPARSENESS);
-	uc->uc_fifo = calloc(sizeof(cache_ptr), size);
+	uc->uc_fifo = calloc(size, sizeof(cache_ptr));
 	if (uc->uc_fifo == NULL) {
 		free(uc->uc_entries);
 		free(uc); uc=NULL;
