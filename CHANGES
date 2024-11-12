@@ -1,5 +1,6 @@
 0.36:
-  static_assert now work with one or two arguments(Gabriel Ravier)
+  static_assert now work with one or two arguments (Gabriel Ravier)
+  fix callback attribute for qsort_r
 
 0.35:
   fix pic for x32
