@@ -3,7 +3,8 @@
 
 #include <errno.h>
 
-FUNC_START	clone
+FUNC_START_WEAK	clone
+FUNC_START	__clone
 	/* sanity checks */
 	cbz	x0, .Linval
 	cbz	x1, .Linval
@@ -26,4 +27,5 @@ FUNC_START	clone
 	ldp	x1, x0, [sp], #16
 	blr	x1
 	b	exit
+FUNC_END	__clone
 FUNC_END	clone
