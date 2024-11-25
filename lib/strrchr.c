@@ -25,4 +25,5 @@ char *strrchr(const char *t, int c) {
   return (char*)l;
 }
 
-char *rindex(const char *t,int c)	__attribute__((weak,alias("strrchr")));
+__readmem__(1)
+char *rindex(const char *t,int c)	__attribute__((weak,alias("strrchr"))) __THROW __pure __nonnull((1));
