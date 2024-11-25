@@ -3,7 +3,7 @@
 
 #include <sys/cdefs.h>
 
-unsigned long getauxval(unsigned long type);
+unsigned long getauxval(unsigned long type) __THROW __pure;
 
 #ifndef AT_BASE
 /* don't fail if they already included elf.h */

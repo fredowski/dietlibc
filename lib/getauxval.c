@@ -16,3 +16,4 @@ unsigned long getauxval(unsigned long type) {
   return (long)find_in_auxvec(_auxvec,type);
 }
 
+unsigned long __getauxval(unsigned long type) __attribute__((alias("getauxval"))) __pure __THROW;
