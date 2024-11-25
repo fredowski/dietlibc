@@ -200,10 +200,13 @@
 #endif
 
 #define __strin(idx) __attribute__((nonnull(idx),access(read_only,idx),null_terminated_string_arg(idx)))
+#define __strnin(idx,szidx) __attribute__((nonnull(idx),access(read_only,idx,szidx),null_terminated_string_arg(idx)))
 #define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_only,bufidx,szidx)))
 #define __strout(idx) __attribute__((nonnull(idx),access(write_only,idx)))
+#define __strnout(idx,szidx) __attribute__((nonnull(idx),access(write_only,idx,szidx)))
 #define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),access(write_only,bufidx,szidx)))
 #define __strinout(idx) __attribute__((nonnull(idx),access(read_write,idx)))
+#define __strninout(idx,szidx) __attribute__((nonnull(idx),access(read_write,idx,szidx),null_terminated_string_arg(idx)))
 #define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_write,bufidx,szidx)))
 
 #endif
