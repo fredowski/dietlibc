@@ -63,9 +63,7 @@ int alphasort64(const struct dirent64 **a, const struct dirent64 **b) __THROW __
 
 #define MAXNAMLEN NAME_MAX
 
-#ifdef _BSD_SOURCE
-extern int dirfd(DIR *dirp) __THROW __attribute_dontuse__;
-#endif
+extern int dirfd(DIR *dirp) __THROW;
 
 #if defined _FILE_OFFSET_BITS && _FILE_OFFSET_BITS == 64
 #define dirent dirent64

@@ -3,6 +3,8 @@
 #include <string.h>
 #include <syscalls.h>
 
+int __rt_sigaction(int signum, const struct sigaction *act, struct sigaction *oldact, long nr);
+
 void __restore_rt(void);
 asm(".text\n" ".align 16\n"
     "__restore_rt:"

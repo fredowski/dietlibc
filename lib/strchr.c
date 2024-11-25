@@ -24,4 +24,5 @@ char *strchr(register const char *t, int c) {
   return (char*)t;
 }
 
-char *index(char *t,int c)	__attribute__((weak,alias("strchr")));
+__readmem__(1)
+char *index(char *t,int c)	__attribute__((weak,alias("strchr"),pure,nonnull((1)))) __THROW;
