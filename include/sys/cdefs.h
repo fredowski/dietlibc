@@ -203,5 +203,7 @@
 #define __bufin(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_only,bufidx,szidx)))
 #define __strout(idx) __attribute__((nonnull(idx),access(write_only,idx)))
 #define __bufout(bufidx,szidx) __attribute__((nonnull(bufidx),access(write_only,bufidx,szidx)))
+#define __strinout(idx) __attribute__((nonnull(idx),access(read_write,idx)))
+#define __bufinout(bufidx,szidx) __attribute__((nonnull(bufidx),access(read_write,bufidx,szidx)))
 
 #endif
