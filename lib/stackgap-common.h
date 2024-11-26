@@ -321,7 +321,7 @@ static void callback() {
 
 
 #ifdef __PIE__
-extern char _DYNAMIC;
+extern char _DYNAMIC[];
 #endif
 
 extern long* _auxvec;
@@ -432,7 +432,7 @@ int stackgap(int argc,char* argv[],char* envp[], funcptr fp) {
 	  const dyn* dh;
 	  size_t j;
 	  
-	  base = &_DYNAMIC - ph->p_vaddr;
+	  base = _DYNAMIC - ph->p_vaddr;
 #ifdef PIEDEBUG
 	  if (((ehdr*)base)->e_entry + (uintptr_t)base != saddr) {
 	    _puts("fail: ");
