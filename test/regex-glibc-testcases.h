@@ -123,7 +123,7 @@
   {1, "[k]", "ab"},
   {0, "abcd", "abcd", {"abcd"}},
   {0, "a(bc)d", "abcd", {"abcd", "bc"}},
-  {0, "a[-]?c", "ac", {"ac"}},
+  {0, "a[-]?c", "ac", {"ac"}},
   {0, "(....).*\\1", "beriberi", {"beriberi", "beri"}},
   {0, "M[ou]'?am+[ae]r .*([AEae]l[- ])?[GKQ]h?[aeu]+([dtz][dhz]?)+af[iy]", "Muammar Qaddafi", {"Muammar Qaddafi", NULL, "dd"}},
   {0, "M[ou]'?am+[ae]r .*([AEae]l[- ])?[GKQ]h?[aeu]+([dtz][dhz]?)+af[iy]", "Mo'ammar Gadhafi", {"Mo'ammar Gadhafi", NULL, "dh"}},
