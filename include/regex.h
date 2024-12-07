@@ -33,6 +33,7 @@ typedef struct __regex_t {
   struct regex {
     matcher m;
     void* next;
+    int startofs;
     int pieces;
     int num;
     struct branch* b;

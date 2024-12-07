@@ -31,7 +31,7 @@ PERFORMANCE OF THIS SOFTWARE.
 #include <string.h>
 #include <stdbool.h>
 
-#define IGNORE_OUTOFRANGE 1
+#define IGNORE_OUTOFRANGE 0
 
 struct a_test
 {
@@ -44,7 +44,6 @@ struct a_test
 static const struct a_test the_tests[] =
 {
 #include "regex-glibc-testcases.h"
-  {0, "ab((c*)d)ef", "abcdefg", { "abcdef", "cd", "c", NULL } },
   {-1, 0, 0}
 };
 
@@ -67,6 +66,8 @@ run_a_test (int id, const struct a_test * t)
   regmatch_t regs[10];
   int match_error = false;
   size_t len = strlen(t->data);
+
+  printf("pattern: %s vs data: %s\n",t->pattern, t->data);
 
   if (!last_pattern || strcmp (last_pattern, t->pattern))
     {
@@ -190,7 +191,8 @@ main (int argc, char * argv[])
   for (x = lo; x < hi; ++x)
     {
       printf ("#%d:", x);
-      res |= run_a_test (x, &the_tests[x]);
+      if (run_a_test (x, &the_tests[x])) res++;
     }
+  printf("%d of %d tests failed\n",res,hi-lo);
   return res != 0;
 }

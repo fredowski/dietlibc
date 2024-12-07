@@ -6,6 +6,12 @@
 #include <sys/types.h>
 #include <string.h>
 #include <assert.h>
+#ifdef DEBUG
+#include <stdio.h>
+#define dprintf(...) printf(__VA_ARGS__)
+#else
+#define dprintf(a,...) {}
+#endif
 
 #if !defined(__x86_64__)
 #undef WANT_REGEX_JIT
@@ -52,6 +58,7 @@ struct string {
 struct atom {
   matcher m;
   void* next;
+  int startofs;
   enum { ILLEGAL, EMPTY, REGEX, BRACKET, ANY, LINESTART, LINEEND, WORDSTART, WORDEND, CHAR, STRING, BACKREF, } type;
   int bnum;
   union {
@@ -65,6 +72,7 @@ struct atom {
 struct piece {
   matcher m;
   void* next;
+  int startofs;
   struct atom a;
   unsigned int min,max;
 };
@@ -72,6 +80,7 @@ struct piece {
 struct branch {
   matcher m;
   void* next;
+  int startofs;
   int num;
   struct piece *p;
 };
@@ -91,12 +100,16 @@ static int issetcc(unsigned int* x,unsigned int bit) {
 static const char* parsebracketed(struct bracketed*__restrict__ b,const char*__restrict__ s,regex_t*__restrict__ rx) {
   const char* t;
   int i,negflag=0;
+  dprintf("parsebracketed %c ", *(s));
   if (*s!='[') return s;
   t=s+1;
   clearcc(b->cc);
   if (*t=='^') { negflag=1; ++t; }
   do {
-    if (*t==0) return s;
+    if (*t==0) {
+        dprintf("no bracketed found\n");
+        return s;
+    }
     setcc(b->cc,rx->cflags&REG_ICASE?tolower(*t):*t);
     if (t[1]=='-' && t[2]!=']') {
       for (i=*t+1; i<=t[2]; ++i) setcc(b->cc,rx->cflags&REG_ICASE?tolower(i):i);
@@ -105,6 +118,7 @@ static const char* parsebracketed(struct bracketed*__restrict__ b,const char*__r
     ++t;
   } while (*t!=']');
   if (negflag) for (i=0; i<32; ++i) b->cc[i]=~b->cc[i];
+  dprintf("parsebracketed found bracket, continue with %c\n", *(t+1));
   return t+1;
 }
 
@@ -115,6 +129,7 @@ static int matchatom_CHAR(void*__restrict__ x,const unsigned char*__restrict__ s
 #ifdef DEBUG
     printf("matching atom CHAR %c against \"%.20s\"\n",a->u.c,s);
 #endif
+  a->startofs=ofs;
   if (*s!=a->u.c) return -1;
   if (a->next)
     return ((struct atom*)(a->next))->m(a->next,(const char*)s+1,ofs+1,preg,plus+1,eflags);
@@ -127,6 +142,7 @@ static int matchatom_CHAR_ICASE(void*__restrict__ x,const unsigned char*__restri
 #ifdef DEBUG
     printf("matching atom CHAR_ICASE %c against \"%.20s\"\n",a->u.c,s);
 #endif
+  a->startofs=ofs;
   if (tolower(*s)!=a->u.c) return -1;
   if (a->next)
     return ((struct atom*)(a->next))->m(a->next,(const char*)s+1,ofs+1,preg,plus+1,eflags);
@@ -138,24 +154,40 @@ static int matchatom(void*__restrict__ x,const unsigned char*__restrict__ s,int 
   register struct atom* a=(struct atom*)x;
   int matchlen=0;
   assert(a->type!=ILLEGAL);
+  a->startofs=ofs;
   switch (a->type) {
   case EMPTY:
 #ifdef DEBUG
     printf("matching atom EMPTY against \"%.20s\"\n",s);
     printf("a->bnum is %d\n",a->bnum);
 #endif
-    if (a->bnum>=0) preg->l[a->bnum].rm_so=preg->l[a->bnum].rm_eo=ofs;
+    if (a->bnum>0) {
+      preg->l[a->bnum].rm_so=preg->l[a->bnum].rm_eo=ofs;
+      dprintf("matchatom: bnum: %d -> rm_so=%d, rm_eo=%d",a->bnum,ofs,ofs);
+    }
     goto match;
   case REGEX:
 #ifdef DEBUG
-    printf("matching atom REGEX against \"%.20s\"\n",s);
+    printf("matching atom (%p) REGEX against \"%.20s\"\n",a,s);
     printf("a->bnum is %d\n",a->bnum);
 #endif
+    /* If there are further BACKREFs we need to fill the match register.
+       So we do a first run and fill the match register on speculation. */
+    if (((preg->cflags&REG_EXTENDED)==0) && a->bnum>0) {
+        matchlen=a->u.r.m(&a->u.r,(const char*)s,ofs,preg,0,eflags);
+        preg->l[a->bnum].rm_so=ofs;
+        preg->l[a->bnum].rm_eo=(a->next?((struct atom *)(a->next))->startofs:ofs+matchlen);
+    }
     if ((matchlen=a->u.r.m(&a->u.r,(const char*)s,ofs,preg,0,eflags))>=0) {
+      int eo=(a->next?((struct atom *)(a->next))->startofs:ofs+matchlen);
       assert(a->bnum>=0);
       preg->l[a->bnum].rm_so=ofs;
-      preg->l[a->bnum].rm_eo=ofs+matchlen;
-      goto match;
+      preg->l[a->bnum].rm_eo=eo;
+      dprintf("matchatom: bnum: %d -> rm_so=%d, rm_eo=%d, next: %p\n",a->bnum,ofs,eo,a->next);
+      return plus+matchlen;
+    } else if (a->bnum>0) {
+      dprintf("matchatom: bnum: %d -> rm_so=%d, rm_eo=%d\n",a->bnum,-1,-1);
+      preg->l[a->bnum].rm_so=-1;
     }
     break;
   case BRACKET:
@@ -206,7 +238,7 @@ static int matchatom(void*__restrict__ x,const unsigned char*__restrict__ s,int 
     break;
   case CHAR:
 #ifdef DEBUG
-    printf("matching atom CHAR %c against \"%.20s\"\n",a->u.c,s);
+    printf("matching atom (%p) CHAR %c against \"%.20s\"\n",a,a->u.c,s);
 #endif
     matchlen=1;
     if (((preg->cflags&REG_ICASE)?tolower(*s):*s)==a->u.c) goto match;
@@ -214,7 +246,7 @@ static int matchatom(void*__restrict__ x,const unsigned char*__restrict__ s,int 
   case STRING:
     matchlen=a->u.s.len;
 #ifdef DEBUG
-    printf("matching atom STRING \"%.*s\" against \"%.20s\"\n",a->u.s.len,a->u.s.s,s);
+    printf("matching atom STRING \"%.*s\" against \"%.20s\"\n",(int)a->u.s.len,a->u.s.s,s);
 #endif
     {
       int i;
@@ -231,11 +263,12 @@ static int matchatom(void*__restrict__ x,const unsigned char*__restrict__ s,int 
   case BACKREF:
     matchlen=preg->l[(unsigned char)(a->u.c)].rm_eo-preg->l[(unsigned char)(a->u.c)].rm_so;
 #ifdef DEBUG
-    printf("matching atom BACKREF %d (\"%.*s\") against \"%.20s\"\n",a->u.c,matchlen,s-ofs+preg->l[a->u.c].rm_so,s);
+    printf("matching atom BACKREF %d (\"%.*s\") against \"%.20s\"\n",(int)a->u.c,matchlen,s-ofs+preg->l[(size_t)(a->u.c)].rm_so,s);
 #endif
     if (memcmp(s-ofs+preg->l[(unsigned char)(a->u.c)].rm_so,s,matchlen)==0) goto match;
     break;
   }
+  dprintf("matchatom: no match, return -1\n");
   return -1;
 match:
   if (a->next)
@@ -255,6 +288,7 @@ static const char* parseatom(struct atom*__restrict__ a,const char*__restrict__ 
   const char *tmp;
   a->m=(matcher)matchatom;
   a->bnum=-1;
+  dprintf("parseatom: %c\n", *s);
   switch (*s) {
   case '(':
     if ((rx->cflags&REG_EXTENDED)==0) goto handle_char;
@@ -262,23 +296,30 @@ openbracket:
     a->bnum=++rx->brackets;
     if (s[1]==')') {
       a->type=EMPTY;
+      dprintf("parseatom: found empty regex, continue with %c\n", *(s+2));
       return s+2;
     }
     a->type=REGEX;
     tmp=parseregex(&a->u.r,s+1,rx);
-    if (closebracket(tmp,rx))
+    if (closebracket(tmp,rx)) {
+      dprintf("parseatom: found regex, continue with %c\n", *(tmp+1));
       return tmp+1+((rx->cflags&REG_EXTENDED)==0);
+    }
     /* fall through */
   case ')':
     if ((rx->cflags&REG_EXTENDED)==0) goto handle_char;
     /* fall through */
   case 0:
   case '|':
+    dprintf("parseatom: found ) or | or null, continue with %c\n", *s);
     return s;
   case '[':
     a->type=BRACKET;
-    if ((tmp=parsebracketed(&a->u.b,s,rx))!=s)
+    if ((tmp=parsebracketed(&a->u.b,s,rx))!=s) {
+      dprintf("parseatom: found bracket, continue with %c\n", *tmp);
       return tmp;
+    }
+    dprintf("parseatom: bracket parse no success, continue with %c\n", *s);
     return s;
   case '.':
     a->type=ANY;
@@ -298,6 +339,7 @@ openbracket:
       a->type=WORDEND;
       break;
     } else if (*s>='1' && *s<=(rx->brackets+'1') && ((rx->cflags&REG_EXTENDED)==0)) {
+      dprintf("parseatom: found BACKREF\n");
       a->type=BACKREF;
       a->u.c=*s-'0';
       break;
@@ -328,13 +370,17 @@ handle_char:
 	if (!(a->u.s.s=malloc(i+1))) return s;
 	memcpy(a->u.s.s,s,i);
 	a->u.s.s[i]=0;
+	dprintf("parseatom: continue with %c\n", *(s+1));
 	return s+i;
       }
     }
     break;
   }
+  dprintf("parseatom: continue with %c\n", *(s+1));
   return s+1;
 }
+
+static void atom_putnext(struct atom*__restrict__ a,void*__restrict__ next);
 
 /* needs to do "greedy" matching, i.e. match as often as possible */
 static int matchpiece(void*__restrict__ x,const char*__restrict__ s,int ofs,struct __regex_t*__restrict__ preg,int plus,int eflags) {
@@ -342,49 +388,73 @@ static int matchpiece(void*__restrict__ x,const char*__restrict__ s,int ofs,stru
   int matchlen=0;
   int tmp=0,num=0;
   unsigned int *offsets;
-  assert(a->max>0 && a->max<1000);
+  void* save = 0;
+  assert(a->max>0 && a->max<=RE_DUP_MAX);
+  a->startofs=ofs;
 #ifdef DEBUG
-  printf("alloca(%d)\n",sizeof(int)*(a->max+1));
+  printf("matchpiece (%p) \"%s\" min:%d max:%d\n", x, s, a->min, a->max);
+  //printf("alloca(%d)\n",(int)sizeof(int)*(a->max+1));
 #endif
   offsets=alloca(sizeof(int)*(a->max+1));
   offsets[0]=0;
-//  printf("allocating %d offsets...\n",a->max);
-//  printf("matchpiece \"%s\"...\n",s);
+  //dprintf("allocating %d offsets...\n",a->max);
+  //dprintf("matchpiece \"%s\"...\n",s);
   /* first, try to match the atom as often as possible, up to a->max times */
-  if (a->max == 1 && a->min == 1)
-    return a->a.m(&a->a,s+matchlen,ofs+matchlen,preg,0,eflags);
-  while ((unsigned int)num<a->max) {
-    void* save=a->a.next;
-    a->a.next=0;
-    if ((tmp=a->a.m(&a->a,s+matchlen,ofs+matchlen,preg,0,eflags))>=0) {
-      a->a.next=save;
+  if (a->max == 1 && a->min == 1) {
+    tmp = a->a.m(&a->a,s+matchlen,ofs+matchlen,preg,plus,eflags);
+    dprintf("matchpiece (%p) return %d\n", x,tmp);
+    return tmp;
+  }
+  save=a->a.next;
+  atom_putnext(&a->a,0);
+  while (num<(int)a->max) {
+    tmp=a->a.m(&a->a,s+matchlen,ofs+matchlen,preg,0,eflags);
+    if (tmp>=0) {
       ++num;
       matchlen+=tmp;
-//      printf("setting offsets[%d] to %d\n",num,tmp);
+      dprintf("matchpiece (%p) setting offsets[%d] to %d\n",x, num,tmp);
       offsets[num]=tmp;
+      if (tmp==0) break;
     } else {
-      a->a.next=save;
       break;
     }
   }
-  if ((unsigned int)num<a->min) return -1;		/* already at minimum matches; signal mismatch */
+  atom_putnext(&a->a,save);
+  dprintf("matchpiece (%p): working backwards with num=%d\n",x,num);
+  if (num<(int)a->min) return -1;		/* already at minimum matches; signal mismatch */
   /* then, while the rest does not match, back off */
-  for (;num>=0;) {
-    if (a->next)
+  for (;num>=(int)a->min;) {
+    if (a->next) {
+      dprintf("matchpiece (%p): trying next\n",x);
       tmp=((struct atom*)(a->next))->m(a->next,s+matchlen,ofs+matchlen,preg,plus+matchlen,eflags);
-    else
+    } else {
+      dprintf("matchpiece (%p): a->next is NULL\n",x);
       tmp=plus+matchlen;
+    }
+    dprintf("matchpiece (%p): tmp=%d\n",x,tmp);
     if (tmp>=0) break;	/* it did match; don't back off any further */
-//    printf("using offsets[%d] (%d)\n",num,offsets[num]);
+    dprintf("matchpiece (%p): using offsets[%d] (%d)\n",x,num,offsets[num]);
     matchlen-=offsets[num];
     --num;
   }
+  /* Now run the matcher again from the last successfull offset to fill the
+     match registers of possible regex atoms */
+  if (tmp>=0) {
+    dprintf("matchpiece (%p): final correction run\n",x);
+    matchlen-=offsets[num];
+    a->a.m(&a->a,s+matchlen,ofs+matchlen,preg,plus,eflags);
+  }
+  dprintf("matchpiece (%p): returning tmp=%d\n",x,tmp);
   return tmp;
 }
 
 static const char* parsepiece(struct piece*__restrict__ p,const char*__restrict__ s,regex_t*__restrict__ rx) {
+  dprintf("parsepiece %c\n", *s);
   const char* tmp=parseatom(&p->a,s,rx);
-  if (tmp==s) return s;
+  if (tmp==s) {
+        dprintf("parsepiece found nothing\n");
+        return s;
+  }
   p->m=matchpiece;
   p->min=p->max=1;
   switch (*tmp) {
@@ -407,8 +477,10 @@ static const char* parsepiece(struct piece*__restrict__ p,const char*__restrict_
     }
     /* fall through */
   default:
+    dprintf("parsepiece found piece, continue with %c\n",*tmp);
     return tmp;
   }
+  dprintf("parsepiece found piece, continue with %c\n",*(tmp+1));
   return tmp+1;
 }
 
@@ -417,38 +489,33 @@ static int matchbranch(void*__restrict__ x,const char*__restrict__ s,int ofs,str
   register struct branch* a=(struct branch*)x;
   int tmp;
 #ifdef DEBUG
-  printf("%08p matching branch against \"%.20s\"\n",a,s);
+  printf("%p matching branch against \"%.20s\"\n",a,s);
   printf("%p %p\n",&a->p->m,a->p->m);
 #endif
+  a->startofs=ofs;
   assert(a->p->m==matchpiece);
   tmp=a->p->m(a->p,s,ofs,preg,plus,eflags);
-  if (tmp>=0) {
-    if (a->next)
-      return ((struct atom*)(a->next))->m(a->next,s+tmp,ofs+tmp,preg,plus+tmp,eflags);
-    else
-      return plus+tmp;
-  }
-  return -1;
+  dprintf("matchbranch (%p) return %d\n",a,tmp);
+  return tmp;
 }
 
 static int matchempty(void*__restrict__ x,const char*__restrict__ s,int ofs,struct __regex_t*__restrict__ preg,int plus,int eflags) {
-  (void)x;
-  (void)s;
-  (void)ofs;
-  (void)preg;
-  (void)plus;
-  (void)eflags;
-  return 0;
+  struct atom *a = (struct atom *)x;
+  if (a->next)
+    return ((struct atom*)(a->next))->m(a->next,(const char*)s,ofs,preg,plus,eflags);
+  else
+    return plus;
 }
 
 static const char* parsebranch(struct branch*__restrict__ b,const char*__restrict__ s,regex_t*__restrict__ rx,int*__restrict__ pieces) {
   struct piece p;
   const char *tmp = NULL;
+  dprintf("parsebranch: %c\n",*s);
   b->m=matchbranch;
   b->num=0; b->p=0;
   for (;;) {
     if (*s=='|' && b->num==0) {
-      tmp=s+1;
+      tmp=s;
       p.a.type=EMPTY;
       p.a.m=matchempty;
       p.min=p.max=1;
@@ -457,16 +524,16 @@ static const char* parsebranch(struct branch*__restrict__ b,const char*__restric
       tmp=parsepiece(&p,s,rx);
       if (tmp==s) return s;
     }
-//    printf("b->p from %p to ",b->p);
+    //printf("parsebranch: b->p from %p to ",b->p);
     {
       struct piece* t;
       if (!(t=realloc(b->p,++b->num*sizeof(p)))) return s;
-//      printf("piece realloc: %p -> %p (%d*%d)\n",b->p,t,b->num,sizeof(p));
+      //printf("parsebranch: piece realloc: %p -> %p (%d*%d)\n",b->p,t,b->num,(int)sizeof(p));
       b->p=t;
     }
-//    printf("%p (size %d)\n",b->p,b->num*sizeof(p));
+    //printf("%p (size %d)\n",b->p,(int)(b->num*sizeof(p)));
     b->p[b->num-1]=p;
-//    printf("assigned piece %d in branch %p\n",b->num-1,b->p);
+    dprintf("assigned piece %d in branch %p\n",b->num-1,b);
     if (*tmp=='|') break;
     s=tmp;
   }
@@ -478,25 +545,30 @@ static const char* parsebranch(struct branch*__restrict__ b,const char*__restric
 static int matchregex(void*__restrict__ x,const char*__restrict__ s,int ofs,struct __regex_t*__restrict__ preg,int plus,int eflags) {
   register struct regex* a=(struct regex*)x;
   int i,tmp;
+  void *save;
 #ifdef DEBUG
-  printf("%08p matching regex against \"%.20s\"\n",a,s);
+  printf("%p matching regex against \"%.20s\"\n",a,s);
 #endif
+  a->startofs = ofs;
   for (i=0; i<a->num; ++i) {
-    assert(a->b[i].m==matchbranch);
+    dprintf("matchregex (%p) trying branch %d of %d\n",x,i,a->num);
+    assert(a->b[i].m==matchbranch || a->b[i].m==matchempty);
     tmp=a->b[i].m(&a->b[i],s,ofs,preg,plus,eflags);
     if (tmp>=0) {
-      if (a->next)
-	return ((struct atom*)(a->next))->m(a->next,s+tmp,ofs+tmp,preg,plus+tmp,eflags);
-      else
-	return plus+tmp;
+      dprintf("matchregex (%p) branch %d matched %d characters\n",x,i,tmp);
+      return tmp;
     }
   }
+  dprintf("matchregex (%p) return -1\n",x);
   return -1;
 }
 
 static const char* parseregex(struct regex*__restrict__ r,const char*__restrict__ s,regex_t*__restrict__ p) {
   struct branch b;
   const char *tmp;
+#ifdef DEBUG
+  printf("parseregex: %c\n", *s);
+#endif
   r->m=matchregex;
   r->num=0; r->b=0; r->pieces=0;
   b.next=0;
@@ -506,24 +578,24 @@ static const char* parseregex(struct regex*__restrict__ r,const char*__restrict_
   }
   for (;;) {
     tmp=parsebranch(&b,s,p,&r->pieces);
-    if (tmp==s && !closebracket(s,p)) return s;
-//    printf("r->b from %p to ",r->b);
+    if (tmp==s && *tmp!='|' && !closebracket(s,p)) return s;
+    //printf("r->b from %p to ",r->b);
     {
       struct branch* t;
       if (!(t=realloc(r->b,++r->num*sizeof(b)))) {
 	free(b.p);
 	return s;
       }
-//      printf("branch realloc: %p -> %p (%d*%d)\n",r->b,t,r->num,sizeof(b));
+      //printf("branch realloc: %p -> %p (%d*%d)\n",r->b,t,r->num,(int)sizeof(b));
       r->b=t;
     }
-//    printf("%p (size %d)\n",r->b,r->num*sizeof(b));
+    //printf("%p (size %d)\n",r->b,(int)(r->num*sizeof(b)));
     r->b[r->num-1]=b;
     if (closebracket(s,p)) {
       r->b[r->num-1].m=matchempty;
       return s;
     }
-//    printf("assigned branch %d at %p\n",r->num-1,r->b);
+    dprintf("parseregex: assigned branch %d at %p\n",r->num-1,r);
     s=tmp;
     if (closebracket(s,p)) return s;
     if (*s=='|') ++s;
@@ -541,7 +613,7 @@ static void regex_putnext(struct regex* r,void* next);
 static void atom_putnext(struct atom*__restrict__ a,void*__restrict__ next) {
   a->next=next;
   if (a->type==REGEX)
-    regex_putnext(&a->u.r,0);
+    regex_putnext(&a->u.r,next);
 }
 
 static void piece_putnext(struct piece*__restrict__ p,void*__restrict__ next) {
@@ -559,7 +631,7 @@ static void branch_putnext(struct branch*__restrict__ b,void*__restrict__ next) 
       else
 	piece_putnext(&b->p[i],&b->p[i+1]);
     }
-    piece_putnext(&b->p[i],0);
+    piece_putnext(&b->p[i],next);
   }
   b->next=next;
 }
@@ -590,9 +662,11 @@ int regexec(const regex_t*__restrict__ preg, const char*__restrict__ string, siz
   for (matched=0; (unsigned int)matched<nmatch; ++matched)
     pmatch[matched].rm_so=-1;
 #ifdef DEBUG
-  printf("alloca(%d)\n",sizeof(regmatch_t)*(preg->brackets+3));
+  printf("alloca(%d)\n",(int)sizeof(regmatch_t)*(preg->brackets+3));
 #endif
   ((regex_t*)preg)->l=alloca(sizeof(regmatch_t)*(preg->brackets+3));
+  for(matched=0;matched<preg->brackets+3;++matched)
+    preg->l[matched].rm_so=-1;
   int earlyabort=(preg->cflags&REG_NEWLINE)==0;
   if (earlyabort) {
     int i;
@@ -606,10 +680,13 @@ int regexec(const regex_t*__restrict__ preg, const char*__restrict__ string, siz
     matched=preg->r.m((void*)&preg->r,string,string-orig,(regex_t*)preg,0,eflags);
 //    printf("ebp on stack = %x\n",stack[1]);
     if (__unlikely(matched>=0)) {
-      matched=preg->r.m((void*)&preg->r,string,string-orig,(regex_t*)preg,0,eflags);
       preg->l[0].rm_so=string-orig;
       preg->l[0].rm_eo=string-orig+matched;
-      if ((preg->cflags&REG_NOSUB)==0) memcpy(pmatch,preg->l,nmatch*sizeof(regmatch_t));
+      dprintf("regexec: bnum: %d -> rm_so=%d, rm_eo=%d\n",0,(int)(string-orig),(int)(string-orig+matched));
+      if ((preg->cflags&REG_NOSUB)==0) {
+        if (preg->brackets+1 < (int)nmatch) nmatch = (size_t)preg->brackets+1;
+        memcpy(pmatch,preg->l,nmatch*sizeof(regmatch_t));
+      }
       return 0;
     }
     if (!*string) break;
